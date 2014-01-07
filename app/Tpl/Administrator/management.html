@@ -1,0 +1,147 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>Administrator Management
+                </div>
+            </div>
+        </div>
+
+        <div class="top_4">
+            <form method="get" action="" name="search_form">
+                <div style="float: right; margin-right: 5px;">
+                    <input class="btn btn-primary" type="button" value="Delete Administrator"
+                        onclick="javascript:del();">
+                </div>
+                <div style="float: right; margin-right: 5px;">
+                    <input class="btn btn-primary" type="button" value="Add Administrator"
+                        onclick="javascript:add();">
+                </div>
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin: 0px auto; padding: 0px;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "Account", name: 'username', align: 'center', width: '10%'},
+            {display: "Real Name", name: 'real_name', align: 'center', width: '10%'},
+            {display: "E-Mail", name: 'email', align: 'center', width: '15%'},
+            {display: "Add Time", name: 'add_time', align: 'center', width: '15%'},
+            {display: "Last Login Time", name: 'last_time', align: 'center', width: '15%'},
+            {display: "Description", name: 'desc', align: 'left', width: '20%', isSort: false},
+            ],
+            url: '<{:U("Administrator/management")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//add administrtor
+var addAdminDialog;
+function add() {
+    if (!isPromise()) {
+        return false;
+    }
+    addAdminDialog = $.ligerDialog.open({
+        url: '<{:U("Administrator/add")}>', height: 400, width: 500,
+        isDrag: false, title: 'Add an Administrator',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {addAdminDialog.frame.addAdminFormSubmit();}},
+                  {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加管理员回调
+function addAdminCallback(obj) {
+    addAdminDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, '恭喜您(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+
+//删除管理员
+function del() {
+    if (!isPromise()) {
+        return false;
+    }
+    if (judge(1, 'type', '您不能对系统管理员操作')) {
+        var data = getCheckedData('id');
+        var id = '';
+        for (var i=0;i<data.length;i++) {
+            if (i==data.length-1) {
+                id += data[i];
+            } else {
+                id += data[i]+',';
+            }
+        }
+    } else {
+        return false;
+    }
+    ajaxUpdateAdmin({action: '删除', url: '/manage/del', post_data: {id: id}});
+}
+
+//判断选中的管理员是否满足条件
+function judge(refer, which, warning) {
+    var arr = getCheckedData(which);
+    if (0 == arr.length) {
+        $.ligerDialog.alert('请选择要删除的管理员！', '温馨提示', 'warn');
+        return false;
+    } else if ($.inArray(refer, arr) >= 0) {
+        $.ligerDialog.alert(warning, '温馨提示', 'warn');
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//ajax更改管理员状态|删除管理员
+function ajaxUpdateAdmin(param) {
+    $.ligerDialog.confirm('确定要'+param.action+'选中的管理员吗？', function(yes) {
+        if (yes) {
+            $.post(param.url, param.post_data, function(data) {
+                if (1 == data.status) {
+                    $.ligerDialog.alert(data.msg, '温馨提示', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, '出错啦(>_<)', 'error');
+                    return;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//judge the privilege
+function isPromise() {
+    if (0 == <{$type}>) {
+        $.ligerDialog.alert('Sorry!Only system administrator can do this!', 'Warning', 'warn');
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
