@@ -71,7 +71,7 @@ body {
 					id="desc" style="resize: none;"
 					onfocus="javascript:checkLength(this);"
 					onkeydown="javascript:checkLength(this);"
-					onkeyup="javascript:checkLength(this);" maxLength="20"></textarea>
+					onkeyup="javascript:checkLength(this);" maxLength="70"></textarea>
 			</td>
 			<td align="left" class="tipmsg" id="desc_tip"></td>
 		</tr>
@@ -168,7 +168,7 @@ function checkLength(obj) {
     var maxLength = obj.maxLength;
     var desc = obj.value;
     if (desc.length <= maxLength) {
-        document.getElementById('desc_tip').innerHTML = maxLength-desc.length+'words left';
+        document.getElementById('desc_tip').innerHTML = maxLength-desc.length+' word(s) left';
     }
     obj.onblur = function() {
         document.getElementById('desc_tip').innerHTML = '';

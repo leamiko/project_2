@@ -36,8 +36,8 @@ class AdministratorAction extends AdminAction {
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pageSize']) ? $_GET['pageSize'] : 20;
-            $order = isset($_GET['order']) ? $_GET['order'] : 'id';
-            $sort = isset($_GET['sort']) ? $_GET['sort'] : 'ASC';
+            $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
+            $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $result = array();
             $adminUser = M('adminUser');
             $count = $adminUser->field("COUNT(1) AS total")->select();

@@ -33,11 +33,11 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Account", name: 'username', align: 'center', width: '10%'},
-            {display: "Real Name", name: 'real_name', align: 'center', width: '10%'},
-            {display: "E-Mail", name: 'email', align: 'center', width: '15%'},
-            {display: "Add Time", name: 'add_time', align: 'center', width: '15%'},
-            {display: "Last Login Time", name: 'last_time', align: 'center', width: '15%'},
+            {display: "Account", name: 'username', align: 'center', width: '10%', isSort: true},
+            {display: "Real Name", name: 'real_name', align: 'center', width: '10%', isSort: true},
+            {display: "E-Mail", name: 'email', align: 'center', width: '15%', isSort: false},
+            {display: "Add Time", name: 'add_time', align: 'center', width: '15%', isSort: true},
+            {display: "Last Login Time", name: 'last_time', align: 'center', width: '15%', isSort: true},
             {display: "Description", name: 'desc', align: 'left', width: '20%', isSort: false},
             ],
             url: '<{:U("Administrator/management")}>',
@@ -61,7 +61,7 @@ function add() {
         return false;
     }
     addAdminDialog = $.ligerDialog.open({
-        url: '<{:U("Administrator/add")}>', height: 400, width: 500,
+        url: '<{:U("Administrator/add")}>', height: 400, width: 600,
         isDrag: false, title: 'Add an Administrator',
         buttons: [{text: 'Ok', onclick: function(item, dialog) {addAdminDialog.frame.addAdminFormSubmit();}},
                   {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]
