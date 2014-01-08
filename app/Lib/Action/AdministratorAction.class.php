@@ -9,6 +9,9 @@
  */
 class AdministratorAction extends AdminAction {
 
+    /**
+     * add an administrator
+     */
     public function add() {
         if ($this->isAjax()) {
             $username = isset($_POST['username']) ? $_POST['username'] : '';
@@ -19,15 +22,15 @@ class AdministratorAction extends AdminAction {
             }
             $email = $_POST['email'];
             $desc = $_POST['desc'];
-            $adminUser = D('AdminUser');
-            echo json_encode($adminUser->add($username, $password, $realname, $email, $desc));
+            $adminUser = D('adminUser');
+            echo json_encode($adminUser->addAdministrator($username, $password, $realname, $email, $desc));
         } else {
             $this->display();
         }
     }
 
     /**
-     *administrator management
+     * administrator management
      */
     public function management() {
         if ($this->isAjax()) {

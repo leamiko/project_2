@@ -9,7 +9,22 @@
  */
 class AdminUserModel extends Model {
 
-    public function add($username, $password, $realname, $email, $desc) {
+    /**
+     * add an administrator
+     *
+     * @param string $username
+     *            account
+     * @param string $password
+     *            password
+     * @param string $realname
+     *            real name
+     * @param string $email
+     *            e-mail
+     * @param string $desc
+     *            description
+     * @return array
+     */
+    public function addAdministrator($username, $password, $realname, $email, $desc) {
         $result = $this->where("username = '{$username}'")->limit(1)->select();
         if (!empty($result)) {
             return array(
@@ -17,26 +32,25 @@ class AdminUserModel extends Model {
                 'msg' => 'account exists!!!'
             );
         }
-        $data['username'] = $username;
-        $data['password'] = md5($password);
-        $data['real_name'] = $realname;
-        $data['email'] = $email;
-        $data['add_time'] = time();
-        $data['last_time'] = 0;
-        $data['status'] = 1;
-       // $data['desc'] = $desc;
-        $data['type'] = 0;
-        dump($this->data($data)->add());exit;
-        echo $this->add($data);exit;
-        //$this->startTrans();
-        if ($this->add($data)) {
-           // $this->commit();
+        $this->startTrans();
+        if ($this->data(array(
+            'username' => $username,
+            'password' => md5($password),
+            'real_name' => $realname,
+            'email' => $email,
+            'add_time' => time(),
+            'last_time' => 0,
+            'status' => 1,
+            'desc' => $desc,
+            'type' => 0
+        ))->add()) {
+            $this->commit();
             return array(
                 'status' => true,
                 'msg' => 'success'
             );
         } else {
-            //$this->rollback();
+            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => 'failed'
@@ -44,6 +58,15 @@ class AdminUserModel extends Model {
         }
     }
 
+    /**
+     * account verification
+     *
+     * @param string $username
+     *            account
+     * @param string $password
+     *            account password
+     * @return array
+     */
     public function auth($username, $password) {
         $result = $this->where("username = '{$username}'")->limit(1)->select();
         if (empty($result)) {

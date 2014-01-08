@@ -81,19 +81,19 @@ body {
 //<![CDATA[
 $(function() {
     $("#username").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '4-20位字母或数字组合，<br>不得包含特殊字符');
+        addTip($(this).parent('td').next('td:last'), '4-20 letters or numbers');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckUserName();
     });
     $("#password").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '6-16位字母或数字组合，<br>不得包含特殊字符');
+        addTip($(this).parent('td').next('td:last'), '6-16 letters or numbers');
     }).blur(function() {
          removeTip($(this).parent('td').next('td:last'));
          ckPassword();
     });
     $("#real_name").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '请输入真实姓名');
+        addTip($(this).parent('td').next('td:last'), 'Please enter a real name');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckRealName();
@@ -104,7 +104,7 @@ $(function() {
     });
 });
 
-//添加选项后面的提示
+//add tips
 function addTip(my, tip) {
     removeTip(my);
     var tip1 = '<div class="tip_msg">';
@@ -112,78 +112,70 @@ function addTip(my, tip) {
     my.append(tip1+tip+tip2);
 }
 
-//移除选项后面的提示，包括成功和失败
+//remove tips
 function removeTip(my) {
     my.find(".tip_msg").remove();
 }
 
-//检测用户名
+//check account
 function ckUserName() {
     var username = $.trim($("#username").val());
     if (username.length > 20 || username.length < 4) {
-        addTip($("#username").parent('td').next('td:last'), '4-20位字母或数字组合，<br />不得包含特殊字符');
+        addTip($("#username").parent('td').next('td:last'), '4-20 letters or numbers');
         return false;
     }
     return true;
 }
 
-//检测密码
+//check password
 function ckPassword() {
     var password = $.trim($("#password").val());
     if (password.length > 16 || password.length < 6) {
-        addTip($("#password").parent('td').next('td:last'), '6-16位字母或数字组合，<br>不得包含特殊字符');
+        addTip($("#password").parent('td').next('td:last'), '6-16 letters or numbers');
         return false;
     }
     var regOtherString=/[~!@#\$%\^&\*]+/g ;
     if (regOtherString.test(password)) {
-        addTip($("#password").parent('td').next('td:last'), '密码不得包含特殊字符');
+        addTip($("#password").parent('td').next('td:last'), 'Password can not contain special characters');
         return false;
     }
     return true;
 }
 
-//检测真实姓名
+//check real name
 function ckRealName() {
     var realname = $.trim($("#real_name").val());
     if (realname.length == 0) {
-        addTip($("#real_name").parent('td').next('td:last'), '请输入真实姓名');
-        return false;
-    }
-    if (realname.length < 2 || realname.length > 4) {
-        addTip($("#real_name").parent('td').next('td:last'), '请输入真实姓名');
-        return false;
-    }
-    if (realname.match(/\d|\w/g) != null) {
-        addTip($("#real_name").parent('td').next('td:last'), '请输入真实姓名');
+        addTip($("#real_name").parent('td').next('td:last'), 'Please enter a real name');
         return false;
     }
     return true;
 }
 
-//检测邮箱
+//check e-mail
 function ckEmail() {
     var email = $.trim($("#email").val());
     var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
     if (email.length != 0 && !reg.test(email)) {
-        addTip($("#email").parent('td').next('td:last'), '请输入正确的邮箱');
+        addTip($("#email").parent('td').next('td:last'), 'invalid email format');
         return false;
     }
     return true;
 }
 
-//检测描述内容长度
+//check description length
 function checkLength(obj) {
     var maxLength = obj.maxLength;
     var desc = obj.value;
     if (desc.length <= maxLength) {
-        document.getElementById('desc_tip').innerHTML = '您还可以输入:'+(maxLength-desc.length)+'个字';
+        document.getElementById('desc_tip').innerHTML = maxLength-desc.length+'words left';
     }
     obj.onblur = function() {
         document.getElementById('desc_tip').innerHTML = '';
     }
 }
 
-//检测表单
+//check form 
 function checkForm() {
     if (!ckUserName()) return false;
     if (!ckPassword()) return false;
@@ -197,7 +189,7 @@ function checkForm() {
     return {username: username, password: password, realname: realname, email: email, desc: desc};
 }
 
-//提交表单
+//submit form
 function addAdminFormSubmit() {
     if (checkForm()) {
         $.post('<{:U('Administrator/add')}>', checkForm(), function(data) {

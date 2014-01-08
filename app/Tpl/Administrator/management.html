@@ -68,14 +68,14 @@ function add() {
     });
 }
 
-//添加管理员回调
+//add administrator callback
 function addAdminCallback(obj) {
     addAdminDialog.close();
     if (1 == obj.status) {
-        $.ligerDialog.alert(obj.msg, '恭喜您(^_^)', 'success');
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
         location.reload(true);
     } else {
-        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
         return false;
     }
 }
