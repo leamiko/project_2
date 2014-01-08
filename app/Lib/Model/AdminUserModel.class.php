@@ -47,13 +47,13 @@ class AdminUserModel extends Model {
             $this->commit();
             return array(
                 'status' => true,
-                'msg' => 'success'
+                'msg' => 'Add successfully'
             );
         } else {
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => 'failed'
+                'msg' => 'Add failed'
             );
         }
     }
@@ -72,7 +72,7 @@ class AdminUserModel extends Model {
         if (empty($result)) {
             return array(
                 'status' => false,
-                'msg' => 'user not found'
+                'msg' => 'User not found'
             );
         } else {
             if (md5($password) == $result[0]['password']) {
@@ -83,9 +83,38 @@ class AdminUserModel extends Model {
             } else {
                 return array(
                     'status' => false,
-                    'msg' => 'invalid password'
+                    'msg' => 'Invalid password'
                 );
             }
+        }
+    }
+
+    /**
+     * delete administrator
+     *
+     * @param array $id
+     *            administrator's id to be deleted
+     * @return array
+     */
+    public function deleteAdministrator(array $id) {
+        $map = array();
+        $map['id'] = array(
+            'in',
+            $id
+        );
+        $this->startTrans();
+        if ($this->where($map)->delete()) {
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => 'Deleted successfully'
+            );
+        } else {
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => 'Deleted failed'
+            );
         }
     }
 

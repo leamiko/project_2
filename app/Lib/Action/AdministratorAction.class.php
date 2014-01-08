@@ -18,7 +18,7 @@ class AdministratorAction extends AdminAction {
             $password = isset($_POST['password']) ? $_POST['password'] : '';
             $realname = isset($_POST['realname']) ? $_POST['realname'] : '';
             if (empty($username) || empty($password) || empty($realname)) {
-                $this->redirect(U('/'));
+                $this->redirect('/');
             }
             $email = $_POST['email'];
             $desc = $_POST['desc'];
@@ -26,6 +26,18 @@ class AdministratorAction extends AdminAction {
             echo json_encode($adminUser->addAdministrator($username, $password, $realname, $email, $desc));
         } else {
             $this->display();
+        }
+    }
+
+    public function delete() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? $_POST['id'] : '';
+            empty($id) && $this->redirect('/');
+            $id = explode(',', $id);
+            $adminUser = D('adminUser');
+            echo json_encode($adminUser->deleteAdministrator((array) $id));
+        } else {
+            $this->redirect('/');
         }
     }
 
@@ -45,7 +57,7 @@ class AdministratorAction extends AdminAction {
             if ($result['Total']) {
                 $result['Rows'] = $adminUser->field("id, username, real_name, email,
                         FROM_UNIXTIME(add_time) AS add_time,
-                        FROM_UNIXTIME(last_time) AS last_time, desc")->limit(($page - 1), $pageSize)->order($order . " " . $sort)->select();
+                        FROM_UNIXTIME(last_time) AS last_time, desc, type")->limit(($page - 1), $pageSize)->order($order . " " . $sort)->select();
             } else {
                 $result['Rows'] = null;
             }

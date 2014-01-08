@@ -24,7 +24,7 @@
         <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerTip.js"></script>
         <script type="text/javascript">
         //<![CDATA[
-        //自动适应宽度
+        //auto width
         function f_change() {
             $(".l-grid-header-inner","#maingrid4").css("width","100%");
             $(".l-grid-header-table","#maingrid4").css("width","100%");
@@ -34,15 +34,15 @@
             $("table","#maingrid4").css("table-layout","fixed");
             if(this.options.total <= 0){
                 $("#maingrid4grid").css({"height":"280px"});
-                $(".l-grid-body2").html("<div style='height:300px;width:100%;'><div style='height:100px;font-size:14px;font-weight:bolder;text-align:center;margin:120px auto;'>没有找到搜索结果，请修改搜索条件后再试！</div></div>");
+                $(".l-grid-body2").html("<div style='height:300px;width:100%;'><div style='height:100px;font-size:14px;font-weight:bolder;text-align:center;margin:120px auto;'>No data...</div></div>");
                 return false;
             } else {
-                if(this.options.checkbox == false){
+                if (this.options.checkbox == false) {
                     $("#maingrid4grid").css({"height":"100%"});
                 }
             }
         }
-        //获取被选中的用户的参数
+        //get attribute of checked
         function getCheckedData(which) {
             var rows = grid.getCheckedRows();
             var arr = new Array();

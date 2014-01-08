@@ -80,15 +80,15 @@ function addAdminCallback(obj) {
     }
 }
 
-//删除管理员
+//delete administrator
 function del() {
     if (!isPromise()) {
         return false;
     }
-    if (judge(1, 'type', '您不能对系统管理员操作')) {
+    if (judge(1, 'type', 'You can\'t do this to system administrator!')) {
         var data = getCheckedData('id');
         var id = '';
-        for (var i=0;i<data.length;i++) {
+        for (var i=0; i<data.length; i++) {
             if (i==data.length-1) {
                 id += data[i];
             } else {
@@ -98,33 +98,33 @@ function del() {
     } else {
         return false;
     }
-    ajaxUpdateAdmin({action: '删除', url: '/manage/del', post_data: {id: id}});
+    ajaxUpdateAdmin({action: 'delete', url: '<{:U("Administrator/delete")}>', post_data: {id:id}});
 }
 
-//判断选中的管理员是否满足条件
+//whether checked system administrator
 function judge(refer, which, warning) {
     var arr = getCheckedData(which);
     if (0 == arr.length) {
-        $.ligerDialog.alert('请选择要删除的管理员！', '温馨提示', 'warn');
+        $.ligerDialog.alert('Please select at least one account', 'Tips', 'warn');
         return false;
     } else if ($.inArray(refer, arr) >= 0) {
-        $.ligerDialog.alert(warning, '温馨提示', 'warn');
+        $.ligerDialog.alert(warning, 'Tips', 'warn');
         return false;
     } else {
         return true;
     }
 }
 
-//ajax更改管理员状态|删除管理员
+//ajax update / delete administrator
 function ajaxUpdateAdmin(param) {
-    $.ligerDialog.confirm('确定要'+param.action+'选中的管理员吗？', function(yes) {
+    $.ligerDialog.confirm('Are you sure to ' + param.action + ' the checked administrator(s)?', function(yes) {
         if (yes) {
             $.post(param.url, param.post_data, function(data) {
                 if (1 == data.status) {
-                    $.ligerDialog.alert(data.msg, '温馨提示', 'success');
+                    $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
                     location.reload(true);
                 } else {
-                    $.ligerDialog.alert(data.msg, '出错啦(>_<)', 'error');
+                    $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
                     return;
                 }
             }, 'json');
@@ -132,7 +132,7 @@ function ajaxUpdateAdmin(param) {
     });
 }
 
-//judge the privilege
+//check permission
 function isPromise() {
     if (0 == <{$type}>) {
         $.ligerDialog.alert('Sorry!Only system administrator can do this!', 'Warning', 'warn');
