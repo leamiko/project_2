@@ -68,25 +68,47 @@
         function f_addTab(tabid, text, url) {
             tab.addTabItem({tabid:tabid, text:text, url:url});
         }
+		//change password
+		var cpwdDialog;
+		function chpwd() {
+			cpwdDialog = $.ligerDialog.open({
+				url: '<{:U("login/chpwd?id=$adminId")}>', height: 200, width: 500,
+				title: 'Change Password', isDrag : false,
+				buttons: [{text:'Ok', onclick:function (item, dialog) {cpwdDialog.frame.chmypwdSubmit();}},
+						  {text:'Cancle', onclick:function (item, dialog) {dialog.close();}}]
+			});
+		}
+		//change password callback
+		function chmypwdCallback(data) {
+			cpwdDialog.close();
+			if (data.status) {
+				$.ligerDialog.alert(data.msg, 'Success(^_^)', 'success', function() {
+					this.parent.location = '<{:U("login/logout")}>';
+				});
+			} else {
+				$.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+				return false;
+			}
+		}
         //]]>
         </script>
         <style type="text/css">
         <!--
         body,html{height:100%;}
-        body{ padding:0px; margin:0;   overflow:hidden;}
-        .l-link{ display:block; height:26px; line-height:26px; padding-left:10px; text-decoration:underline; color:#333;}
-        .l-link2{text-decoration:underline; color:white; margin-left:2px;margin-right:2px;}
-        .l-layout-top{background:#102A49; color:White;}
-        .l-layout-bottom{ background:#E5EDEF; text-align:center;}
-        #pageloading{position:absolute; left:0px; top:0px; background:white url('__PUBLIC__/images/loading.gif') no-repeat center; width:100%; height:100%;z-index:99999;}
-        .l-link{ display:block; line-height:22px; height:22px; padding-left:16px;border:1px solid white; margin:4px;}
-        .l-link-over{ background:#FFEEAC; border:1px solid #DB9F00;}
-        .l-winbar{ background:#2B5A76; height:30px; position:absolute; left:0px; bottom:0px; width:100%; z-index:99999;}
-        .space{ color:#E7E7E7;padding-left:6px;padding-right:6px;}
-        .l-topmenu{ margin:0; padding:0; height:31px; line-height:31px; background:url('__PUBLIC__/images/top.jpg') repeat-x bottom;  position:relative; border-top:1px solid #1D438B;  }
-        .l-topmenu-logo{ color:#E7E7E7; padding-left:35px; line-height:26px;background:url('__PUBLIC__/images/topicon.gif') no-repeat 10px 5px;}
-        .l-topmenu-welcome{  position:absolute; height:24px; line-height:24px;  right:30px; top:2px;color:#070A0C;}
-        .l-topmenu-welcome a{ color:#E7E7E7; text-decoration:underline}
+        body{padding:0px; margin:0px;overflow:hidden;}
+        .l-link{display:block; height:26px;line-height:26px; padding-left:10px; text-decoration:underline; color:#333;}
+        .l-link2{text-decoration:underline;color:white;margin-left:2px;margin-right:2px;}
+        .l-layout-top{background:#102A49;color:White;}
+        .l-layout-bottom{background:#E5EDEF;text-align:center;}
+        #pageloading{position:absolute;left:0px;top:0px;background:white url('__PUBLIC__/images/loading.gif') no-repeat center;width:100%;height:100%;z-index:99999;}
+        .l-link{display:block;line-height:22px;height:22px;padding-left:16px;border:1px solid white;margin:4px;}
+        .l-link-over{background:#FFEEAC;border:1px solid #DB9F00;}
+        .l-winbar{background:#2B5A76;height:30px;position:absolute;left:0px;bottom:0px;width:100%;z-index:99999;}
+        .space{color:#E7E7E7;padding-left:6px;padding-right:6px;}
+        .l-topmenu{margin:0px;padding:0px;height:31px;line-height:31px;background:url('__PUBLIC__/images/top.jpg') repeat-x bottom;position:relative;border-top:1px solid #1D438B;}
+        .l-topmenu-logo{color:#E7E7E7;padding-left:35px;line-height:26px;background:url('__PUBLIC__/images/topicon.gif') no-repeat 10px 5px;}
+        .l-topmenu-welcome{position:absolute;height:24px;line-height:24px;right:30px;top:2px;color:#070A0C;}
+        .l-topmenu-welcome a{color:#E7E7E7;text-decoration:underline;}
         -->
         </style>
     </head>
@@ -98,7 +120,7 @@
             <div class="l-topmenu-welcome">
                 <span style="color:#fff;">Hello! <i><{$administrator}></i></span>
                 <span class="space">|</span>
-                <a href="javascript:void(0);" onclick="javascript:chmypwd();" class="l-link2">Change Password</a>
+                <a href="javascript:void(0);" onclick="javascript:chpwd();" class="l-link2">Change Password</a>
                 <span class="space">|</span>
                 <a href="<{:U('Login/logout')}>" class="l-link2">Logout</a>
                 <span class="space">|</span>

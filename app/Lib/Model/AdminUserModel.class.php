@@ -90,6 +90,34 @@ class AdminUserModel extends Model {
     }
 
     /**
+     * Change administrator's password
+     *
+     * @param int $id
+     *            administrator's id
+     * @param string $password
+     *            new password
+     * @return array
+     */
+    public function changePassword($id, $password) {
+        $this->startTrans();
+        if ($this->where("id = {$id}")->save(array(
+            'password' => md5($password)
+        ))) {
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => 'Change password successfully'
+            );
+        } else {
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => 'Change password failed'
+            );
+        }
+    }
+
+    /**
      * delete administrator
      *
      * @param array $id

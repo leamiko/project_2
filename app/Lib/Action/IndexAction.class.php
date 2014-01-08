@@ -15,6 +15,7 @@ class IndexAction extends AdminAction {
     public function index() {
         $this->assign('menu', json_encode($this->getMenu()));
         $this->assign('administrator', $this->admin_info['username']);
+        $this->assign('adminId', $this->admin_info['id']);
         $this->display();
     }
 
