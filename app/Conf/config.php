@@ -19,7 +19,6 @@ $app_config = array(
                 )
             )
         )
-    ),
-    'APP_DEBUG' => true
+    )
 );
 return array_merge(require 'config.inc.php', $app_config);

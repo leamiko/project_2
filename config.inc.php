@@ -19,5 +19,6 @@ return array(
     "DB_PWD" => "123456",
     "DB_PORT" => 3306,
     "DB_PREFIX" => "easy_",
-    "URL_HTML_SUFFIX" => ""
+    "URL_HTML_SUFFIX" => "",
+    'APP_DEBUG' => true
 );
