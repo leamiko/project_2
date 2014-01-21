@@ -2,7 +2,8 @@
 ## Eclipse
 #################
 
-Cache/
+app/Runtime/*
+app/Runtime/Cache/*
 *.pydevproject
 .project
 .metadata
