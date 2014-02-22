@@ -1,0 +1,64 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>Member Overview
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <form method="get" name="search_form">
+                Email Or Username：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="submit" value="Search" />
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin: 0px auto; padding: 0px;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "Username", name: 'account', align: 'center', width: '16%', isSort: false},
+            {display: "Sex", name: 'sex', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+					if (value) {
+						return parseInt(value) ? 'man' : 'woman';
+					} else {
+						return 'unknown';
+					}
+				}
+			},
+			{display: "E-mail", name: 'email', align: 'center', width: '16%', isSort: false},
+			{display: "Phone", name: 'phone', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+					return value ? value : 'unknown';
+				}
+			},
+            {display: "Register Time", name: 'register_time', align: 'center', width: '16%', isSort: true},
+            {display: "Last login Time", name: 'last_time', align: 'center', width: '16%', isSort: true, render: function(rowdata, rowindex, value) {
+					return value ? value : 'This member never login';
+				}
+			}
+            ],
+            url: '<{:U("Member/index")}>?keyword=<{$keyword}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
