@@ -18,6 +18,16 @@ $app_config = array(
                     'url' => '/administrator/management'
                 )
             )
+        ),
+        'Member' => array(
+            'text' => 'Member',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Member Overview',
+                    'url' => '/member/index'
+                )
+            )
         )
     )
 );

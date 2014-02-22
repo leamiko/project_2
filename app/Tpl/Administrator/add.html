@@ -11,44 +11,53 @@ body{font-size:12px;}
 .tip_msg3{color:#fb072f;}
 -->
 </style>
-<form id="user_form" enctype="multipart/form-data" method="post">
-	<table cellpadding="0" cellspacing="0" class="l-table-edit">
-		<tr>
-			<td align="right" class="l-table-edit-td"><span>*</span>account:</td>
-			<td align="left" class="l-table-edit-td"><input type="text"
-				name="username" id="username" /></td>
-			<td align="left" class="tipmsg"></td>
-		</tr>
-		<tr>
-			<td align="right" class="l-table-edit-td"><span>*</span>password:</td>
-			<td align="left" class="l-table-edit-td"><input type="password"
-				name="password" id="password" /></td>
-			<td align="left" class="tipmsg"></td>
-		</tr>
-		<tr>
-			<td align="right" class="l-table-edit-td"><span>*</span>real name:</td>
-			<td align="left" class="l-table-edit-td"><input type="text"
-				name="real_name" id="real_name" /></td>
-			<td align="left" class="tipmsg"></td>
-		</tr>
-		<tr>
-			<td align="right" class="l-table-edit-td">e-mail:</td>
-			<td align="left" class="l-table-edit-td"><input type="text"
-				name="email" id="email" /></td>
-			<td align="left" class="tipmsg"></td>
-		</tr>
-		<tr>
-			<td align="right" class="l-table-edit-td">description:</td>
-			<td align="left" class="l-table-edit-td"><textarea name="desc"
-					id="desc" style="resize: none;"
-					onfocus="javascript:checkLength(this);"
-					onkeydown="javascript:checkLength(this);"
-					onkeyup="javascript:checkLength(this);" maxLength="70"></textarea>
-			</td>
-			<td align="left" class="tipmsg" id="desc_tip"></td>
-		</tr>
-	</table>
-</form>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>account:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="username" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>password:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="password" id="password" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>real name:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="real_name" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            e-mail:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="email" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            description:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <textarea id="desc" style="resize: none;" onfocus="javascript:checkLength(this);" onkeydown="javascript:checkLength(this);" onkeyup="javascript:checkLength(this);" maxLength="70"></textarea>
+        </td>
+        <td align="left" class="tipmsg" id="desc_tip"></td>
+    </tr>
+</table>
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
@@ -164,7 +173,7 @@ function checkForm() {
 //submit form
 function addAdminFormSubmit() {
     if (checkForm()) {
-        $.post('<{:U('Administrator/add')}>', checkForm(), function(data) {
+        $.post('<{:U("Administrator/add")}>', checkForm(), function(data) {
             window.parent.addAdminCallback(data);
         }, 'json');
     }

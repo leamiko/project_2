@@ -25,31 +25,30 @@ class AdminUserModel extends Model {
      * @return array
      */
     public function addAdministrator($username, $password, $realname, $email, $desc) {
-        $result = $this->where("username = '{$username}'")->limit(1)->select();
-        if (!empty($result)) {
+        if ($this->where("username = \"{$username}\"")->count()) {
             return array(
                 'status' => false,
-                'msg' => 'account exists!!!'
+                'msg' => 'Account exists!!!'
             );
         }
+        // start transaction
         $this->startTrans();
-        if ($this->data(array(
+        if ($this->add(array(
             'username' => $username,
             'password' => md5($password),
             'real_name' => $realname,
             'email' => $email,
             'add_time' => time(),
-            'last_time' => 0,
-            'status' => 1,
-            'desc' => $desc,
-            'type' => 0
-        ))->add()) {
+            'desc' => $desc
+        ))) {
+            // add successfully.commit transaction
             $this->commit();
             return array(
                 'status' => true,
                 'msg' => 'Add successfully'
             );
         } else {
+            // add failed.rollback transaction
             $this->rollback();
             return array(
                 'status' => false,
@@ -144,6 +143,29 @@ class AdminUserModel extends Model {
                 'msg' => 'Deleted failed'
             );
         }
+    }
+
+    /**
+     * get administrator count
+     */
+    public function getAdministratorCount() {
+        return (int) $this->count();
+    }
+
+    /**
+     * get administrator list
+     *
+     * @param int $page
+     *            current page
+     * @param int $pageSize
+     *            page size
+     * @param string $order
+     *            order field
+     * @param string $sort
+     *            sort
+     */
+    public function getAdministratorList($page, $pageSize, $order, $sort) {
+        return $this->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
     }
 
 }

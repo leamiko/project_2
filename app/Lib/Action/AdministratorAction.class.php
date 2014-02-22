@@ -14,16 +14,13 @@ class AdministratorAction extends AdminAction {
      */
     public function add() {
         if ($this->isAjax()) {
-            $username = isset($_POST['username']) ? $_POST['username'] : '';
-            $password = isset($_POST['password']) ? $_POST['password'] : '';
-            $realname = isset($_POST['realname']) ? $_POST['realname'] : '';
-            if (empty($username) || empty($password) || empty($realname)) {
-                $this->redirect('/');
-            }
-            $email = $_POST['email'];
-            $desc = $_POST['desc'];
+            $username = isset($_POST['username']) ? trim($_POST['username']) : $this->redirect('/');
+            $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
+            $realname = isset($_POST['realname']) ? trim($_POST['realname']) : $this->redirect('/');
+            $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
+            $desc = isset($_POST['desc']) ? trim($_POST['desc']) : $this->redirect('/');
             $adminUser = D('adminUser');
-            echo json_encode($adminUser->addAdministrator($username, $password, $realname, $email, $desc));
+            $this->ajaxReturn($adminUser->addAdministrator($username, $password, $realname, $email, $desc));
         } else {
             $this->display();
         }
@@ -47,21 +44,24 @@ class AdministratorAction extends AdminAction {
     public function management() {
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
-            $pageSize = isset($_GET['pageSize']) ? $_GET['pageSize'] : 20;
+            $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
-            $result = array();
-            $adminUser = M('adminUser');
-            $count = $adminUser->field("COUNT(1) AS total")->select();
-            $result['Total'] = $count[0]['total'];
-            if ($result['Total']) {
-                $result['Rows'] = $adminUser->field("id, username, real_name, email,
-                        FROM_UNIXTIME(add_time) AS add_time,
-                        FROM_UNIXTIME(last_time) AS last_time, desc, type")->limit(($page - 1), $pageSize)->order($order . " " . $sort)->select();
+            $adminUser = D('adminUser');
+            $total = $adminUser->getAdministratorCount();
+            if ($total) {
+                $rows = array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
+                    return $value;
+                }, $adminUser->getAdministratorList($page, $pageSize, $order, $sort));
             } else {
-                $result['Rows'] = null;
+                $rows = null;
             }
-            echo json_encode($result);
+            $this->ajaxReturn(array(
+                'Total' => $total,
+                'Rows' => $rows
+            ));
         } else {
             $this->assign('type', $this->admin_info['type']);
             $this->display();

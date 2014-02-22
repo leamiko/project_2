@@ -33,11 +33,14 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Account", name: 'username', align: 'center', width: '10%', isSort: true},
-            {display: "Real Name", name: 'real_name', align: 'center', width: '10%', isSort: true},
-            {display: "E-Mail", name: 'email', align: 'center', width: '15%', isSort: false},
-            {display: "Add Time", name: 'add_time', align: 'center', width: '15%', isSort: true},
-            {display: "Last Login Time", name: 'last_time', align: 'center', width: '15%', isSort: true},
+            {display: "Account", name: 'username', align: 'center', width: '12%'},
+            {display: "Real Name", name: 'real_name', align: 'center', width: '12%'},
+            {display: "E-Mail", name: 'email', align: 'center', width: '16%', isSort: false},
+            {display: "Add Time", name: 'add_time', align: 'center', width: '16%'},
+            {display: "Last Login Time", name: 'last_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
+					return value ? value : 'This administrator never login';
+				}
+			},
             {display: "Description", name: 'desc', align: 'left', width: '20%', isSort: false},
             ],
             url: '<{:U("Administrator/management")}>',
