@@ -10,7 +10,7 @@
 class AdministratorAction extends AdminAction {
 
     /**
-     * add an administrator
+     * Add an administrator
      */
     public function add() {
         if ($this->isAjax()) {
@@ -39,7 +39,7 @@ class AdministratorAction extends AdminAction {
     }
 
     /**
-     * administrator management
+     * Administrator management
      */
     public function management() {
         if ($this->isAjax()) {

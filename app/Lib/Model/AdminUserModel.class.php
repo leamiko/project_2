@@ -10,7 +10,7 @@
 class AdminUserModel extends Model {
 
     /**
-     * add an administrator
+     * Add an administrator
      *
      * @param string $username
      *            account
@@ -31,7 +31,7 @@ class AdminUserModel extends Model {
                 'msg' => 'Account exists!!!'
             );
         }
-        // start transaction
+        // Start transaction
         $this->startTrans();
         if ($this->add(array(
             'username' => $username,
@@ -41,14 +41,14 @@ class AdminUserModel extends Model {
             'add_time' => time(),
             'desc' => $desc
         ))) {
-            // add successfully.commit transaction
+            // Add successfully,commit transaction
             $this->commit();
             return array(
                 'status' => true,
                 'msg' => 'Add successfully'
             );
         } else {
-            // add failed.rollback transaction
+            // Add failed,rollback transaction
             $this->rollback();
             return array(
                 'status' => false,
@@ -58,7 +58,7 @@ class AdminUserModel extends Model {
     }
 
     /**
-     * account verification
+     * Account verification
      *
      * @param string $username
      *            account
@@ -117,7 +117,7 @@ class AdminUserModel extends Model {
     }
 
     /**
-     * delete administrator
+     * Delete administrator
      *
      * @param array $id
      *            administrator's id to be deleted
@@ -153,7 +153,7 @@ class AdminUserModel extends Model {
     }
 
     /**
-     * get administrator list
+     * Get administrator list
      *
      * @param int $page
      *            current page
