@@ -10,7 +10,7 @@
 class MemberAction extends AdminAction {
 
     /**
-     * member overview
+     * Member overview
      */
     public function index() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
@@ -25,6 +25,7 @@ class MemberAction extends AdminAction {
                 $rows = array_map(function ($value) {
                     $value['register_time'] = date("Y-m-d H:i:s", $value['register_time']);
                     $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
+                    $value['upgrade_time'] = $value['upgrade_time'] ? date("Y-m-d H:i:s", $value['upgrade_time']) : $value['upgrade_time'];
                     return $value;
                 }, $member->getMemberList($page, $pageSize, $order, $sort, $keyword));
             } else {

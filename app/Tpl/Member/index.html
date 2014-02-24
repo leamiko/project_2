@@ -26,7 +26,7 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Username", name: 'account', align: 'center', width: '16%', isSort: false},
+            {display: "Username", name: 'account', align: 'center', width: '12%', isSort: false},
             {display: "Sex", name: 'sex', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
 					if (value) {
 						return parseInt(value) ? 'man' : 'woman';
@@ -35,14 +35,22 @@ $(function(){
 					}
 				}
 			},
-			{display: "E-mail", name: 'email', align: 'center', width: '16%', isSort: false},
-			{display: "Phone", name: 'phone', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+			{display: "E-mail", name: 'email', align: 'center', width: '12%', isSort: false},
+			{display: "Phone", name: 'phone', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
 					return value ? value : 'unknown';
+				}
+			},
+			{display: "VIP", name: 'is_vip', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+					return parseInt(value) ? 'Yes' : 'No';
 				}
 			},
             {display: "Register Time", name: 'register_time', align: 'center', width: '16%', isSort: true},
             {display: "Last login Time", name: 'last_time', align: 'center', width: '16%', isSort: true, render: function(rowdata, rowindex, value) {
-					return value ? value : 'This member never login';
+					return value ? value : 'This member never logined';
+				}
+			},
+			{display: "Upgrade Time", name: 'upgrade_time', align: 'center', width: '16%', isSort: true, render: function(rowdata, rowindex, value) {
+					return value ? value : 'This member never upgraded';
 				}
 			}
             ],

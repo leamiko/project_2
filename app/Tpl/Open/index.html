@@ -9,10 +9,10 @@
             </div>
         </div>
         <div style="width:100%;line-height:28px;">
-            <table border="1">
+            <table border="1" width="96%">
                 <tr>
-                    <td>Interface：</td>
-                    <td>Login</td>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Login</td>
                 </tr>
                 <tr>
                     <td>URL：</td>
@@ -35,13 +35,219 @@
                     <td><div class="failed_return_1"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Register</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/register</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>string account:'xxx', string password:'xxx', string email:'xxx'</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_2"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_2"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Add address</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/add_address</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        string name: 'xxx'<font color="#f00;">（Consignee name can not more than 10 Chinese characters or 30 English characters）</font>,<br />
+                        string phone: 'xxx'<font color="#f00;">（Consignee phone only include numbers and underline and can not more than 30 English characters）</font>,<br />
+                        string zip: 'xxx'<font color="#f00;">（Zip code only include number and can not more than 30 English characters）</font>,<br />
+                        string address: 'xxx'<font color="#f00;">（Address can not more than 80 Chinese characters or 250 English characters）</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_3"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_3"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Delete address</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/delete_address</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>int id: 1</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_4"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_4"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Update address</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/update_address</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        string name: 'xxx'<font color="#f00;">（Consignee name can not more than 10 Chinese characters or 30 English characters）</font>,<br />
+                        string phone: 'xxx'<font color="#f00;">（Consignee phone only include numbers and underline and can not more than 30 English characters）</font>,<br />
+                        string zip: 'xxx'<font color="#f00;">（Zip code only include number and can not more than 30 English characters）</font>,<br />
+                        string address: 'xxx'<font color="#f00;">（Address can not more than 80 Chinese characters or 250 English characters）</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_5"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_5"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">User address list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/address_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>int user_id: 1, int page: 1, int pageSize: 15</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_6"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_6"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Upgrade an user</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/user_upgrade</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>int user_id: 1, int is_vip: 1<font color="#f00">(1:yes,0:no)</font></td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_7"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_7"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Change password</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/change_password</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                    	int user_id: 1,
+                        string old_password: 'xxx',
+                        string new_password: 'xxx'
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_8"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_8"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
 <style type="text/css">
 <!--
-table{margin:20px;}
+table{margin:20px;font-size:14px;font-weight:bolder;}
 table tr td{padding-left:12px;padding-right:12px;}
+.api_hr{width:100%;height:6px;border-top:1px #000 dashed;clear:both;}
 -->
 </style>
 <script type="text/javascript">
@@ -52,6 +258,36 @@ $(function() {
     }, 'json');
     $.post("<{:U('api/login')}>", {account: 'lzjjie', password : '654321'}, function(data) {
         $(".failed_return_1").JSONView(data);
+    }, 'json');
+	$(".success_return_2").JSONView({"status":1,"result":"Registration successful"});
+	$.post("<{:U('api/register')}>", {account: 'lzjjie', password: '123456', email:'lzjjie@gmail.com'}, function(data) {
+        $(".failed_return_2").JSONView(data);
+    }, 'json');
+	$(".success_return_3").JSONView({"status":1,"result":"Add address successful"});
+	$.post("<{:U('api/add_address')}>", {user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
+        $(".failed_return_3").JSONView(data);
+    }, 'json');
+	$(".success_return_4").JSONView({"status":1,"result":"Delete address successful"});
+	$.post("<{:U('api/delete_address')}>", {id: 0}, function(data) {
+        $(".failed_return_4").JSONView(data);
+    }, 'json');
+	$(".success_return_5").JSONView({"status":1,"result":"Update address successful"});
+	$.post("<{:U('api/update_address')}>", {id: 0, user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
+        $(".failed_return_5").JSONView(data);
+    }, 'json');
+	$.post("<{:U('api/address_list')}>", {user_id: 1, page: 1, pageSize: 15}, function(data) {
+        $(".success_return_6").JSONView(data);
+    }, 'json');
+	$.post("<{:U('api/address_list')}>", {user_id: 0, page: 0, pageSize: -15}, function(data) {
+        $(".failed_return_6").JSONView(data);
+    }, 'json');
+    $(".success_return_7").JSONView({"status":1,"result":"Upgrade successful"});
+	$.post("<{:U('api/user_upgrade')}>", {user_id: 0, is_vip: -1}, function(data) {
+        $(".failed_return_7").JSONView(data);
+    }, 'json');
+	$(".success_return_8").JSONView({"status":1,"result":"Change password successful"});    
+	$.post("<{:U('api/change_password')}>", {user_id: 0, old_password: '', new_password: ''}, function(data) {
+        $(".failed_return_8").JSONView(data);
     }, 'json');
 });
 //]]>
