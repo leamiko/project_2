@@ -28,6 +28,16 @@ $app_config = array(
                     'url' => '/member/index'
                 )
             )
+        ),
+        'API' => array(
+            'text' => 'API',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'App API List',
+                    'url' => '/open/index'
+                )
+            )
         )
     )
 );
