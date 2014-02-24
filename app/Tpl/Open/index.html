@@ -1,0 +1,59 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>App API List&nbsp;&nbsp;<span style="font-size:12px;font-weight:bolder;color:#f00;">(Attention：The parameters are all required if without special instructions, the integer parameters without special instructions must be positive integer.)</span>
+                </div>
+            </div>
+        </div>
+        <div style="width:100%;line-height:28px;">
+            <table border="1">
+                <tr>
+                    <td>Interface：</td>
+                    <td>Login</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/login</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>String account:'xxx', String password:'xxx'</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_1"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_1"></div></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+<!--
+table{margin:20px;}
+table tr td{padding-left:12px;padding-right:12px;}
+-->
+</style>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $.post("<{:U('api/login')}>", {account: 'lzjjie', password : '123456'}, function(data) {
+        $(".success_return_1").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/login')}>", {account: 'lzjjie', password : '654321'}, function(data) {
+        $(".failed_return_1").JSONView(data);
+    }, 'json');
+});
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
