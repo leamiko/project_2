@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 02 月 25 日 12:44
+-- 生成日期: 2014 年 02 月 25 日 17:07
 -- 服务器版本: 5.5.34
 -- PHP 版本: 5.3.18
 
@@ -100,5 +100,5 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
 --
 
 INSERT INTO `easy_member` (`id`, `account`, `password`, `phone`, `avatar`, `sex`, `is_vip`, `email`, `register_time`, `last_time`, `upgrade_time`) VALUES
-(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 'lzjjie@163.com', 1, 1393303307, 1393234186),
+(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 'lzjjie@163.com', 1, 1393303619, 1393234186),
 (2, 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', NULL, 0, 0, 'dfdfdsfsdf', 0, NULL, NULL);
