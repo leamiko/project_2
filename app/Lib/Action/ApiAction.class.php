@@ -11,8 +11,6 @@ class ApiAction extends Action {
 
     /**
      * Address list
-     *
-     * @return string
      */
     public function address_list() {
         if ($this->isPost() || $this->isAjax()) {
@@ -173,9 +171,33 @@ class ApiAction extends Action {
     }
 
     /**
+     * Get default address
+     */
+    public function get_default_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            if ($user_id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $address = M('Address');
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, $address->where("user_id = {$user_id} AND is_default = 1")->select())
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Login
-     *
-     * @return Ambigous <string, unknown>
      */
     public function login() {
         if ($this->isPost() || $this->isAjax()) {
@@ -265,6 +287,89 @@ class ApiAction extends Action {
                     'status' => 0,
                     'result' => 'Unknown error'
                 ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Set default address
+     */
+    public function set_default_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            if ($id < 1 || $user_id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $address = M('Address');
+            // Check whether have default address or not
+            if ($address->where("user_id = {$user_id} AND is_default = 1")->count()) {
+                // Check address with current id is default or not
+                if ($address->where("user_id = {$user_id} AND is_default = 1 AND id = {$id}")->count()) {
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'This address was the default one'
+                    ));
+                } else {
+                    // Start transaction
+                    $address->startTrans();
+                    // Set the current default one to Non-default
+                    if ($address->where("user_id = {$user_id} AND is_default = 1")->save(array(
+                        'is_default' => 0
+                    ))) {
+                        // Update successful,set the new default address
+                        if ($address->where("id = {$id}")->save(array(
+                            'is_default' => 1,
+                            'update_time' => time()
+                        ))) {
+                            // Set default address successful,commit transaction
+                            $address->commit();
+                            $this->ajaxReturn(array(
+                                'status' => 1,
+                                'result' => 'Set default address successful'
+                            ));
+                        } else {
+                            // Set default address failed,rollback transaction
+                            $address->rollback();
+                            $this->ajaxReturn(array(
+                                'status' => 0,
+                                'result' => 'Unknown error'
+                            ));
+                        }
+                    } else {
+                        // Set the current default address to Non-default failed
+                        $address->rollback();
+                        $this->ajaxReturn(array(
+                            'status' => 0,
+                            'result' => 'Unknown error'
+                        ));
+                    }
+                }
+            } else {
+                // No default address before,start transaction
+                $address->startTrans();
+                if ($address->where("id = {$id}")->save(array(
+                    'is_default' => 1
+                ))) {
+                    // Set default address successful,commit transaction
+                    $address->commit();
+                    $this->ajaxReturn(array(
+                        'status' => 1,
+                        'result' => 'Set default address successful'
+                    ));
+                } else {
+                    // Set default address failed,rollback transaction
+                    $address->rollback();
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'Unknown error'
+                    ));
+                }
             }
         } else {
             $this->redirect('/');

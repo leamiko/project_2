@@ -186,6 +186,63 @@
             <table border="1" width="96%">
                 <tr>
                     <td width="20%">Interface：</td>
+                    <td width="80%">Set default address</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/set_default_address</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int id: 1,<font color="#f00">(address id)</font>
+                        int user_id: 1
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_9"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_9"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Get default address</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/get_default_address</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>int user_id: 1</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_10"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_10"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
                     <td width="80%">Upgrade an user</td>
                 </tr>
                 <tr>
@@ -288,6 +345,16 @@ $(function() {
 	$(".success_return_8").JSONView({"status":1,"result":"Change password successful"});    
 	$.post("<{:U('api/change_password')}>", {user_id: 0, old_password: '', new_password: ''}, function(data) {
         $(".failed_return_8").JSONView(data);
+    }, 'json');
+    $(".success_return_9").JSONView({"status":1,"result":"Set default address successful"});
+	$.post("<{:U('api/set_default_address')}>", {id: 0, user_id: 0}, function(data) {
+        $(".failed_return_9").JSONView(data);
+    }, 'json');
+	$.post("<{:U('api/get_default_address')}>", {user_id: 1}, function(data) {
+        $(".success_return_10").JSONView(data);
+    }, 'json');
+	$.post("<{:U('api/get_default_address')}>", {user_id: 0}, function(data) {
+        $(".failed_return_10").JSONView(data);
     }, 'json');
 });
 //]]>
