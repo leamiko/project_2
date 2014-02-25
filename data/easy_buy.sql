@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 02 月 24 日 18:02
+-- 生成日期: 2014 年 02 月 25 日 12:44
 -- 服务器版本: 5.5.34
 -- PHP 版本: 5.3.18
 
@@ -32,17 +32,19 @@ CREATE TABLE IF NOT EXISTS `easy_address` (
   `phone` varchar(30) NOT NULL COMMENT 'consignee phone',
   `zip` varchar(30) NOT NULL COMMENT 'zip code',
   `address` varchar(255) NOT NULL COMMENT 'consignee address',
+  `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'default address(0:no,1:yes)',
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='user address table' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='user address table' AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `easy_address`
 --
 
-INSERT INTO `easy_address` (`id`, `user_id`, `name`, `phone`, `zip`, `address`, `add_time`, `update_time`) VALUES
-(1, 1, 'lzjjie', '13437563074', '518029', 'Room #207,2F,No.43,Jinhu 1st Street,Yinhu Road,Luohu District, Shenzhen, P.R.C', 1393227625, 1393228797);
+INSERT INTO `easy_address` (`id`, `user_id`, `name`, `phone`, `zip`, `address`, `is_default`, `add_time`, `update_time`) VALUES
+(1, 1, 'lzjjie', '13437563074', '518029', 'Room #207,2F,No.43,Jinhu 1st Street,Yinhu Road,Luohu District, Shenzhen, P.R.C', 1, 1393227625, 1393302552),
+(2, 1, 'lzjjie', '202-33228866', '510000', 'Room #207,2F,No.43,Jinhu 1st Street,Yinhu Road,Luohu District, Shenzhen, P.R.C', 0, 1393227625, 1393302510);
 
 -- --------------------------------------------------------
 
@@ -69,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1393218935, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1393302460, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
 
 -- --------------------------------------------------------
@@ -98,5 +100,5 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
 --
 
 INSERT INTO `easy_member` (`id`, `account`, `password`, `phone`, `avatar`, `sex`, `is_vip`, `email`, `register_time`, `last_time`, `upgrade_time`) VALUES
-(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 'lzjjie@163.com', 1, 1393236022, 1393234186),
+(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 'lzjjie@163.com', 1, 1393303307, 1393234186),
 (2, 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', NULL, 0, 0, 'dfdfdsfsdf', 0, NULL, NULL);
