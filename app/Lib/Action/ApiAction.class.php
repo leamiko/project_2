@@ -10,7 +10,7 @@
 class ApiAction extends Action {
 
     public function test() {
-        echo $this->think_send_mail('971318606@qq.com', 'banzhiyan', 'test', 'This is a test');
+        echo $this->sendMail('971318606@qq.com', 'banzhiyan', 'test', 'This is a test');
     }
 
     /**
@@ -28,13 +28,14 @@ class ApiAction extends Action {
                 ));
             }
             $address = M('Address');
+            $result = $address->where("user_id = {$user_id}")->limit(($page - 1) * $pageSize, $pageSize)->order("add_time DESC")->select();
+            foreach ($result as &$value) {
+                $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+            }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => array_map(function ($value) {
-                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
-                    return $value;
-                }, $address->where("user_id = {$user_id}")->limit(($page - 1) * $pageSize, $pageSize)->order("add_time DESC")->select())
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -187,13 +188,14 @@ class ApiAction extends Action {
                 ));
             }
             $address = M('Address');
+            $result = $address->where("user_id = {$user_id} AND is_default = 1")->select();
+            foreach ($result as &$value) {
+                $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+            }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => array_map(function ($value) {
-                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
-                    return $value;
-                }, $address->where("user_id = {$user_id} AND is_default = 1")->select())
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -209,22 +211,23 @@ class ApiAction extends Action {
             $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
             $member = M('Member');
             if ($member->where("account = \"{$account}\" AND password = \"" . md5($password) . "\"")->count()) {
-                $result = array_map(function ($value) use($password) {
-                    $value['password'] = $password;
-                    $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
-                    $value['upgrade_time'] = $value['upgrade_time'] ? date("Y-m-d H:i:s", $value['upgrade_time']) : $value['upgrade_time'];
-                    $value['avatar'] = $value['avatar'] ? "http://{$_SERVER['HTTP_HOST']}{$value['avatar']}" : $value['avatar'];
-                    return $value;
-                }, $member->field(array(
+                $result = $member->field(array(
                     'id',
                     'account',
                     'phone',
                     'avatar',
                     'sex',
-                    'FROM_UNIXTIME(register_time)' => 'register_time',
+                    'register_time',
                     'upgrade_time',
                     'last_time'
-                ))->where("account = \"{$account}\" AND password = \"" . md5($password) . "\"")->select());
+                ))->where("account = \"{$account}\" AND password = \"" . md5($password) . "\"")->select();
+                foreach ($result as &$value) {
+                    $value['password'] = $password;
+                    $value['register_time'] = date("Y-m-d H:i:s", $value['register_time']);
+                    $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
+                    $value['upgrade_time'] = $value['upgrade_time'] ? date("Y-m-d H:i:s", $value['upgrade_time']) : $value['upgrade_time'];
+                    $value['avatar'] = $value['avatar'] ? "http://{$_SERVER['HTTP_HOST']}{$value['avatar']}" : $value['avatar'];
+                }
                 // Update user last login time,start transaction
                 $member->startTrans();
                 if ($member->where("id = {$result[0]['id']}")->save(array(
@@ -476,44 +479,42 @@ class ApiAction extends Action {
     }
 
     /**
-     * 系统邮件发送函数
+     * Send an email
      *
-     * @param string $to
-     *            接收邮件者邮箱
+     * @param string $recipient
+     *            recipient
      * @param string $name
-     *            接收邮件者名称
+     *            name of recipient
      * @param string $subject
-     *            邮件主题
+     *            mail subject
      * @param string $body
-     *            邮件内容
+     *            mail content
      * @param string $attachment
-     *            附件列表
+     *            mail attachment
      * @return boolean
      */
-    protected function think_send_mail($to, $name, $subject = '', $body = '', $attachment = null) {
-        $config = C('THINK_EMAIL');
-        vendor('PHPMailer.class#phpmailer'); // 从PHPMailer目录导class.phpmailer.php类文件
-        $mail = new PHPMailer(); // PHPMailer对象
-        $mail->CharSet = 'UTF-8'; // 设定邮件编码，默认ISO-8859-1，如果发中文此项必须设置，否则乱码
-        $mail->IsSMTP(); // 设定使用SMTP服务
-        $mail->SMTPDebug = 0; // 关闭SMTP调试功能
-                              // 1 = errors and messages
-                              // 2 = messages only
-        $mail->SMTPAuth = true; // 启用 SMTP 验证功能
-        $mail->SMTPSecure = 'ssl'; // 使用安全协议
-        $mail->Host = $config['SMTP_HOST']; // SMTP 服务器
-        $mail->Port = $config['SMTP_PORT']; // SMTP服务器的端口号
-        $mail->Username = $config['SMTP_USER']; // SMTP服务器用户名
-        $mail->Password = $config['SMTP_PASS']; // SMTP服务器密码
-        $mail->SetFrom($config['FROM_EMAIL'], $config['FROM_NAME']);
-        $replyEmail = $config['REPLY_EMAIL'] ? $config['REPLY_EMAIL'] : $config['FROM_EMAIL'];
-        $replyName = $config['REPLY_NAME'] ? $config['REPLY_NAME'] : $config['FROM_NAME'];
+    protected function sendMail($recipient, $name, $subject = '', $body = '', $attachment = null) {
+        $config = C('EMAIL');
+        vendor('PHPMailer.class#phpmailer');
+        $mail = new PHPMailer();
+        $mail->CharSet = 'UTF-8';
+        $mail->IsSMTP();
+        // smtp debug setting(0:close, 1:errors and messages, 2:message only)
+        $mail->SMTPDebug = 0;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "ssl";
+        $mail->Host = $config['SMTP_HOST'];
+        $mail->Port = $config['SMTP_PORT'];
+        $mail->Username = $config['SENDER_MAIL'];
+        $mail->Password = $config['SENDER_PWD'];
+        $mail->SetFrom($config['SENDER_MAIL'], $config['SENDER_NAME']);
+        $replyEmail = $config['REPLY_EMAIL'] ? $config['REPLY_EMAIL'] : $config['SENDER_MAIL'];
+        $replyName = $config['REPLY_NAME'] ? $config['REPLY_NAME'] : $config['SENDER_NAME'];
         $mail->AddReplyTo($replyEmail, $replyName);
         $mail->Subject = $subject;
         $mail->MsgHTML($body);
-        $mail->AddAddress($to, $name);
-//         dump($mail);exit;
-        if (is_array($attachment)) { // 添加附件
+        $mail->AddAddress($recipient, $name);
+        if (is_array($attachment)) {
             foreach ($attachment as $file) {
                 is_file($file) && $mail->AddAttachment($file);
             }

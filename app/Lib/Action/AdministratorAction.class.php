@@ -50,11 +50,11 @@ class AdministratorAction extends AdminAction {
             $adminUser = D('adminUser');
             $total = $adminUser->getAdministratorCount();
             if ($total) {
-                $rows = array_map(function ($value) {
+                $rows = $adminUser->getAdministratorList($page, $pageSize, $order, $sort);
+                foreach ($rows as &$value) {
                     $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
                     $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
-                    return $value;
-                }, $adminUser->getAdministratorList($page, $pageSize, $order, $sort));
+                }
             } else {
                 $rows = null;
             }
