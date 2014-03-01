@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.8
+-- version 3.3.10
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 02 月 25 日 17:07
--- 服务器版本: 5.5.34
--- PHP 版本: 5.3.18
+-- 生成日期: 2014 年 03 月 01 日 15:44
+-- 服务器版本: 5.5.35
+-- PHP 版本: 5.4.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1393302460, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1393688011, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
 
 -- --------------------------------------------------------
@@ -87,18 +87,20 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
   `phone` varchar(30) DEFAULT NULL COMMENT 'user phone',
   `avatar` varchar(255) DEFAULT NULL COMMENT 'user avatar',
   `sex` tinyint(1) DEFAULT NULL COMMENT 'gender（1：man 0：woman）',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'user status(0:non-verify,1:verified)',
   `is_vip` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is a vip account(0:no,1:yes)',
   `email` varchar(255) NOT NULL COMMENT 'user email',
   `register_time` int(11) NOT NULL COMMENT 'user register time',
   `last_time` int(11) DEFAULT NULL COMMENT 'user last login time',
   `upgrade_time` int(11) DEFAULT NULL COMMENT 'upgrade time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='member table' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='member table' AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `easy_member`
 --
 
-INSERT INTO `easy_member` (`id`, `account`, `password`, `phone`, `avatar`, `sex`, `is_vip`, `email`, `register_time`, `last_time`, `upgrade_time`) VALUES
-(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 'lzjjie@163.com', 1, 1393303619, 1393234186),
-(2, 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', NULL, 0, 0, 'dfdfdsfsdf', 0, NULL, NULL);
+INSERT INTO `easy_member` (`id`, `account`, `password`, `phone`, `avatar`, `sex`, `status`, `is_vip`, `email`, `register_time`, `last_time`, `upgrade_time`) VALUES
+(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 0, 1, 'lzjjie@163.com', 1, 1393688580, 1393234186),
+(2, 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', NULL, 0, 0, 0, 'dfdfdsfsdf', 0, NULL, NULL),
+(6, 'tester', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, NULL, 0, 0, '971318606@qq.com', 1393688224, NULL, NULL);

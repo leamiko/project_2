@@ -279,14 +279,40 @@ class ApiAction extends Action {
                 'account' => $account,
                 'password' => md5($password),
                 'email' => $email,
+                'status' => 0,
                 'register_time' => time()
             ))) {
-                // Registration successful,commit transaction
-                $member->commit();
-                $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => 'Successful registration'
-                ));
+                // Send the email to user with verfication code
+                $verificationCode = $this->generateVerificationCode();
+                if ($this->sendMail($email, $account, 'EasyBuy Register Verification Code', "Dear {$account}! Thinks for registering!Your verification code is : {$verificationCode}.Enjoy you shopping!")) {
+                    $lastId = $member->getLastInsID();
+                    $result = $member->field(array(
+                        'id',
+                        'account',
+                        'avatar',
+                        'sex',
+                        'status',
+                        'is_vip',
+                        'email',
+                        'register_time',
+                        'last_time',
+                        'upgrade_time'
+                    ))->where("id = {$lastId}")->select();
+                    foreach ($result as &$v) {
+                        $v['avatar'] = $v['avatar'] ? "http://{$_SERVER['HTTP_HOST']}{$v['avatar']}" : $v['avatar'];
+                        $v['register_time'] = date("Y-m-d H:i:s", $v['register_time']);
+                        $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
+                        $v['upgrade_time'] = $v['upgrade_time'] ? date("Y-m-d H:i:s", $v['upgrade_time']) : $v['upgrade_time'];
+                        $v['password'] = $password;
+                        $v['verification_code'] = $verificationCode;
+                    }
+                    // Registration successful,commit transaction
+                    $member->commit();
+                    $this->ajaxReturn(array(
+                        'status' => 1,
+                        'result' => $result
+                    ));
+                }
             } else {
                 // Registration failed,rollback transaction
                 $member->rollback();
@@ -520,6 +546,15 @@ class ApiAction extends Action {
             }
         }
         return $mail->Send() ? true : $mail->ErrorInfo;
+    }
+
+    /**
+     * Generate the verification code
+     *
+     * @return number
+     */
+    private function generateVerificationCode() {
+        return rand(100000, 999999);
     }
 
 }

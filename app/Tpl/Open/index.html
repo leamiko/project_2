@@ -316,7 +316,7 @@ $(function() {
     $.post("<{:U('api/login')}>", {account: 'lzjjie', password : '654321'}, function(data) {
         $(".failed_return_1").JSONView(data);
     }, 'json');
-	$(".success_return_2").JSONView({"status":1,"result":"Registration successful"});
+	$(".success_return_2").JSONView({"status":1,"result":[{"id":"6","account":"tester","avatar":null,"sex":null,"status":"0","is_vip":"0","email":"971318606@qq.com","register_time":"2014-03-01 23:37:04","last_time":null,"upgrade_time":null,"password":"123456","verification_code":310980}]});
 	$.post("<{:U('api/register')}>", {account: 'lzjjie', password: '123456', email:'lzjjie@gmail.com'}, function(data) {
         $(".failed_return_2").JSONView(data);
     }, 'json');
