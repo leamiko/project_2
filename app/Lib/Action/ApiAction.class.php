@@ -327,6 +327,37 @@ class ApiAction extends Action {
     }
 
     /**
+     * resend a verification email
+     */
+    public function resend_verification_email() {
+        if ($this->isPost() || $this->isAjax()) {
+            $account = isset($_POST['account']) ? trim($_POST['account']) : $this->redirect('/');
+            $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
+            if (empty($account) || empty($email)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            // Send the email to user with verfication code
+            $verificationCode = $this->generateVerificationCode();
+            if ($this->sendMail($email, $account, 'EasyBuy Register Verification Code', "Dear {$account}! Thinks for registering!Your verification code is : {$verificationCode}.Enjoy you shopping!")) {
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => $verificationCode
+                ));
+            } else {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Resend verification email failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Set default address
      */
     public function set_default_address() {
@@ -463,6 +494,47 @@ class ApiAction extends Action {
     }
 
     /**
+     * Update user status
+     */
+    public function update_user_status() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            if ($user_id < 1 || !in_array($status, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $member = M('Member');
+            // Start transaction
+            $member->startTrans();
+            if ($member->where("id = {$user_id}")->save(array(
+                'status' => $status
+            ))) {
+                // Update user status successful,commit transaction
+                $member->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Update user status successful'
+                ));
+            } else {
+                // Update user status failed,rollback transaction
+                $member->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Unknown error'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Upgrade an user
      */
     public function user_upgrade() {
@@ -475,7 +547,7 @@ class ApiAction extends Action {
             ))) {
                 $this->ajaxReturn(array(
                     'status' => 0,
-                    'result' => 'Invalid'
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');

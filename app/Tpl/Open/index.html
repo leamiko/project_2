@@ -93,6 +93,33 @@
             <table border="1" width="96%">
                 <tr>
                     <td width="20%">Interface：</td>
+                    <td width="80%">Update user status</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/update_user_status</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>int user_id : 1, int status : 1(0:unverified, 1:verified)</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_12"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_12"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
                     <td width="80%">Add address</td>
                 </tr>
                 <tr>
@@ -383,11 +410,13 @@ $(function() {
 	$.post("<{:U('api/get_default_address')}>", {user_id: 0}, function(data) {
         $(".failed_return_10").JSONView(data);
     }, 'json');
-	$.post("<{:U('api/resend_verification_email')}>", {account:'tester', string email:'xxx'}, function(data) {
-        $(".success_return_11").JSONView(data);
-    }, 'json');
-	$.post("<{:U('api/resend_verification_email')}>", {account:'xxx', string email:'xxx'}, function(data) {
+    $(".success_return_11").JSONView({"status":1,"result":812440});
+	$.post("<{:U('api/resend_verification_email')}>", {account:'', email:''}, function(data) {
         $(".failed_return_11").JSONView(data);
+    }, 'json');
+    $(".success_return_12").JSONView({"status":1,"result":"Update user status successful"});
+    $.post("<{:U('api/update_user_status')}>", {user_id: 0, status: -1}, function(data) {
+        $(".failed_return_12").JSONView(data);
     }, 'json');
 });
 //]]>
