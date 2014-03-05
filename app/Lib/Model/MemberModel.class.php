@@ -1,7 +1,7 @@
 <?php
 
 /**
- * easy_member table model
+ * easy_member table's Model
  *
  * @author lzjjie
  * @version 1.0.0

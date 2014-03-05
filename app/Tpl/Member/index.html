@@ -36,6 +36,10 @@ $(function(){
 				}
 			},
 			{display: "E-mail", name: 'email', align: 'center', width: '12%', isSort: false},
+			{display: "Status", name: 'status', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+			        return parseInt(value) ? 'Verified' : 'Unverified';
+			    }
+			},
 			{display: "Phone", name: 'phone', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
 					return value ? value : 'unknown';
 				}
@@ -44,12 +48,12 @@ $(function(){
 					return parseInt(value) ? 'Yes' : 'No';
 				}
 			},
-            {display: "Register Time", name: 'register_time', align: 'center', width: '16%', isSort: true},
-            {display: "Last login Time", name: 'last_time', align: 'center', width: '16%', isSort: true, render: function(rowdata, rowindex, value) {
+            {display: "Register Time", name: 'register_time', align: 'center', width: '14%', isSort: true},
+            {display: "Last login Time", name: 'last_time', align: 'center', width: '14%', isSort: true, render: function(rowdata, rowindex, value) {
 					return value ? value : 'This member never logined';
 				}
 			},
-			{display: "Upgrade Time", name: 'upgrade_time', align: 'center', width: '16%', isSort: true, render: function(rowdata, rowindex, value) {
+			{display: "Upgrade Time", name: 'upgrade_time', align: 'center', width: '14%', isSort: true, render: function(rowdata, rowindex, value) {
 					return value ? value : 'This member never upgraded';
 				}
 			}
