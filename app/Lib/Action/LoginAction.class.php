@@ -18,7 +18,7 @@ class LoginAction extends Action {
         if ($this->isAjax()) {
             $password = isset($_POST['password']) ? $_POST['password'] : '';
             empty($password) && $this->redirect('/');
-            $adminUser = D('adminUser');
+            $adminUser = D('AdminUser');
             echo json_encode($adminUser->changePassword($id, $password));
         } else {
             $this->assign('adminId', $id);
@@ -33,7 +33,7 @@ class LoginAction extends Action {
         if ($this->isPost()) {
             $username = $_POST['username'];
             $password = $_POST['password'];
-            $adminUser = D('adminUser');
+            $adminUser = D('AdminUser');
             $check = $adminUser->auth($username, $password);
             if ($check['status']) {
                 session('admin_info', $check['admin_info']);

@@ -19,7 +19,7 @@ class AdministratorAction extends AdminAction {
             $realname = isset($_POST['realname']) ? trim($_POST['realname']) : $this->redirect('/');
             $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : $this->redirect('/');
-            $adminUser = D('adminUser');
+            $adminUser = D('AdminUser');
             $this->ajaxReturn($adminUser->addAdministrator($username, $password, $realname, $email, $desc));
         } else {
             $this->display();
@@ -31,7 +31,7 @@ class AdministratorAction extends AdminAction {
             $id = isset($_POST['id']) ? $_POST['id'] : '';
             empty($id) && $this->redirect('/');
             $id = explode(',', $id);
-            $adminUser = D('adminUser');
+            $adminUser = D('AdminUser');
             echo json_encode($adminUser->deleteAdministrator((array) $id));
         } else {
             $this->redirect('/');
@@ -47,7 +47,7 @@ class AdministratorAction extends AdminAction {
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
-            $adminUser = D('adminUser');
+            $adminUser = D('AdminUser');
             $total = $adminUser->getAdministratorCount();
             if ($total) {
                 $rows = $adminUser->getAdministratorList($page, $pageSize, $order, $sort);
