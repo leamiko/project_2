@@ -30,6 +30,16 @@ $app_config = array(
                 )
             )
         ),
+        'Category' => array(
+            'text' => 'Goods Category',
+            'default' => 'parent',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Parent Category',
+                    'url' => '/category/parent'
+                )
+            )
+        ),
         'API' => array(
             'text' => 'API',
             'default' => 'index',
@@ -41,6 +51,12 @@ $app_config = array(
             )
         )
     ),
+    'CATEGORY_ALLOW_UPLOAD_IMAGE_EXTENSION' => array(
+        'jpg',
+        'jpeg',
+        'png'
+    ),
+    'CATEGORY_MAX_UPLOAD_FILE_SIZE' => 2097152,
     //Mail
     'EMAIL' => array(
         'SMTP_HOST'   => 'smtp.qq.com',
