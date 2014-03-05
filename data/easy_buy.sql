@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 03 月 01 日 15:44
+-- 生成日期: 2014 年 03 月 05 日 16:10
 -- 服务器版本: 5.5.35
 -- PHP 版本: 5.4.17
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1393688011, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394027300, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
 
 -- --------------------------------------------------------
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
   `phone` varchar(30) DEFAULT NULL COMMENT 'user phone',
   `avatar` varchar(255) DEFAULT NULL COMMENT 'user avatar',
   `sex` tinyint(1) DEFAULT NULL COMMENT 'gender（1：man 0：woman）',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'user status(0:non-verify,1:verified)',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'user status(0:unverified,1:verified)',
   `is_vip` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is a vip account(0:no,1:yes)',
   `email` varchar(255) NOT NULL COMMENT 'user email',
   `register_time` int(11) NOT NULL COMMENT 'user register time',
@@ -101,6 +101,28 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
 --
 
 INSERT INTO `easy_member` (`id`, `account`, `password`, `phone`, `avatar`, `sex`, `status`, `is_vip`, `email`, `register_time`, `last_time`, `upgrade_time`) VALUES
-(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 0, 1, 'lzjjie@163.com', 1, 1393688580, 1393234186),
+(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 1, 'lzjjie@163.com', 1, 1394029682, 1393234186),
 (2, 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', NULL, 0, 0, 0, 'dfdfdsfsdf', 0, NULL, NULL),
 (6, 'tester', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, NULL, 0, 0, '971318606@qq.com', 1393688224, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `easy_parent_category`
+--
+
+CREATE TABLE IF NOT EXISTS `easy_parent_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'parent category id',
+  `name` varchar(255) NOT NULL COMMENT 'parent category name',
+  `image` varchar(255) NOT NULL COMMENT 'parent category image',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='parent category table' AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `easy_parent_category`
+--
+
+INSERT INTO `easy_parent_category` (`id`, `name`, `image`, `add_time`, `update_time`) VALUES
+(1, 'Agricuture', '/uploads/cate_13940345024427.png', 1394034503, NULL);
