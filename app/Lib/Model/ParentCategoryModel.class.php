@@ -48,88 +48,27 @@ class ParentCategoryModel extends Model {
     }
 
     /**
-     * 删除分类
+     * delete parent category
      *
      * @param array $id
-     *            分类ID
+     *            parent category id
      * @return array
      */
     public function deleteParentCategory(array $id) {
+        // check if have goods in this parent category
         $goods = M('Goods');
-        // 查看该分类是否存在商品
-        $count = $goods->where(array(
-            'cate_id' => array(
-                'in',
-                $id
+        if ($goods->where(array(
+            array(
+                'is_delete' => 0,
+                'p_cate_id' => array(
+                    'in',
+                    $id
+                )
             )
-        ))->count();
-        if ($count > 0) {
-            // 开启事务
-            $goods->startTrans();
-            // 删除该分类下的所有商品
-            if ($goods->where(array(
-                'cate_id' => array(
-                    'in',
-                    $id
-                )
-            ))->delete()) {
-                // 开启事务
-                $this->startTrans();
-                // 删除分类
-                if ($this->where(array(
-                    'id' => array(
-                        'in',
-                        $id
-                    )
-                ))->delete()) {
-                    // 删除成功，提交事务
-                    $goods->commit();
-                    $this->commit();
-                    return array(
-                        'status' => true,
-                        'msg' => '删除分类成功'
-                    );
-                } else {
-                    // 删除失败，回滚事务
-                    $goods->rollback();
-                    $this->rollback();
-                    return array(
-                        'status' => false,
-                        'msg' => '删除分类失败'
-                    );
-                }
-            } else {
-                // 删除失败，回滚失败
-                $goods->rollback();
-                return array(
-                    'status' => false,
-                    'msg' => '删除该分类下的商品失败，尚未能删除该分类'
-                );
-            }
-        } else {
-            // 开启事务
-            $this->startTrans();
-            // 删除分类
-            if ($this->where(array(
-                'id' => array(
-                    'in',
-                    $id
-                )
-            ))->delete()) {
-                // 删除成功，提交事务
-                $this->commit();
-                return array(
-                    'status' => true,
-                    'msg' => '删除分类成功'
-                );
-            } else {
-                // 删除失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => false,
-                    'msg' => '删除分类失败'
-                );
-            }
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            //
         }
     }
 
@@ -139,7 +78,7 @@ class ParentCategoryModel extends Model {
      * @return int
      */
     public function getParentCategoryCount() {
-        return (int) $this->count();
+        return (int) $this->where("is_delete = 0")->count();
     }
 
     /**
@@ -156,7 +95,7 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function getParentCategoryList($page, $pageSize, $order, $sort) {
-        return $this->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+        return $this->where("is_delete")->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
     }
 
     /**
