@@ -94,21 +94,6 @@ class CategoryAction extends AdminAction {
     }
 
     /**
-     * 更新商品分类
-     */
-    public function update() {
-        $id = isset($_GET['id']) && intval($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
-        $category = D('Category');
-        if ($this->isAjax()) {
-            $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-            $this->ajaxReturn($category->updateCategory($id, $name));
-        } else {
-            $this->assign('category', $category->where("id = {$id}")->find());
-            $this->display();
-        }
-    }
-
-    /**
      * upload parent/child category image
      */
     public function upload() {

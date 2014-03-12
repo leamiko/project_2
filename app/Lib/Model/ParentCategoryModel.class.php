@@ -56,20 +56,39 @@ class ParentCategoryModel extends Model {
      */
     public function deleteParentCategory(array $id) {
         // check if have goods in this parent category
-        $goods = M('Goods');
-        if ($goods->where(array(
-            array(
-                'is_delete' => 0,
-                'p_cate_id' => array(
-                    'in',
-                    $id
-                )
+        if (M('Goods')->where(array(
+            'is_delete' => 0,
+            'p_cate_id' => array(
+                'in',
+                $id
             )
-        ))->save(array(
-            'is_delete' => 1
-        ))) {
-            //
+        ))->count()) {
+            // exists goods in this parent category,delete the goods
+            D('Goods')->deleteGoodsByParentCateId($id);
         }
+        // $goods = M('Goods');
+        // if ($goods->where(array(
+        // 'is_delete' => 0,
+        // 'p_cate_id' => array(
+        // 'in',
+        // $id
+        // )
+        // ))->count()) {
+        // // exists goods in this parent category,delete the goods and
+        // // child category,start transaction
+        // $goods->startTrans();
+        // if ($goods->where(array(
+        // 'is_delete' => 0,
+        // 'p_cate_id' => array(
+        // 'in',
+        // $id
+        // )
+        // ))->save(array(
+        // 'is_delete' => 1
+        // ))) {
+        // // delete successful
+        // }
+        // }
     }
 
     /**
