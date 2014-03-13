@@ -4,7 +4,7 @@
         <div id="contentH" class="cnt-box wall" style="padding-left:0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>Parent category overview
+                    <span class="icon icon8"></span>Child category overview
                 </div>
             </div>
         </div>
@@ -24,8 +24,9 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "Category Name", name: 'name', align: 'center', width: '20%', isSort: false},
-            {display: "Add Time", name: 'add_time', align: 'center', width: '30%'},
-            {display: "Update Time", name: 'update_time', align: 'center', width: '30%', render: function(rowdata, rowindex, value) {
+			{display: "Parent Category Name", name: 'parent_name', align: 'center', width: '20%', isSort: false},
+            {display: "Add Time", name: 'add_time', align: 'center', width: '20%'},
+            {display: "Update Time", name: 'update_time', align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
                     return value ? value : 'Nerver Update';
                 }
             },
@@ -34,7 +35,7 @@ $(function(){
                 }
             }
             ],
-            url: '<{:U("Category/parent")}>',
+            url: '<{:U("Category/child_category")}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',
@@ -52,7 +53,7 @@ $(function(){
 var addParentCategoryDialog;
 function add() {
     addParentCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/add_parent")}>', height: 400, width: 600,
+        url: '<{:U("Category/add_parent")}>', height: 300, width: 700,
         isDrag: false, title: 'Add a parent category',
         buttons: [{text: 'Ok', onclick: function(item, dialog) {addParentCategoryDialog.frame.addParentCategoryFormSubmit();}},
                   {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]

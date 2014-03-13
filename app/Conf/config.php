@@ -34,9 +34,13 @@ $app_config = array(
             'text' => 'Goods Category',
             'default' => 'parent',
             'children' => array(
-                'index' => array(
+                'parent' => array(
                     'text' => 'Parent Category',
-                    'url' => '/category/parent'
+                    'url' => '/category/parent_category'
+                ),
+                'child' => array(
+                    'text' => 'Child Category',
+                    'url' => '/category/child_category'
                 )
             )
         ),

@@ -1,0 +1,128 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left:0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>Parent category overview
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <input class="btn btn-primary" type="button" value="Add a parent category" onclick="javascript:add();">&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="Delete a parent category" onclick="javascript:del();">
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "Category Name", name: 'name', align: 'center', width: '20%', isSort: false},
+            {display: "Add Time", name: 'add_time', align: 'center', width: '30%'},
+            {display: "Update Time", name: 'update_time', align: 'center', width: '30%', render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Nerver Update';
+                }
+            },
+            {display: "Edit", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a>';
+                }
+            }
+            ],
+            url: '<{:U("Category/parent_category")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//Add a parent category
+var addParentCategoryDialog;
+function add() {
+    addParentCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/add_parent")}>', height: 300, width: 700,
+        isDrag: false, title: 'Add a parent category',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {addParentCategoryDialog.frame.addParentCategoryFormSubmit();}},
+                  {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//Add parent category callback
+function addParentCategoryCallback(obj) {
+    addParentCategoryDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
+        return false;
+    }
+}
+
+//Delete parent category
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('Please select at least one parent category', 'Tips', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('This will also remove all the sub-categories and <br />goods of this parent category.<br />Are you sure to delete the selected parent category(s)?', function(yes) {
+        if (yes) {
+            $.post('<{:U("Category/delete_parent")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//编辑分类
+var updateCategoryDialog;
+function update(id) {
+    updateCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/update")}>?id='+id, height: 150, width: 500,
+        isDrag: false, title: '编辑商品分类',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateCategoryDialog.frame.updateCategoryFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//编辑分类回调
+function updateCategoryCallback(obj) {
+    updateCategoryDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

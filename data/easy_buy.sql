@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.8
+-- version 3.3.10
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 03 月 13 日 18:05
--- 服务器版本: 5.5.34
--- PHP 版本: 5.3.18
+-- 生成日期: 2014 年 03 月 13 日 23:22
+-- 服务器版本: 5.5.19
+-- PHP 版本: 5.4.0RC4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394700192, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394721572, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
 
 -- --------------------------------------------------------
@@ -180,4 +180,4 @@ CREATE TABLE IF NOT EXISTS `easy_parent_category` (
 --
 
 INSERT INTO `easy_parent_category` (`id`, `name`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
-(1, 'Agricuture', '/uploads/cate_13940345024427.png', 1394034503, NULL, 0);
+(1, 'Chemical', '/uploads/cate_13947240427600.jpg', 1394724044, NULL, 0);

@@ -24,6 +24,35 @@ class CategoryAction extends AdminAction {
     }
 
     /**
+     * Child category overview
+     */
+    public function child_category() {
+        if ($this->isAjax()) {
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
+            $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
+            $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
+            $child_category = D('ChildCategory');
+            $total = $child_category->getChildCategoryCount();
+            if ($total) {
+                $rows = $child_category->getChildCategoryList($page, $pageSize, $order, $sort);
+                foreach ($rows as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                }
+            } else {
+                $rows = null;
+            }
+            $this->ajaxReturn(array(
+                'Rows' => $rows,
+                'Total' => $total
+            ));
+        } else {
+            $this->display();
+        }
+    }
+
+    /**
      * Delete parent category(s)
      */
     public function delete_parent() {
@@ -65,9 +94,9 @@ class CategoryAction extends AdminAction {
     }
 
     /**
-     * Parent category
+     * Parent category overview
      */
-    public function parent() {
+    public function parent_category() {
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;

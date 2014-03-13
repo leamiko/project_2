@@ -18,7 +18,7 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function addParentCategory($name, $image) {
-        if ($this->where("name = \"{$name}\"")->count()) {
+        if ($this->where("name = \"{$name}\" AND is_delete = 0")->count()) {
             return array(
                 'status' => false,
                 'msg' => 'A same parent category existed.'
