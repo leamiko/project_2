@@ -55,7 +55,9 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function deleteParentCategory(array $id) {
-        // check if have goods in this parent category
+        $gflag = false;
+        $cflag = false;
+        $pflag = false;
         if (M('Goods')->where(array(
             'is_delete' => 0,
             'p_cate_id' => array(
@@ -63,32 +65,49 @@ class ParentCategoryModel extends Model {
                 $id
             )
         ))->count()) {
-            // exists goods in this parent category,delete the goods
-            D('Goods')->deleteGoodsByParentCateId($id);
+            $gflag = D('Goods')->deleteGoodsByParentCateId($id);
+        } else {
+            $gflag = true;
         }
-        // $goods = M('Goods');
-        // if ($goods->where(array(
-        // 'is_delete' => 0,
-        // 'p_cate_id' => array(
-        // 'in',
-        // $id
-        // )
-        // ))->count()) {
-        // // exists goods in this parent category,delete the goods and
-        // // child category,start transaction
-        // $goods->startTrans();
-        // if ($goods->where(array(
-        // 'is_delete' => 0,
-        // 'p_cate_id' => array(
-        // 'in',
-        // $id
-        // )
-        // ))->save(array(
-        // 'is_delete' => 1
-        // ))) {
-        // // delete successful
-        // }
-        // }
+        if (M('ChildCategory')->where(array(
+            'is_delete' => 0,
+            'parent_id' => array(
+                'in',
+                $id
+            )
+        ))->count()) {
+            $cflag = D('ChildCategory')->deleteChildCateByParentCateId($id);
+        } else {
+            $cflag = true;
+        }
+        // start transaction
+        $this->startTrans();
+        if ($this->where(array(
+            'id' => array(
+                'in',
+                $id
+            )
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            // delete successful,commit transaction
+            $this->commit();
+            $pflag = true;
+        } else {
+            // delete failed,rollback transaction
+            $this->rollback();
+        }
+        if ($gflag && $cflag && $pflag) {
+            return array(
+                'status' => true,
+                'msg' => 'Delete parent category successful'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => 'Delete parent category failed'
+            );
+        }
     }
 
     /**
@@ -114,46 +133,7 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function getParentCategoryList($page, $pageSize, $order, $sort) {
-        return $this->where("is_delete")->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
-    }
-
-    /**
-     * 更新商品分类
-     *
-     * @param int $id
-     *            分类ID
-     * @param string $name
-     *            分类名称
-     * @return array
-     */
-    public function updateCategory($id, $name) {
-        $result = $this->where("name = \"{$name}\" AND id != {$id}")->find();
-        if (!empty($result)) {
-            return array(
-                'status' => false,
-                'msg' => '分类已经存在（分类名称不能重复）'
-            );
-        }
-        // 开启事务
-        $this->startTrans();
-        if ($this->where("id = {$id}")->save(array(
-            'name' => $name,
-            'update_time' => time()
-        ))) {
-            // 更新成功，提交事务
-            $this->commit();
-            return array(
-                'status' => true,
-                'msg' => '更新分类成功'
-            );
-        } else {
-            // 更新失败，回滚事务
-            $this->rollback();
-            return array(
-                'status' => false,
-                'msg' => '更新分类失败'
-            );
-        }
+        return $this->where("is_delete = 0")->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
     }
 
 }

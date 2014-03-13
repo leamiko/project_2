@@ -65,7 +65,7 @@ class CategoryAction extends AdminAction {
     }
 
     /**
-     * parent category
+     * Parent category
      */
     public function parent() {
         if ($this->isAjax()) {
@@ -94,7 +94,7 @@ class CategoryAction extends AdminAction {
     }
 
     /**
-     * upload parent/child category image
+     * Upload parent/child category image
      */
     public function upload() {
         if (!empty($_FILES)) {
