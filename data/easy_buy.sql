@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 03 月 05 日 16:10
+-- 生成日期: 2014 年 03 月 13 日 00:20
 -- 服务器版本: 5.5.35
 -- PHP 版本: 5.4.17
 
@@ -71,8 +71,62 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394027300, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394541400, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `easy_child_category`
+--
+
+CREATE TABLE IF NOT EXISTS `easy_child_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'child category id',
+  `parent_id` int(11) NOT NULL COMMENT 'parent category id',
+  `name` varchar(255) NOT NULL COMMENT 'child category name',
+  `image` varchar(255) NOT NULL COMMENT 'child category image',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='child category table' AUTO_INCREMENT=1 ;
+
+--
+-- 转存表中的数据 `easy_child_category`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `easy_goods`
+--
+
+CREATE TABLE IF NOT EXISTS `easy_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'goods id',
+  `c_cate_id` int(11) NOT NULL COMMENT 'child category id',
+  `p_cate_id` int(11) NOT NULL COMMENT 'parent category id',
+  `name` varchar(255) NOT NULL COMMENT 'goods name',
+  `goods_number` varchar(255) NOT NULL COMMENT 'goods number',
+  `price` decimal(10,2) NOT NULL COMMENT 'goods price',
+  `sale_amount` int(11) NOT NULL COMMENT 'amount for sale',
+  `unit` varchar(30) NOT NULL COMMENT 'goods unit',
+  `size` varchar(30) DEFAULT NULL COMMENT 'goods size',
+  `quality` int(11) DEFAULT NULL COMMENT 'goods quality',
+  `color` varchar(30) DEFAULT NULL COMMENT 'goods color',
+  `area` varchar(255) DEFAULT NULL COMMENT 'goods area',
+  `pay_method` varchar(255) NOT NULL COMMENT 'pay method',
+  `guarantee` varchar(255) DEFAULT NULL COMMENT 'guarantee service',
+  `stock` int(11) NOT NULL COMMENT 'goods stock',
+  `description` varchar(255) DEFAULT NULL COMMENT 'goods description',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='goods table' AUTO_INCREMENT=1 ;
+
+--
+-- 转存表中的数据 `easy_goods`
+--
+
 
 -- --------------------------------------------------------
 
@@ -117,6 +171,7 @@ CREATE TABLE IF NOT EXISTS `easy_parent_category` (
   `image` varchar(255) NOT NULL COMMENT 'parent category image',
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='parent category table' AUTO_INCREMENT=2 ;
 
@@ -124,5 +179,5 @@ CREATE TABLE IF NOT EXISTS `easy_parent_category` (
 -- 转存表中的数据 `easy_parent_category`
 --
 
-INSERT INTO `easy_parent_category` (`id`, `name`, `image`, `add_time`, `update_time`) VALUES
-(1, 'Agricuture', '/uploads/cate_13940345024427.png', 1394034503, NULL);
+INSERT INTO `easy_parent_category` (`id`, `name`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
+(1, 'Agricuture', '/uploads/cate_13940345024427.png', 1394034503, NULL, 0);
