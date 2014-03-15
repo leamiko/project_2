@@ -30,6 +30,16 @@ $app_config = array(
                 )
             )
         ),
+        'Goods' => array(
+            'text' => 'Goods',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Goods Overview',
+                    'url' => '/goods/index'
+                )
+            )
+        ),
         'Category' => array(
             'text' => 'Goods Category',
             'default' => 'parent',

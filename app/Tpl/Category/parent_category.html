@@ -55,7 +55,7 @@ function add() {
         url: '<{:U("Category/add_parent")}>', height: 300, width: 700,
         isDrag: false, title: 'Add a parent category',
         buttons: [{text: 'Ok', onclick: function(item, dialog) {addParentCategoryDialog.frame.addParentCategoryFormSubmit();}},
-                  {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]
+                  {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]
     });
 }
 
@@ -101,25 +101,25 @@ function del() {
     });
 }
 
-//编辑分类
-var updateCategoryDialog;
+//Edit parent category
+var updateParentCategoryDialog;
 function update(id) {
-    updateCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/update")}>?id='+id, height: 150, width: 500,
-        isDrag: false, title: '编辑商品分类',
-        buttons: [{text: '确定', onclick: function(item, dialog) {updateCategoryDialog.frame.updateCategoryFormSubmit();}},
-                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    updateParentCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/update_parent")}>?id='+id, height: 300, width: 700,
+        isDrag: false, title: 'Edit parent category',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {updateParentCategoryDialog.frame.updateParentCategoryFormSubmit();}},
+                  {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]
     });
 }
 
-//编辑分类回调
-function updateCategoryCallback(obj) {
-    updateCategoryDialog.close();
+//Edit parent category callback
+function updateParentCategoryCallback(obj) {
+    updateParentCategoryDialog.close();
     if (obj.status) {
-        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
         location.reload(true);
     } else {
-        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
         return false;
     }
 }

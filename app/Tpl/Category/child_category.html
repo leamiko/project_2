@@ -9,8 +9,8 @@
             </div>
         </div>
         <div class="top_4">
-            <input class="btn btn-primary" type="button" value="Add a parent category" onclick="javascript:add();">&nbsp;&nbsp;
-            <input class="btn btn-primary" type="button" value="Delete a parent category" onclick="javascript:del();">
+            <input class="btn btn-primary" type="button" value="Add a child category" onclick="javascript:add();">&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="Delete a child category" onclick="javascript:del();">
         </div>
         <div>
             <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
@@ -49,20 +49,20 @@ $(function(){
     $("#pageloading").hide();
 });
 
-//Add a parent category
-var addParentCategoryDialog;
+//Add a child category
+var addChildCategoryDialog;
 function add() {
-    addParentCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/add_parent")}>', height: 300, width: 700,
-        isDrag: false, title: 'Add a parent category',
-        buttons: [{text: 'Ok', onclick: function(item, dialog) {addParentCategoryDialog.frame.addParentCategoryFormSubmit();}},
+    addChildCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/add_child")}>', height: 400, width: 700,
+        isDrag: false, title: 'Add a child category',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {addChildCategoryDialog.frame.addChildCategoryFormSubmit();}},
                   {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]
     });
 }
 
-//Add parent category callback
-function addParentCategoryCallback(obj) {
-    addParentCategoryDialog.close();
+//Add child category callback
+function addChildCategoryCallback(obj) {
+    addChildCategoryDialog.close();
     if (1 == obj.status) {
         $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
         location.reload(true);
@@ -72,11 +72,11 @@ function addParentCategoryCallback(obj) {
     }
 }
 
-//Delete parent category
+//Delete child category
 function del() {
     var data = getCheckedData('id');
     if (data.length <= 0) {
-        $.ligerDialog.alert('Please select at least one parent category', 'Tips', 'warn');
+        $.ligerDialog.alert('Please select at least one child category', 'Tips', 'warn');
         return false;
     }
     var id = '';
@@ -87,9 +87,9 @@ function del() {
             id += data[i]+',';
         }
     }
-    $.ligerDialog.confirm('This will also remove all the sub-categories and <br />goods of this parent category.<br />Are you sure to delete the selected parent category(s)?', function(yes) {
+    $.ligerDialog.confirm('This will also remove all the goods of this child category.<br />Are you sure to delete the selected child category(s)?', function(yes) {
         if (yes) {
-            $.post('<{:U("Category/delete_parent")}>', {id:id}, function(data) {
+            $.post('<{:U("Category/delete_child")}>', {id:id}, function(data) {
                 if (data.status) {
                     $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
                     location.reload(true);
@@ -102,25 +102,25 @@ function del() {
     });
 }
 
-//编辑分类
-var updateCategoryDialog;
+//Edit child category
+var updateChildCategoryDialog;
 function update(id) {
-    updateCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/update")}>?id='+id, height: 150, width: 500,
-        isDrag: false, title: '编辑商品分类',
-        buttons: [{text: '确定', onclick: function(item, dialog) {updateCategoryDialog.frame.updateCategoryFormSubmit();}},
+    updateChildCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/update_child")}>?id='+id, height: 300, width: 700,
+        isDrag: false, title: 'Update child category',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateChildCategoryDialog.frame.updateChildCategoryFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
     });
 }
 
-//编辑分类回调
-function updateCategoryCallback(obj) {
-    updateCategoryDialog.close();
+//update child category callback
+function updateChildCategoryCallback(obj) {
+    updateChildCategoryDialog.close();
     if (obj.status) {
-        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
         location.reload(true);
     } else {
-        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
         return false;
     }
 }

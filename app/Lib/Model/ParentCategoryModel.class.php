@@ -18,7 +18,10 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function addParentCategory($name, $image) {
-        if ($this->where("name = \"{$name}\" AND is_delete = 0")->count()) {
+        if ($this->where(array(
+            'name' => $name,
+            'is_delete' => 0
+        ))->count()) {
             return array(
                 'status' => false,
                 'msg' => 'A same parent category existed.'
@@ -48,7 +51,7 @@ class ParentCategoryModel extends Model {
     }
 
     /**
-     * delete parent category
+     * Delete parent category
      *
      * @param array $id
      *            parent category id
@@ -133,7 +136,59 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function getParentCategoryList($page, $pageSize, $order, $sort) {
-        return $this->where("is_delete = 0")->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+        return $this->where(array(
+            'is_delete' => 0
+        ))->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+    }
+
+    /**
+     * Update parent category
+     *
+     * @param int $id
+     *            parent category id
+     * @param string $name
+     *            parent category name
+     * @param string $image
+     *            parent category image
+     * @return array
+     */
+    public function updateParentCategory($id, $name, $image) {
+        if ($this->where(array(
+            'name' => $name,
+            'is_delete' => 0,
+            'id' => array(
+                'neq',
+                $id
+            )
+        ))->count()) {
+            return array(
+                'status' => false,
+                'msg' => 'A same parent category existed.'
+            );
+        }
+        // Start transaction
+        $this->startTrans();
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'name' => $name,
+            'image' => $image,
+            'update_time' => time()
+        ))) {
+            // Update successful,commit transaction
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => 'Edit parent category successful'
+            );
+        } else {
+            // Update failed,rollback transaction
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => 'Edit parent category failed'
+            );
+        }
     }
 
 }

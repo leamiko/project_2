@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10
+-- version 3.3.8
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 03 月 13 日 23:22
--- 服务器版本: 5.5.19
--- PHP 版本: 5.4.0RC4
+-- 生成日期: 2014 年 03 月 14 日 17:37
+-- 服务器版本: 5.5.34
+-- PHP 版本: 5.3.18
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394721572, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394787834, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
 
 -- --------------------------------------------------------
@@ -89,12 +89,14 @@ CREATE TABLE IF NOT EXISTS `easy_child_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='child category table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='child category table' AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `easy_child_category`
 --
 
+INSERT INTO `easy_child_category` (`id`, `parent_id`, `name`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
+(1, 1, 'apple', '/uploads/cate_13947779364321.jpg', 1394777927, 1394777939, 0);
 
 -- --------------------------------------------------------
 
@@ -120,13 +122,17 @@ CREATE TABLE IF NOT EXISTS `easy_goods` (
   `stock` int(11) NOT NULL COMMENT 'goods stock',
   `description` varchar(255) DEFAULT NULL COMMENT 'goods description',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='goods table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods table' AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `easy_goods`
 --
 
+INSERT INTO `easy_goods` (`id`, `c_cate_id`, `p_cate_id`, `name`, `goods_number`, `price`, `sale_amount`, `unit`, `size`, `quality`, `color`, `area`, `pay_method`, `guarantee`, `stock`, `description`, `is_delete`, `add_time`, `update_time`) VALUES
+(1, 1, 1, 'red apple', '100', 10.00, 1000, 'g', '10', 100, 'red', 'ShanXi China', 'Paypal', '10 days return', 10000, 'redredredredredredredredredredredredredredredredredredredredredredredredred', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -155,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
 --
 
 INSERT INTO `easy_member` (`id`, `account`, `password`, `phone`, `avatar`, `sex`, `status`, `is_vip`, `email`, `register_time`, `last_time`, `upgrade_time`) VALUES
-(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 1, 'lzjjie@163.com', 1, 1394029682, 1393234186),
+(1, 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1, 1, 1, 'lzjjie@163.com', 1, 1394777610, 1393234186),
 (2, 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', NULL, 0, 0, 0, 'dfdfdsfsdf', 0, NULL, NULL),
 (6, 'tester', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, NULL, 0, 0, '971318606@qq.com', 1393688224, NULL, NULL);
 
@@ -180,4 +186,4 @@ CREATE TABLE IF NOT EXISTS `easy_parent_category` (
 --
 
 INSERT INTO `easy_parent_category` (`id`, `name`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
-(1, 'Chemical', '/uploads/cate_13947240427600.jpg', 1394724044, NULL, 0);
+(1, 'Agriculture', '/uploads/cate_13947778694621.jpg', 1394777853, 1394777870, 0);
