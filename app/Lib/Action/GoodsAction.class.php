@@ -9,6 +9,14 @@
  */
 class GoodsAction extends AdminAction {
 
+    public function add() {
+        if ($this->isAjax()) {
+
+        } else {
+            $this->display();
+        }
+    }
+
     /**
      * Goods overview
      */

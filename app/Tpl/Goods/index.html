@@ -32,7 +32,7 @@ $(function(){
             {display: "Parent category", name: 'parent_category', align: 'center', width: '12%', isSort: false},
             {display: "Child category", name: 'child_category', align: 'center', width: '12%', isSort: false},
             {display: "Price", name: 'price', align: 'center', width: '6%'},
-            {display: "Goods number", name: 'goods_number', align: 'center', width: '6%'},
+            {display: "Item number", name: 'item_number', align: 'center', width: '6%'},
             {display: "Amount for sale", name: 'sale_amount', align: 'center', width: '6%'},
             {display: "Stock", name: 'stock', align: 'center', width: '6%'},
             {display: "Unit", name: 'unit', align: 'center', width: '4%', isSort: false},
@@ -62,25 +62,25 @@ $(function(){
     $("#pageloading").hide();
 });
 
-//添加茶叶
-var addTeaDialog;
+//Add a godds
+var addGoodsDialog;
 function add() {
-    addTeaDialog = $.ligerDialog.open({
-        url: '<{:U("/Goods/add")}>', height: 800, width: 600,
-        isDrag: false, title: '添加茶叶商品',
-        buttons: [{text: '确定', onclick: function(item, dialog) {addTeaDialog.frame.addTeaFormSubmit();}},
-                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+	addGoodsDialog = $.ligerDialog.open({
+        url: '<{:U("Goods/add")}>', height: 800, width: 600,
+        isDrag: false, title: 'Add a goods',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {addGoodsDialog.frame.addGoodsFormSubmit();}},
+                  {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]
     });
 }
 
-//添加茶叶回调
-function addTeaCallback(obj) {
-    addTeaDialog.close();
+//Add goods callback
+function addGoodsCallback(obj) {
+    addGoodsDialog.close();
     if (1 == obj.status) {
-        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
         location.reload(true);
     } else {
-        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
         return false;
     }
 }

@@ -108,7 +108,7 @@ class GoodsModel extends Model {
             'g.c_cate_id',
             'g.p_cate_id',
             'g.name',
-            'g.goods_number',
+            'g.item_number',
             'g.price',
             'g.sale_amount',
             'g.unit',

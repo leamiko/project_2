@@ -37,6 +37,10 @@ $app_config = array(
                 'index' => array(
                     'text' => 'Goods Overview',
                     'url' => '/goods/index'
+                ),
+                'add' => array(
+                    'text' => 'Add A Goods',
+                    'url' => '/goods/add'
                 )
             )
         ),
@@ -71,15 +75,15 @@ $app_config = array(
         'png'
     ),
     'CATEGORY_MAX_UPLOAD_FILE_SIZE' => 2097152,
-    //Mail
+    // Mail
     'EMAIL' => array(
-        'SMTP_HOST'   => 'smtp.qq.com',
-        'SMTP_PORT'   => '465',
-        'SENDER_MAIL'   => '635420322@qq.com',
-        'SENDER_PWD'   => 'lzjjie635420322',
-        'SENDER_NAME'   => 'Lzjjie',
+        'SMTP_HOST' => 'smtp.qq.com',
+        'SMTP_PORT' => '465',
+        'SENDER_MAIL' => '635420322@qq.com',
+        'SENDER_PWD' => 'lzjjie635420322',
+        'SENDER_NAME' => 'Lzjjie',
         'REPLY_EMAIL' => '',
-        'REPLY_NAME'  => '',
+        'REPLY_NAME' => ''
     ),
     'SHOW_PAGE_TRACE' => true
 );

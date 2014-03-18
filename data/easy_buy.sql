@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.8
+-- version 3.3.10
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 03 月 14 日 17:37
--- 服务器版本: 5.5.34
--- PHP 版本: 5.3.18
+-- 生成日期: 2014 年 03 月 18 日 11:05
+-- 服务器版本: 5.5.35
+-- PHP 版本: 5.4.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
 --
 
 INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394787834, 1, 'Administrator!Do not delete!', 1),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1394945199, 1, 'Administrator!Do not delete!', 1),
 (4, 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', 1393059963, 1393060050, 1, '', 0);
 
 -- --------------------------------------------------------
@@ -109,9 +109,10 @@ CREATE TABLE IF NOT EXISTS `easy_goods` (
   `c_cate_id` int(11) NOT NULL COMMENT 'child category id',
   `p_cate_id` int(11) NOT NULL COMMENT 'parent category id',
   `name` varchar(255) NOT NULL COMMENT 'goods name',
-  `goods_number` varchar(255) NOT NULL COMMENT 'goods number',
-  `price` decimal(10,2) NOT NULL COMMENT 'goods price',
-  `sale_amount` int(11) NOT NULL COMMENT 'amount for sale',
+  `item_number` varchar(255) NOT NULL COMMENT 'item number',
+  `price` decimal(12,2) NOT NULL COMMENT 'goods price',
+  `business_model` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'goods''s business model(1:b2c,2:b2b)',
+  `sale_amount` int(11) DEFAULT NULL COMMENT 'amount for sale',
   `unit` varchar(30) NOT NULL COMMENT 'goods unit',
   `size` varchar(30) DEFAULT NULL COMMENT 'goods size',
   `quality` int(11) DEFAULT NULL COMMENT 'goods quality',
@@ -131,8 +132,8 @@ CREATE TABLE IF NOT EXISTS `easy_goods` (
 -- 转存表中的数据 `easy_goods`
 --
 
-INSERT INTO `easy_goods` (`id`, `c_cate_id`, `p_cate_id`, `name`, `goods_number`, `price`, `sale_amount`, `unit`, `size`, `quality`, `color`, `area`, `pay_method`, `guarantee`, `stock`, `description`, `is_delete`, `add_time`, `update_time`) VALUES
-(1, 1, 1, 'red apple', '100', 10.00, 1000, 'g', '10', 100, 'red', 'ShanXi China', 'Paypal', '10 days return', 10000, 'redredredredredredredredredredredredredredredredredredredredredredredredred', 0, 0, NULL);
+INSERT INTO `easy_goods` (`id`, `c_cate_id`, `p_cate_id`, `name`, `item_number`, `price`, `business_model`, `sale_amount`, `unit`, `size`, `quality`, `color`, `area`, `pay_method`, `guarantee`, `stock`, `description`, `is_delete`, `add_time`, `update_time`) VALUES
+(1, 1, 1, 'red apple', '100', 10.00, 1, 1000, 'g', '10', 100, 'red', 'ShanXi China', 'Paypal', '10 days return', 10000, 'redredredredredredredredredredredredredredredredredredredredredredredredred', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
