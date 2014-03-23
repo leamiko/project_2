@@ -199,12 +199,12 @@ $(function() {
                 if (image_count.length < 5) {
                     image_count.push(data.result.filename);
                     $("#image_tip").append("<div class='image-preview'>"
-                                            + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                            + "<a href='"+data.result.src+"' target='_blank' title='Click to see the source' class='image-preview-outter'>"
                                             + "<img src='"+data.result.src+"' width='160' height='90' border='0' />"
                                             + "</a>"
                                             + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
                                             + data.result.filename
-                                            + "\', $(this));\" class='image-preview-delete' title='删除'>"
+                                            + "\', $(this));\" class='image-preview-delete' title='Delete'>"
                                             + "</a>" + "</div>");
                 } else {
                     delete_another_image(data.result.filename);
@@ -295,19 +295,19 @@ function ckUnit() {
     return true;
 }
 
-//检测简介
+//Check Length
 function checkLength(obj, id) {
     var maxLength = obj.maxLength;
     var desc = obj.value;
     if (desc.length <= maxLength) {
-        $("#"+id).html('还剩下'+ (maxLength - desc.length) + '个字');
+        $("#"+id).html((maxLength - desc.length) + 'word(s) left');
     }
     obj.onblur = function() {
         $("#"+id).empty();
     }
 }
 
-//检测图片
+//Check Images
 function ckImage() {
     if (image_count.length <= 0) {
         addTip($("#image_tip"), '请至少上传一张商品图片');
