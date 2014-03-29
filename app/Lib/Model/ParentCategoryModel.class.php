@@ -12,14 +12,17 @@ class ParentCategoryModel extends Model {
     /**
      *
      * @param string $name
-     *            new parent category name
+     *            New parent category name
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param string $image
-     *            new parent category image
+     *            New parent category image
      * @return array
      */
-    public function addParentCategory($name, $image) {
+    public function addParentCategory($name, $business_model, $image) {
         if ($this->where(array(
             'name' => $name,
+            'business_model' => $business_model,
             'is_delete' => 0
         ))->count()) {
             return array(
@@ -31,6 +34,7 @@ class ParentCategoryModel extends Model {
         $this->startTrans();
         if ($this->add(array(
             'name' => $name,
+            'business_model' => $business_model,
             'image' => $image,
             'add_time' => time()
         ))) {
@@ -125,6 +129,8 @@ class ParentCategoryModel extends Model {
     /**
      * Get Parent category list
      *
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param int $page
      *            current page
      * @param int $pageSize
@@ -135,9 +141,10 @@ class ParentCategoryModel extends Model {
      *            sort
      * @return array
      */
-    public function getParentCategoryList($page, $pageSize, $order, $sort) {
+    public function getParentCategoryList($business_model, $page, $pageSize, $order, $sort) {
         return $this->where(array(
-            'is_delete' => 0
+            'is_delete' => 0,
+            'business_model' => $business_model
         ))->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
     }
 
@@ -145,16 +152,19 @@ class ParentCategoryModel extends Model {
      * Update parent category
      *
      * @param int $id
-     *            parent category id
+     *            Parent category id
      * @param string $name
-     *            parent category name
+     *            Parent category name
+     * @param int $business_model
+     *            Business model
      * @param string $image
-     *            parent category image
+     *            Parent category image
      * @return array
      */
-    public function updateParentCategory($id, $name, $image) {
+    public function updateParentCategory($id, $name, $business_model, $image) {
         if ($this->where(array(
             'name' => $name,
+            'business_model' => $business_model,
             'is_delete' => 0,
             'id' => array(
                 'neq',
@@ -172,6 +182,7 @@ class ParentCategoryModel extends Model {
             'id' => $id
         ))->save(array(
             'name' => $name,
+            'business_model' => $business_model,
             'image' => $image,
             'update_time' => time()
         ))) {

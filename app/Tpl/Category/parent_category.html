@@ -24,9 +24,13 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "Category Name", name: 'name', align: 'center', width: '20%', isSort: false},
-            {display: "Add Time", name: 'add_time', align: 'center', width: '30%'},
-            {display: "Update Time", name: 'update_time', align: 'center', width: '30%', render: function(rowdata, rowindex, value) {
-                    return value ? value : 'Nerver Update';
+            {display: "Business Model", name: 'business_model', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) == 1 ? 'B2C' : 'B2B';
+                }
+            },
+            {display: "Add Time", name: 'add_time', align: 'center', width: '20%'},
+            {display: "Update Time", name: 'update_time', align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Never Update';
                 }
             },
             {display: "Edit", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
@@ -52,7 +56,7 @@ $(function(){
 var addParentCategoryDialog;
 function add() {
     addParentCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/add_parent")}>', height: 300, width: 700,
+        url: '<{:U("Category/add_parent")}>', height: 400, width: 700,
         isDrag: false, title: 'Add a parent category',
         buttons: [{text: 'Ok', onclick: function(item, dialog) {addParentCategoryDialog.frame.addParentCategoryFormSubmit();}},
                   {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]

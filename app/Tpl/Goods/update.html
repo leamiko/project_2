@@ -4,7 +4,7 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>Add a goods
+                    <span class="icon icon8"></span>Update a goods
                 </div>
             </div>
         </div>
@@ -15,33 +15,6 @@
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="name" value="<{$goods['name']}>" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>Parent Category:
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="p_cate_id" style="width:160px;">
-                        <option value="0">PARENT CATEGORY</option>
-                        <volist name = "parent_category" id = "val">
-                        <option value="<{$val['id']}>"<if condition="$goods['p_cate_id'] eq $val['id']"> selected</if>><{$val['name']}></option>
-                        </volist>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>Child Category:
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="c_cate_id" style="width:160px;">
-                    <volist name = "child_category" id = "val">
-                    <option value="<{$val['id']}>"<if condition="$goods['c_cate_id'] eq $val['id']"> selected</if>><{$val['name']}></option>
-                    </volist>
-                    </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -81,6 +54,34 @@
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="sale_amount" value="<{$goods['sale_amount']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span>*</span>Parent Category:
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="p_cate_id" style="width:160px;">
+                        <option value="0">PARENT CATEGORY</option>
+                        <volist name = "parent_category" id = "val">
+                        <option value="<{$val['id']}>"<if condition="$goods['p_cate_id'] eq $val['id']"> selected</if>><{$val['name']}></option>
+                        </volist>
+                    </select>
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span>*</span>Child Category:
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="c_cate_id" style="width:160px;">
+                    <option value="0">CHILD CATEGORY</option>
+                    <volist name = "child_category" id = "val">
+                    <option value="<{$val['id']}>"<if condition="$goods['c_cate_id'] eq $val['id']"> selected</if>><{$val['name']}></option>
+                    </volist>
+                    </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -181,7 +182,7 @@
             <a href="<{$val['src']}>" target="_blank" title="Click to see the source" class="image-preview-outter">
                 <img src="<{$val['src']}>" width="160" height="90" border="0" />
             </a>
-            <a href="javascript:void(0);" onclick="update_image('<{$val['image']}>', $(this), <{$val['id']}>);" class="image-preview-delete" title="Delete"></a> 
+            <a href="javascript:void(0);" onclick="update_picture('<{$val['image']}>', $(this), <{$val['id']}>);" class="image-preview-delete" title="Delete"></a> 
         </li>
         </volist>
     </ul>
@@ -201,6 +202,24 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckName();
     });
+    $("#business_model").change(function() {
+        $("#c_cate_id").html('<option value="0">CHILD CATEGORY</option>');
+        var business_model = parseInt($(this).val());
+        if (business_model == 2) {
+            $("#amount_select").show();
+        } else {
+            $("#amount_select").hide();
+        }
+        $.post('<{:U("Goods/getParentCategory")}>', {business_model: business_model}, function(data) {
+            var str = '<option value="0">PARENT CATEGORY</option>';
+            if (data) {
+                for (var i in data) {
+                    str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+            }
+            $("#p_cate_id").html(str);
+        }, 'json');
+    });
     $("#p_cate_id").change(function() {
         var p_cate_id = $(this).val();
         if (parseInt(p_cate_id) == 0) {
@@ -209,15 +228,13 @@ $(function() {
         } else {
             removeTip($(this).parent('td').next('td:last'));
             $.post('<{:U("Goods/getChildCategory")}>', {p_cate_id: p_cate_id}, function(data) {
+                str = '<option value="0">CHILD CATEGORY</option>';
                 if (data) {
-                    var str = '';
                     for (var i in data) {
                         str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                     }
-                    $("#c_cate_id").html(str);
-                } else {
-                    $("#c_cate_id").html('<option value="0">CHILD CATEGORY</option>');
                 }
+                $("#c_cate_id").html(str);
             }, 'json');
         }
     });
@@ -230,14 +247,6 @@ $(function() {
     $("#stock").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckStock();
-    });
-    $("#business_model").change(function() {
-        var model = parseInt($(this).val());
-        if (model == 2) {
-            $("#amount_select").show();
-        } else {
-            $("#amount_select").hide();
-        }
     });
     $("#unit").focus(function() {
         addTip($(this).parent('td').next('td:last'), 'Unit can not more than 30 characters.');
@@ -359,25 +368,16 @@ function ckStock() {
 
 //Check Amount for sale
 function ckSaleAmount() {
-    if (parseInt($("#business_model").val()) == 1) {
-        return true;
-    } else {
-        var sale_amount = $.trim($("#sale_amount").val());
-        if (sale_amount.length == 0) {
-            addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale can not be empty.');
-            return false;
-        }
-        if (sale_amount.length > 11) {
-            addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale is too high.');
-            return false;
-        }
+    var sale_amount = $.trim($("#sale_amount").val());
+    if (sale_amount.length > 0) {
         var reg = /^\d+$/g;
         if (!reg.test(sale_amount)) {
             addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale just contains number only.');
             return false;
-        }
+        } 
         return true;
     }
+    return true;
 }
 
 //Check Unit
@@ -430,11 +430,7 @@ function checkForm() {
     var price = parseFloat($("#price").val());
     var stock = $.trim($("#stock").val());
     var business_model = parseInt($("#business_model").val());
-    if (parseInt(business_model) == 1) {
-        var sale_amount = '';
-    } else {
-        var sale_amount = parseInt($("#sale_amount").val());
-    }
+    var sale_amount = $.trim($("#sale_amount").val());
     var unit = $.trim($("#unit").val());
     var size = $.trim($("#size").val());
     var quality = $.trim($("#quality").val());
@@ -495,12 +491,13 @@ function delete_image(filename, obj) {
 }
 
 //Update Picture
-function update_image(filename, obj, id) {
+function update_picture(filename, obj, id) {
     $.post('<{:U("Goods/update_image")}>', {id: id}, function(data) {
         if (data.status) {
             obj.parent().remove();
             var index = image_count.indexOf(filename);
             image_count.splice(index, 1);
+            $.ligerDialog.alert(data.msg, 'Success(>_<)', 'success');
         } else {
             $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
             return false;

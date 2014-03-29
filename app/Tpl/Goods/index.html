@@ -29,6 +29,10 @@ $(function(){
         columns: [
             {display: "Goods Name", name: 'name', align: 'center', width: '12%', isSort: false},
             {display: "Parent category", name: 'parent_category', align: 'center', width: '12%', isSort: false},
+            {display: "Business Model", name: 'business_model', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) == 1 ? 'B2C' : 'B2B';
+                }
+            },
             {display: "Child category", name: 'child_category', align: 'center', width: '12%', isSort: false},
             {display: "Price", name: 'price', align: 'center', width: '6%'},
             {display: "Item number", name: 'item_number', align: 'center', width: '12%'},

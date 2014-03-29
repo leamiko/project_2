@@ -15,13 +15,17 @@ class CategoryAction extends AdminAction {
     public function add_child() {
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : $this->redirect('/');
             $image = isset($_POST['image']) ? trim($_POST['image']) : $this->redirect('/');
-            $child_category = D('ChildCategory');
-            $this->ajaxReturn($child_category->addChildCategory($name, $parent_id, $image));
+            $this->ajaxReturn(D('ChildCategory')->addChildCategory($name, $business_model, $parent_id, $image));
         } else {
-            $this->assign('parent', M('ParentCategory')->where(array(
-                'is_delete' => 0
+            $this->assign('parent_category', M('ParentCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'is_delete' => 0,
+                'business_model' => 1
             ))->field(array(
                 'id, name'
             ))->select());
@@ -35,9 +39,10 @@ class CategoryAction extends AdminAction {
     public function add_parent() {
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $image = isset($_POST['image']) ? trim($_POST['image']) : $this->redirect('/');
             $parent_category = D('ParentCategory');
-            $this->ajaxReturn($parent_category->addParentCategory($name, $image));
+            $this->ajaxReturn($parent_category->addParentCategory($name, $business_model, $image));
         } else {
             $this->display();
         }
@@ -127,6 +132,24 @@ class CategoryAction extends AdminAction {
     }
 
     /**
+     * Get parent category by business model
+     */
+    public function getParentCategory() {
+        if ($this->isAjax()) {
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
+            $this->ajaxReturn(M('ParentCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'business_model' => $business_model,
+                'is_delete' => 0
+            ))->select());
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Parent category overview
      */
     public function parent_category() {
@@ -160,20 +183,24 @@ class CategoryAction extends AdminAction {
      */
     public function update_child() {
         $id = isset($_GET['id']) && intval($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
-        $child_category = D('ChildCategory');
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $parent_id = isset($_POST['parent_id']) ? trim($_POST['parent_id']) : $this->redirect('/');
             $image = isset($_POST['image']) ? trim($_POST['image']) : $this->redirect('/');
-            $this->ajaxReturn($child_category->updateChildCategory($id, $name, $parent_id, $image));
+            $this->ajaxReturn(D('ChildCategory')->updateChildCategory($id, $name, $business_model, $parent_id, $image));
         } else {
-            $child_category_assign = $child_category->where("id = {$id}")->find();
-            $child_category_assign['src'] = "http://{$_SERVER['HTTP_HOST']}{$child_category_assign['image']}";
-            $this->assign('child_category', $child_category_assign);
-            $this->assign('parent', M('ParentCategory')->where(array(
-                'is_delete' => 0
+            $child_category = M('ChildCategory')->where(array(
+                'id' => $id
+            ))->find();
+            $child_category['src'] = "http://{$_SERVER['HTTP_HOST']}{$child_category['image']}";
+            $this->assign('child_category', $child_category);
+            $this->assign('parent_category', M('ParentCategory')->where(array(
+                'is_delete' => 0,
+                'business_model' => $child_category['business_model']
             ))->field(array(
-                'id, name'
+                'id',
+                'name'
             ))->select());
             $this->display();
         }
@@ -184,15 +211,17 @@ class CategoryAction extends AdminAction {
      */
     public function update_parent() {
         $id = isset($_GET['id']) && intval($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
-        $parent_category = D('ParentCategory');
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $image = isset($_POST['image']) ? trim($_POST['image']) : $this->redirect('/');
-            $this->ajaxReturn($parent_category->updateParentCategory($id, $name, $image));
+            $this->ajaxReturn(D('ParentCategory')->updateParentCategory($id, $name, $business_model, $image));
         } else {
-            $parent_category_assign = $parent_category->where("id = {$id}")->find();
-            $parent_category_assign['src'] = "http://{$_SERVER['HTTP_HOST']}{$parent_category_assign['image']}";
-            $this->assign('parent_category', $parent_category_assign);
+            $parent_category = M('ParentCategory')->where(array(
+                'id' => $id
+            ))->find();
+            $parent_category['src'] = "http://{$_SERVER['HTTP_HOST']}{$parent_category['image']}";
+            $this->assign('parent_category', $parent_category);
             $this->display();
         }
     }

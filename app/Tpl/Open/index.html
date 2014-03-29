@@ -368,6 +368,7 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
+                        int business_model: 1,(1:b2c,2:b2b),
                         int page: 1,
                         int pageSize: 15
                     </td>
@@ -511,19 +512,19 @@ $(function() {
     $.post("<{:U('api/update_user_status')}>", {user_id: 0, status: -1}, function(data) {
         $(".failed_return_12").JSONView(data);
     }, 'json');
-    $.post("<{:U('api/parent_category_list')}>", {page: 1, pageSize: 15}, function(data) {
+    $.post("<{:U('api/parent_category_list')}>", {business_model: 1, page: 1, pageSize: 15}, function(data) {
         $(".success_return_13").JSONView(data);
     }, 'json');
-    $.post("<{:U('api/parent_category_list')}>", {page: 0, pageSize: -1}, function(data) {
+    $.post("<{:U('api/parent_category_list')}>", {business_model: 0, page: 0, pageSize: -1}, function(data) {
         $(".failed_return_13").JSONView(data);
     }, 'json');
-    $.post("<{:U('api/child_category_list')}>", {p_cate_id: 1, page: 1, pageSize: 15}, function(data) {
+    $.post("<{:U('api/child_category_list')}>", {p_cate_id: 3, page: 1, pageSize: 15}, function(data) {
         $(".success_return_14").JSONView(data);
     }, 'json');
     $.post("<{:U('api/child_category_list')}>", {p_cate_id: 0, page: 0, pageSize: -1}, function(data) {
         $(".failed_return_14").JSONView(data);
     }, 'json');
-    $.post("<{:U('api/goods')}>", {p_cate_id: 1, c_cate_id: 1, page: 1, pageSize: 15}, function(data) {
+    $.post("<{:U('api/goods')}>", {p_cate_id: 3, c_cate_id: 1, page: 1, pageSize: 15}, function(data) {
         $(".success_return_15").JSONView(data);
     }, 'json');
     $.post("<{:U('api/goods')}>", {p_cate_id: 0, c_cate_id: 0, page: 0, pageSize: -1}, function(data) {

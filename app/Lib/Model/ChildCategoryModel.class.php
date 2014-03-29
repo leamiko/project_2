@@ -13,16 +13,19 @@ class ChildCategoryModel extends Model {
      * Add a child category
      *
      * @param string $name
-     *            child category name
+     *            Child category name
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param int $parent_id
-     *            parent category id
+     *            Parent category id
      * @param string $image
-     *            child category image
+     *            Child category image
      * @return array
      */
-    public function addChildCategory($name, $parent_id, $image) {
+    public function addChildCategory($name, $business_model, $parent_id, $image) {
         if ($this->where(array(
             'name' => $name,
+            'business_model' => $business_model,
             'parent_id' => $parent_id,
             'is_delete' => 0
         ))->count()) {
@@ -35,6 +38,7 @@ class ChildCategoryModel extends Model {
         $this->startTrans();
         if ($this->add(array(
             'name' => $name,
+            'business_model' => $business_model,
             'parent_id' => $parent_id,
             'image' => $image,
             'add_time' => time()
@@ -73,6 +77,7 @@ class ChildCategoryModel extends Model {
             'c.id',
             'c.parent_id',
             'c.name',
+            'c.business_model',
             'c.image',
             'c.add_time',
             'c.update_time',
@@ -187,40 +192,39 @@ class ChildCategoryModel extends Model {
      */
     public function getChildCategoryList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
-        $sql = "SELECT
-                    c.id, c.name, c.image, c.add_time, c.update_time,
-                    c.is_delete, p.name AS parent_name
-                FROM
-                    " . $this->getTableName() . " AS c
-                INNER JOIN
-                    easy_parent_category AS p
-                ON
-                    c.parent_id = p.id
-                WHERE
-                    c.is_delete = 0
-                ORDER BY
-                    c.id DESC
-                LIMIT
-                    {$offset}, {$pageSize}";
-        return $this->query($sql);
+        return $this->table($this->getTableName() . " AS c")->join(array(
+            "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON c.parent_id = p.id"
+        ))->field(array(
+            'c.id',
+            'c.name',
+            'c.business_model',
+            'c.image',
+            'c.add_time',
+            'c.update_time',
+            'c.is_delete',
+            'p.name' => 'parent_name'
+        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**
      * Update child category
      *
      * @param int $id
-     *            child category id
+     *            Child category id
      * @param string $name
-     *            child category name
+     *            Child category name
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param int $parent_id
-     *            parent category id
+     *            Parent category id
      * @param string $image
-     *            child category image
+     *            Child category image
      * @return array
      */
-    public function updateChildCategory($id, $name, $parent_id, $image) {
+    public function updateChildCategory($id, $name, $business_model, $parent_id, $image) {
         if ($this->where(array(
             'name' => $name,
+            'business_model' => $business_model,
             'parent_id' => $parent_id,
             'is_delete' => 0,
             'id' => array(
@@ -239,6 +243,7 @@ class ChildCategoryModel extends Model {
             'id' => $id
         ))->save(array(
             'name' => $name,
+            'business_model' => $business_model,
             'parent_id' => $parent_id,
             'image' => $image,
             'update_time' => time()

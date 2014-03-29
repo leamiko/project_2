@@ -322,6 +322,7 @@ class ApiAction extends Action {
      */
     public function parent_category_list() {
         if ($this->isPost() || $this->isAjax()) {
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($page < 1 || $pageSize < 0) {
@@ -330,7 +331,7 @@ class ApiAction extends Action {
                     'result' => 'Invalid parameters'
                 ));
             }
-            $result = D('ParentCategory')->getParentCategoryList($page, $pageSize, "id", "ASC");
+            $result = D('ParentCategory')->getParentCategoryList($business_model, $page, $pageSize, "id", "ASC");
             foreach ($result as &$v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];

@@ -36,7 +36,8 @@ class GoodsAction extends AdminAction {
                 'id',
                 'name'
             ))->where(array(
-                'is_delete' => 0
+                'is_delete' => 0,
+                'business_model' => 1
             ))->select());
             $this->display();
         }
@@ -88,7 +89,7 @@ class GoodsAction extends AdminAction {
     }
 
     /**
-     * Get child category
+     * Get child category by parent category id
      */
     public function getChildCategory() {
         if ($this->isAjax()) {
@@ -98,6 +99,24 @@ class GoodsAction extends AdminAction {
                 'name'
             ))->where(array(
                 'parent_id' => $p_cate_id,
+                'is_delete' => 0
+            ))->select());
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Get parent category by business model
+     */
+    public function getParentCategory() {
+        if ($this->isAjax()) {
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
+            $this->ajaxReturn(M('ParentCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'business_model' => $business_model,
                 'is_delete' => 0
             ))->select());
         } else {
@@ -137,7 +156,6 @@ class GoodsAction extends AdminAction {
      */
     public function update() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
-        $goods = D('Goods');
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
@@ -162,24 +180,7 @@ class GoodsAction extends AdminAction {
             }
             $this->ajaxReturn(D('Goods')->updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $quality, $color, $area, $pay_method, $guarantee, $description, $image));
         } else {
-            $this->assign('parent_category', M('ParentCategory')->field(array(
-                'id',
-                'name'
-            ))->where(array(
-                'is_delete' => 0
-            ))->select());
-            $parent_id = $goods->field(array(
-                'p_cate_id'
-            ))->where(array(
-                'id' => $id
-            ))->find();
-            $this->assign('child_category', M('ChildCategory')->field(array(
-                'id',
-                'name'
-            ))->where(array(
-                'is_delete' => 0,
-                'parent_id' => $parent_id['p_cate_id']
-            ))->select());
+            $goods = M('Goods')->where(array('id' => $id))->find();
             $goods_image = M('GoodsImage')->field(array(
                 'id',
                 'image'
@@ -192,7 +193,21 @@ class GoodsAction extends AdminAction {
                 $v['src'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
                 $image_count .= "'" . $v['image'] . "',";
             }
-            $this->assign('goods', $goods->where("id = {$id}")->find());
+            $this->assign('goods', $goods);
+            $this->assign('parent_category', M('ParentCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'is_delete' => 0,
+                'business_model' => $goods['business_model']
+            ))->select());
+            $this->assign('child_category', M('ChildCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'is_delete' => 0,
+                'parent_id' => $goods['p_cate_id']
+            ))->select());
             $this->assign('goods_image', $goods_image);
             $this->assign('image_count', $image_count);
             $this->display();
@@ -216,7 +231,8 @@ class GoodsAction extends AdminAction {
                 // Delete successful,commit transaction
                 $goods_image->commit();
                 $this->ajaxReturn(array(
-                    'status' => true
+                    'status' => true,
+                    'msg' => 'Delete goods image successful'
                 ));
             } else {
                 // Delete failed,rollback transaction

@@ -24,9 +24,13 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "Category Name", name: 'name', align: 'center', width: '20%', isSort: false},
-			{display: "Parent Category Name", name: 'parent_name', align: 'center', width: '20%', isSort: false},
-            {display: "Add Time", name: 'add_time', align: 'center', width: '20%'},
-            {display: "Update Time", name: 'update_time', align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
+            {display: "Parent Category Name", name: 'parent_name', align: 'center', width: '20%', isSort: false},
+            {display: "Business Model", name: 'business_model', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                return parseInt(value) == 1 ? 'B2C' : 'B2B';
+                }
+            },
+            {display: "Add Time", name: 'add_time', align: 'center', width: '12%'},
+            {display: "Update Time", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     return value ? value : 'Nerver Update';
                 }
             },

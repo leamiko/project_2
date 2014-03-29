@@ -11,6 +11,18 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="left" class="tipmsg"></td>
     </tr>
     <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Business Model:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <select id="business_model" style="width:80px;">
+                <option value="1">B2C</option>
+                <option value="2">B2B</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>Category image：</td>
         <td align="left" class="l-table-edit-td">
             <span class="btn btn-success fileinput-button" style="color:#fff;">
@@ -50,13 +62,13 @@ $(function() {
         done: function (e, data) {
             if (data.result.status) {
                 $("#progress").hide();
-                $("#image_tip").html("<div id='image-preview'>"+
-                                        "<a href='"+data.result.src+"' target='_blank' title='Click to see the source' id='image-preview-outter'>"+
-                                            "<img src='"+data.result.src+"' width='160' height='90' border='0' />"+
-                                        "</a>"+
-                                        "<a href='javascript:void(0);' onclick=\"delete_image(\'"+data.result.filename+"\');\" id='image-preview-delete' title='Delete'>"+
-                                        "</a>"+
-                                    "</div>");
+                $("#image_tip").html("<div id='image-preview'>" +
+                                     "<a href='" + data.result.src + "' target='_blank' title='Click to see the source' id='image-preview-outter'>" +
+                                     "<img src='" + data.result.src + "' width='160' height='90' border='0' />" +
+                                     "</a>" +
+                                     "<a href='javascript:void(0);' onclick=\"delete_image(\'" + data.result.filename + "\');\" id='image-preview-delete' title='Delete'>" +
+                                     "</a>" +
+                                     "</div>");
                 $("#image").val(data.result.filename);
             } else {
                 $("#image_tip").html(data.result.msg);
@@ -108,9 +120,11 @@ function checkForm() {
     if (!ckName()) return false;
     if (!ckImage()) return false;
     var name = $.trim($("#name").val());
+    var business_model = parseInt($("#business_model").val());
     var image = $.trim($("#image").val());
     return {
         name: name,
+        business_model: business_model,
         image: image};
 }
 

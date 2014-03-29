@@ -11,6 +11,18 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="left" class="tipmsg"></td>
     </tr>
     <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Business Model:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <select id="business_model" style="width:80px;">
+                <option value="1"<if condition="$parent_category['id'] eq 1"> selected</if>>B2C</option>
+                <option value="2"<if condition="$parent_category['id'] eq 2"> selected</if>>B2B</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>Category image：</td>
         <td align="left" class="l-table-edit-td">
             <span class="btn btn-success fileinput-button" style="color:#fff;">
@@ -109,15 +121,16 @@ function ckImage() {
     return true;
 }
 
-
 //Check Form
 function checkForm() {
     if (!ckName()) return false;
     if (!ckImage()) return false;
     var name = $.trim($("#name").val());
+    var business_model = parseInt($("#business_model").val());
     var image = $.trim($("#image").val());
     return {
         name: name,
+        business_model: business_model,
         image: image};
 }
 

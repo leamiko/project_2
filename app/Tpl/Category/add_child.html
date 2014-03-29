@@ -11,11 +11,23 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="left" class="tipmsg"></td>
     </tr>
     <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Business Model:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <select id="business_model" style="width:80px;">
+                <option value="1">B2C</option>
+                <option value="2">B2B</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>Parent category：</td>
         <td align="left" class="l-table-edit-td">
             <select id="parent_id">
                 <option value="0">--PARENT--</option>
-                <volist name = "parent" id = "val">
+                <volist name = "parent_category" id = "val">
                 <option value="<{$val['id']}>"><{$val['name']}></option>
                 </volist>
             </select>
@@ -48,6 +60,20 @@ $(function() {
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckName();
+    });
+    $("#business_model").change(function() {
+        var business_model = parseInt($(this).val());
+        $.post('<{:U("Category/getParentCategory")}>', {business_model: business_model}, function(data) {
+            if (data) {
+                var str = '';
+                for (var i in data) {
+                    str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+                $("#parent_id").html(str);
+            } else {
+                $("#parent_id").html('<option value="0">--PARENT--</option>');
+            }
+        }, 'json');
     });
     $("#parent_id").change(function() {
         removeTip($(this).parent('td').next('td:last'));
@@ -135,10 +161,12 @@ function checkForm() {
     if (!ckParent()) return false;
     if (!ckImage()) return false;
     var name = $.trim($("#name").val());
+    var business_model = parseInt($("#business_model").val());
     var parent_id = $("#parent_id").val();
     var image = $.trim($("#image").val());
     return {
         name: name,
+        business_model: business_model,
         parent_id: parent_id,
         image: image};
 }
