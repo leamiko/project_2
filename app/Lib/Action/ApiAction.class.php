@@ -371,7 +371,7 @@ class ApiAction extends Action {
             ))) {
                 // Send the email to user with verfication code
                 $verificationCode = $this->generateVerificationCode();
-                if ($this->sendMail($email, $account, 'EasyBuy Register Verification Code', "Dear {$account}! Thinks for registering!Your verification code is : {$verificationCode}.Enjoy you shopping!")) {
+                if ($this->sendMail($email, $account, 'EasyBuy Register Verification Code', "Dear {$account}! Thinks for registering!Your verification code is : {$verificationCode}.Enjoy your shopping!")) {
                     $lastId = $member->getLastInsID();
                     $result = $member->field(array(
                         'id',
