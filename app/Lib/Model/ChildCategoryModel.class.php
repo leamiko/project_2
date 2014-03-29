@@ -56,6 +56,35 @@ class ChildCategoryModel extends Model {
     }
 
     /**
+     * Child category list api
+     *
+     * @param int $parent_id
+     *            Parent category id
+     * @param int $page
+     *            Current page
+     * @param int $pageSize
+     *            Page size
+     */
+    public function apiGetChildCategoryList($parent_id, $page, $pageSize) {
+        $offset = ($page - 1) * $pageSize;
+        return $this->table($this->getTableName() . " AS c")->join(array(
+            "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON p.id = c.parent_id"
+        ))->field(array(
+            'c.id',
+            'c.parent_id',
+            'c.name',
+            'c.image',
+            'c.add_time',
+            'c.update_time',
+            'c.is_delete',
+            'p.name' => 'parent_name'
+        ))->where(array(
+            'c.parent_id' => $parent_id,
+            'c.is_delete' => 0
+        ))->order("c.id ASC")->limit($offset, $pageSize)->select();
+    }
+
+    /**
      * Delete child category by parent category id
      *
      * @param array $parent_id

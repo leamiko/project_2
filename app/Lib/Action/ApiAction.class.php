@@ -9,10 +9,6 @@
  */
 class ApiAction extends Action {
 
-    public function test() {
-        echo $this->sendMail('971318606@qq.com', 'banzhiyan', 'test', 'This is a test');
-    }
-
     /**
      * Address list
      */
@@ -141,6 +137,37 @@ class ApiAction extends Action {
     }
 
     /**
+     * Child category list
+     */
+    public function child_category_list() {
+        if ($this->isAjax()) {
+            $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($p_cate_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = D('ChildCategory')->apiGetChildCategoryList($p_cate_id, $page, $pageSize);
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Delete address
      */
     public function delete_address() {
@@ -203,6 +230,38 @@ class ApiAction extends Action {
     }
 
     /**
+     * Goods list
+     */
+    public function goods() {
+        if ($this->isAjax()) {
+            $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
+            $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($p_cate_id < 1 || $c_cate_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = D('Goods')->apiGetGoodsList($p_cate_id, $c_cate_id, $page, $pageSize);
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $v['image'] = D('GoodsImage')->apiGetGoodsImageList($v['id']);
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Login
      */
     public function login() {
@@ -253,6 +312,34 @@ class ApiAction extends Action {
                     'result' => 'Invalid password'
                 ));
             }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Parent category list
+     */
+    public function parent_category_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = D('ParentCategory')->getParentCategoryList($page, $pageSize, "id", "ASC");
+            foreach ($result as &$v) {
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
         } else {
             $this->redirect('/');
         }

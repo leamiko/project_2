@@ -74,6 +74,12 @@ $app_config = array(
         'jpeg',
         'png'
     ),
+    'GOODS_ALLOW_UPLOAD_IMAGE_EXTENSION' => array(
+        'jpg',
+        'jpeg',
+        'png'
+    ),
+    'GOODS_MAX_UPLOAD_FILE_SIZE' => 2097152,
     'CATEGORY_MAX_UPLOAD_FILE_SIZE' => 2097152,
     // Mail
     'EMAIL' => array(

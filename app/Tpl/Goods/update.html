@@ -14,7 +14,7 @@
                     <span>*</span>Name:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="name" />
+                    <input type="text" id="name" value="<{$goods['name']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -26,7 +26,7 @@
                     <select id="p_cate_id" style="width:160px;">
                         <option value="0">PARENT CATEGORY</option>
                         <volist name = "parent_category" id = "val">
-                        <option value="<{$val['id']}>"><{$val['name']}></option>
+                        <option value="<{$val['id']}>"<if condition="$goods['p_cate_id'] eq $val['id']"> selected</if>><{$val['name']}></option>
                         </volist>
                     </select>
                 </td>
@@ -38,7 +38,9 @@
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <select id="c_cate_id" style="width:160px;">
-                    <option value="0">CHILD CATEGORY</option>
+                    <volist name = "child_category" id = "val">
+                    <option value="<{$val['id']}>"<if condition="$goods['c_cate_id'] eq $val['id']"> selected</if>><{$val['name']}></option>
+                    </volist>
                     </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
@@ -48,7 +50,7 @@
                     <span>*</span>Price:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="price" />
+                    <input type="text" id="price" value="<{$goods['price']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -57,7 +59,7 @@
                     <span>*</span>Stock:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="stock" />
+                    <input type="text" id="stock" value="<{$goods['stock']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -67,8 +69,8 @@
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <select id="business_model" style="width:80px;">
-                        <option value="1">B2C</option>
-                        <option value="2">B2B</option>
+                        <option value="1"<if condition="$goods['business_model'] eq 1"> selected</if>>B2C</option>
+                        <option value="2"<if condition="$goods['business_model'] eq 2"> selected</if>>B2B</option>
                     </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
@@ -78,7 +80,7 @@
                     Amount for sale:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="sale_amount" />
+                    <input type="text" id="sale_amount" value="<{$goods['sale_amount']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -87,7 +89,7 @@
                     <span>*</span>Unit:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="unit" />
+                    <input type="text" id="unit" value="<{$goods['unit']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -96,7 +98,7 @@
                     Size:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="size" />
+                    <input type="text" id="size" value="<{$goods['size']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -105,7 +107,7 @@
                     Quality:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="quality" />
+                    <input type="text" id="quality" value="<{$goods['quality']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -114,7 +116,7 @@
                     Color:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="color" />
+                    <input type="text" id="color" value="<{$goods['color']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -123,7 +125,7 @@
                     Area:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="area" />
+                    <input type="text" id="area" value="<{$goods['area']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -133,8 +135,8 @@
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <select id="pay_method" style="width:80px;">
-                        <option value="1">Paypal</option>
-                        <option value="2">Alipay</option>
+                        <option value="1"<if condition="$goods['pay_method'] eq 1"> selected</if>>Paypal</option>
+                        <option value="2"<if condition="$goods['pay_method'] eq 2"> selected</if>>Alipay</option>
                     </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
@@ -144,7 +146,7 @@
                     Guarantee:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <textarea id="guarantee" style="resize: none;" onfocus="javascript:checkLength(this, 'guarantee_tip');" onkeydown="javascript:checkLength(this, 'guarantee_tip');" onkeyup="javascript:checkLength(this, 'guarantee_tip');" maxLength="80"></textarea>
+                    <textarea id="guarantee" style="resize: none;" onfocus="javascript:checkLength(this, 'guarantee_tip');" onkeydown="javascript:checkLength(this, 'guarantee_tip');" onkeyup="javascript:checkLength(this, 'guarantee_tip');" maxLength="80"><{$goods['guarantee']}></textarea>
                 </td>
                 <td align="left" class="tipmsg" id="guarantee_tip"></td>
             </tr>
@@ -153,7 +155,7 @@
                     Description:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <textarea id="desc" style="resize: none;" onfocus="javascript:checkLength(this, 'desc_tip');" onkeydown="javascript:checkLength(this, 'desc_tip');" onkeyup="javascript:checkLength(this, 'desc_tip');" maxLength="80"></textarea>
+                    <textarea id="desc" style="resize: none;" onfocus="javascript:checkLength(this, 'desc_tip');" onkeydown="javascript:checkLength(this, 'desc_tip');" onkeyup="javascript:checkLength(this, 'desc_tip');" maxLength="80"><{$goods['description']}></textarea>
                 </td>
                 <td align="left" class="tipmsg" id="desc_tip"></td>
             </tr>
@@ -174,8 +176,16 @@
         </table>
     </div>
     <ul id="image_box">
+        <volist name = "goods_image" id = "val">
+        <li>
+            <a href="<{$val['src']}>" target="_blank" title="Click to see the source" class="image-preview-outter">
+                <img src="<{$val['src']}>" width="160" height="90" border="0" />
+            </a>
+            <a href="javascript:void(0);" onclick="update_image('<{$val['image']}>', $(this), <{$val['id']}>);" class="image-preview-delete" title="Delete"></a> 
+        </li>
+        </volist>
     </ul>
-    <div id="add_goods_button"><input class="btn btn-primary" type="button" value="Add" onclick="addGoodsSubmit();" /></div>
+    <div id="add_goods_button"><input class="btn btn-primary" type="button" value="Save" onclick="updateGoodsSubmit();" /></div>
 </div>
 <style type="text/css">
 <!--
@@ -184,7 +194,8 @@ body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{wi
 </style>
 <script type="text/javascript">
 //<![CDATA[
-var image_count = new Array();
+var image_count = [<{$image_count}>];
+var update_image = new Array();
 $(function() {
     $("#name").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
@@ -246,7 +257,7 @@ $(function() {
         done : function(e, data) {
             if (data.result.status) {
                 $("#progress").hide();
-                image_count.push(data.result.filename);
+                update_image.push(data.result.filename);
                 $("#image_box").append("<li>" +
                                        "<a href='" + data.result.src + "' target='_blank' title='Click to see the source' class='image-preview-outter'>" +
                                        "<img src='" + data.result.src + "' width='160' height='90' border='0' />" +
@@ -397,7 +408,7 @@ function checkLength(obj, id) {
 
 //Check Images
 function ckImage() {
-    if (image_count.length <= 0) {
+    if (image_count.length == 0 && update_image.length == 0) {
         addTip($("#image_tip"), 'Please upload one goods picture at least.');
         return false;
     }
@@ -448,14 +459,14 @@ function checkForm() {
         pay_method: pay_method,
         guarantee: guarantee,
         description : description,
-        image : image_count
+        image : update_image.length ? update_image : ''
     };
 }
 
 //Submit Form
-function addGoodsSubmit() {
+function updateGoodsSubmit() {
     if (checkForm()) {
-        $.post('<{:U("Goods/add")}>', checkForm(), function(data) {
+        $.post('<{:U("Goods/update")}>/id/<{$goods["id"]}>', checkForm(), function(data) {
             if (data.status) {
                 $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
                 window.location.reload(true);
@@ -474,6 +485,20 @@ function delete_image(filename, obj) {
     }, function(data) {
         if (data.status) {
             obj.parent().remove();
+            var index = update_image.indexOf(filename);
+            update_image.splice(index, 1);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+
+//Update Picture
+function update_image(filename, obj, id) {
+    $.post('<{:U("Goods/update_image")}>', {id: id}, function(data) {
+        if (data.status) {
+            obj.parent().remove();
             var index = image_count.indexOf(filename);
             image_count.splice(index, 1);
         } else {
@@ -482,7 +507,6 @@ function delete_image(filename, obj) {
         }
     }, 'json');
 }
-
 //]]>
 </script>
 <include file="./Public/html/footer.html" />

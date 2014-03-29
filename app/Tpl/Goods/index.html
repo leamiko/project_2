@@ -12,7 +12,6 @@
             <form method="get" name="search_form">
                 Goods Name：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="submit" value="Search" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="Add goods" onclick="javascript:add();" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="Delete goods" onclick="javascript:del();" />
             </form>
         </div>
@@ -32,18 +31,29 @@ $(function(){
             {display: "Parent category", name: 'parent_category', align: 'center', width: '12%', isSort: false},
             {display: "Child category", name: 'child_category', align: 'center', width: '12%', isSort: false},
             {display: "Price", name: 'price', align: 'center', width: '6%'},
-            {display: "Item number", name: 'item_number', align: 'center', width: '6%'},
-            {display: "Amount for sale", name: 'sale_amount', align: 'center', width: '6%'},
+            {display: "Item number", name: 'item_number', align: 'center', width: '12%'},
+            {display: "Amount for sale", name: 'sale_amount', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Unknown';
+                }
+            },
             {display: "Stock", name: 'stock', align: 'center', width: '6%'},
-            {display: "Unit", name: 'unit', align: 'center', width: '4%', isSort: false},
-            {display: "Size", name: 'size', align: 'center', width: '4%'},
-            {display: "Quality", name: 'quality', align: 'center', width: '4%'},
-            {display: "Color", name: 'color', align: 'center', width: '4%', isSort: false},
+            {display: "Unit", name: 'unit', align: 'center', width: '6%', isSort: false},
+            {display: "Size", name: 'size', align: 'center', width: '6%'},
+            {display: "Quality", name: 'quality', align: 'center', width: '6%'},
+            {display: "Color", name: 'color', align: 'center', width: '6%', isSort: false},
             {display: "Area", name: 'area', align: 'left', width: '12%', isSort: false},
-            {display: "Pay Method", name: 'pay_method', align: 'center', width: '6%', isSort: false},
-            {display: "Guarantee", name: 'guarantee', align: 'left', width: '12%', isSort: false},
-            {display: "Description", name: 'description', align: 'left', width: '12%', isSort: false},
-            {display: "Edit", width:'4%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Pay Method", name: 'pay_method', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    switch (parseInt(value)) {
+	                    case 1 :
+	                        return 'Paypal';
+	                    case 2 :
+	                        return 'Alipay';
+                    }
+                }
+            },
+            {display: "Guarantee", name: 'guarantee', align: 'left', width: '40%', isSort: false},
+            {display: "Description", name: 'description', align: 'left', width: '40%', isSort: false},
+            {display: "Edit", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">Edit</a>';
                 }
             }
@@ -62,34 +72,11 @@ $(function(){
     $("#pageloading").hide();
 });
 
-//Add a godds
-var addGoodsDialog;
-function add() {
-	addGoodsDialog = $.ligerDialog.open({
-        url: '<{:U("Goods/add")}>', height: 800, width: 600,
-        isDrag: false, title: 'Add a goods',
-        buttons: [{text: 'Ok', onclick: function(item, dialog) {addGoodsDialog.frame.addGoodsFormSubmit();}},
-                  {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]
-    });
-}
-
-//Add goods callback
-function addGoodsCallback(obj) {
-    addGoodsDialog.close();
-    if (1 == obj.status) {
-        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
-        location.reload(true);
-    } else {
-        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
-        return false;
-    }
-}
-
-//删除茶叶
+//Delete goods
 function del() {
     var data = getCheckedData('id');
     if (data.length <= 0) {
-        $.ligerDialog.alert('请至少选中一个商品', '温馨提示', 'warn');
+        $.ligerDialog.alert('Please select one goods at least.', 'Tips', 'warn');
         return false;
     }
     var id = '';
@@ -100,14 +87,14 @@ function del() {
             id += data[i]+',';
         }
     }
-    $.ligerDialog.confirm('您确定要删除选中的商品吗？', function(yes) {
+    $.ligerDialog.confirm('Are you sure to delete the goods you selected?', function(yes) {
         if (yes) {
             $.post('<{:U("Goods/delete")}>', {id:id}, function(data) {
                 if (data.status) {
-                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                    $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
                     location.reload(true);
                 } else {
-                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
                     return false;
                 }
             }, 'json');
@@ -115,27 +102,9 @@ function del() {
     });
 }
 
-//编辑商品
-var updateTeaDialog;
+//Edit goods
 function update(id) {
-    updateTeaDialog = $.ligerDialog.open({
-        url: '<{:U("/Goods/update")}>?id='+id, height: 800, width: 600,
-        isDrag: false, title: '编辑茶叶商品',
-        buttons: [{text: '确定', onclick: function(item, dialog) {updateTeaDialog.frame.updateTeaFormSubmit();}},
-                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
-    });
-}
-
-//编辑商品回调
-function updateTeaCallback(obj) {
-    updateTeaDialog.close();
-    if (obj.status) {
-        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
-        location.reload(true);
-    } else {
-        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
-        return false;
-    }
+    top.f_addTab(null, 'Edit a goods', '<{:U("Goods/update")}>/id/'+id);
 }
 //]]>
 </script>

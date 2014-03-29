@@ -337,7 +337,7 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
-                    	int user_id: 1,
+                        int user_id: 1,
                         string old_password: 'xxx',
                         string new_password: 'xxx'
                     </td>
@@ -349,6 +349,99 @@
                 <tr>
                     <td>Failed return：</td>
                     <td><div class="failed_return_8"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Parent Category List</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/parent_category_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int page: 1,
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_13"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_13"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Child Category List</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/child_category_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int p_cate_id: 1,
+                        int page: 1,
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_14"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_14"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Goods List</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/goods</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int p_cate_id: 1,
+                        int c_cate_id: 1,
+                        int page: 1,
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_15"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_15"></div></td>
                 </tr>
             </table>
         </div>
@@ -370,53 +463,71 @@ $(function() {
     $.post("<{:U('api/login')}>", {account: 'lzjjie', password : '654321'}, function(data) {
         $(".failed_return_1").JSONView(data);
     }, 'json');
-	$(".success_return_2").JSONView({"status":1,"result":[{"id":"6","account":"tester","avatar":null,"sex":null,"status":"0","is_vip":"0","email":"971318606@qq.com","register_time":"2014-03-01 23:37:04","last_time":null,"upgrade_time":null,"password":"123456","verification_code":310980}]});
-	$.post("<{:U('api/register')}>", {account: 'lzjjie', password: '123456', email:'lzjjie@gmail.com'}, function(data) {
+    $(".success_return_2").JSONView({"status":1,"result":[{"id":"6","account":"tester","avatar":null,"sex":null,"status":"0","is_vip":"0","email":"971318606@qq.com","register_time":"2014-03-01 23:37:04","last_time":null,"upgrade_time":null,"password":"123456","verification_code":310980}]});
+    $.post("<{:U('api/register')}>", {account: 'lzjjie', password: '123456', email:'lzjjie@gmail.com'}, function(data) {
         $(".failed_return_2").JSONView(data);
     }, 'json');
-	$(".success_return_3").JSONView({"status":1,"result":"Add address successful"});
-	$.post("<{:U('api/add_address')}>", {user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
+    $(".success_return_3").JSONView({"status":1,"result":"Add address successful"});
+    $.post("<{:U('api/add_address')}>", {user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
         $(".failed_return_3").JSONView(data);
     }, 'json');
-	$(".success_return_4").JSONView({"status":1,"result":"Delete address successful"});
-	$.post("<{:U('api/delete_address')}>", {id: 0}, function(data) {
+    $(".success_return_4").JSONView({"status":1,"result":"Delete address successful"});
+    $.post("<{:U('api/delete_address')}>", {id: 0}, function(data) {
         $(".failed_return_4").JSONView(data);
     }, 'json');
-	$(".success_return_5").JSONView({"status":1,"result":"Update address successful"});
-	$.post("<{:U('api/update_address')}>", {id: 0, user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
+    $(".success_return_5").JSONView({"status":1,"result":"Update address successful"});
+    $.post("<{:U('api/update_address')}>", {id: 0, user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
         $(".failed_return_5").JSONView(data);
     }, 'json');
-	$.post("<{:U('api/address_list')}>", {user_id: 1, page: 1, pageSize: 15}, function(data) {
+    $.post("<{:U('api/address_list')}>", {user_id: 1, page: 1, pageSize: 15}, function(data) {
         $(".success_return_6").JSONView(data);
     }, 'json');
-	$.post("<{:U('api/address_list')}>", {user_id: 0, page: 0, pageSize: -15}, function(data) {
+    $.post("<{:U('api/address_list')}>", {user_id: 0, page: 0, pageSize: -15}, function(data) {
         $(".failed_return_6").JSONView(data);
     }, 'json');
     $(".success_return_7").JSONView({"status":1,"result":"Upgrade successful"});
-	$.post("<{:U('api/user_upgrade')}>", {user_id: 0, is_vip: -1}, function(data) {
+    $.post("<{:U('api/user_upgrade')}>", {user_id: 0, is_vip: -1}, function(data) {
         $(".failed_return_7").JSONView(data);
     }, 'json');
-	$(".success_return_8").JSONView({"status":1,"result":"Change password successful"});    
-	$.post("<{:U('api/change_password')}>", {user_id: 0, old_password: '', new_password: ''}, function(data) {
+    $(".success_return_8").JSONView({"status":1,"result":"Change password successful"});    
+    $.post("<{:U('api/change_password')}>", {user_id: 0, old_password: '', new_password: ''}, function(data) {
         $(".failed_return_8").JSONView(data);
     }, 'json');
     $(".success_return_9").JSONView({"status":1,"result":"Set default address successful"});
-	$.post("<{:U('api/set_default_address')}>", {id: 0, user_id: 0}, function(data) {
+    $.post("<{:U('api/set_default_address')}>", {id: 0, user_id: 0}, function(data) {
         $(".failed_return_9").JSONView(data);
     }, 'json');
-	$.post("<{:U('api/get_default_address')}>", {user_id: 1}, function(data) {
+    $.post("<{:U('api/get_default_address')}>", {user_id: 1}, function(data) {
         $(".success_return_10").JSONView(data);
     }, 'json');
-	$.post("<{:U('api/get_default_address')}>", {user_id: 0}, function(data) {
+    $.post("<{:U('api/get_default_address')}>", {user_id: 0}, function(data) {
         $(".failed_return_10").JSONView(data);
     }, 'json');
     $(".success_return_11").JSONView({"status":1,"result":812440});
-	$.post("<{:U('api/resend_verification_email')}>", {account:'', email:''}, function(data) {
+    $.post("<{:U('api/resend_verification_email')}>", {account:'', email:''}, function(data) {
         $(".failed_return_11").JSONView(data);
     }, 'json');
     $(".success_return_12").JSONView({"status":1,"result":"Update user status successful"});
     $.post("<{:U('api/update_user_status')}>", {user_id: 0, status: -1}, function(data) {
         $(".failed_return_12").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/parent_category_list')}>", {page: 1, pageSize: 15}, function(data) {
+        $(".success_return_13").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/parent_category_list')}>", {page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_13").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/child_category_list')}>", {p_cate_id: 1, page: 1, pageSize: 15}, function(data) {
+        $(".success_return_14").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/child_category_list')}>", {p_cate_id: 0, page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_14").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/goods')}>", {p_cate_id: 1, c_cate_id: 1, page: 1, pageSize: 15}, function(data) {
+        $(".success_return_15").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/goods')}>", {p_cate_id: 0, c_cate_id: 0, page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_15").JSONView(data);
     }, 'json');
 });
 //]]>
