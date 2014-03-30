@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-03-30 00:51:22
+Date: 2014-03-30 20:26:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,21 +23,24 @@ CREATE TABLE `easy_address` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'user_id',
   `name` varchar(30) NOT NULL COMMENT 'consignee name',
-  `phone` varchar(30) NOT NULL COMMENT 'consignee phone',
-  `telphone` varchar(30) DEFAULT NULL COMMENT 'consignee telphone',
-  `zip` varchar(30) NOT NULL COMMENT 'zip code',
+  `phone` varchar(30) DEFAULT NULL COMMENT 'consignee phone',
+  `telephone` varchar(30) DEFAULT NULL COMMENT 'consignee telephone',
+  `zip` varchar(30) DEFAULT NULL COMMENT 'zip code',
   `address` varchar(255) NOT NULL COMMENT 'consignee address',
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'default address(0:no,1:yes)',
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='user address table';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='user address table';
 
 -- ----------------------------
 -- Records of easy_address
 -- ----------------------------
-INSERT INTO `easy_address` VALUES ('1', '1', 'lzjjie', '13437563074', null, '518029', 'Room #207,2F,No.43,Jinhu 1st Street,Yinhu Road,Luohu District, Shenzhen, P.R.C', '1', '1393227625', '1393302552');
-INSERT INTO `easy_address` VALUES ('2', '1', 'lzjjie', '202-33228866', null, '510000', 'Room #207,2F,No.43,Jinhu 1st Street,Yinhu Road,Luohu District, Shenzhen, P.R.C', '0', '1393227625', '1393302510');
+INSERT INTO `easy_address` VALUES ('1', '1', 'Zonkee', null, null, null, 'BeiJing', '0', '1396159315', '1396160574');
+INSERT INTO `easy_address` VALUES ('2', '1', 'Zonkee', '13751670932', '0750-3645012', '201293', 'ShangHai', '1', '1396159427', '1396160736');
+INSERT INTO `easy_address` VALUES ('3', '1', 'Lzjjie', null, null, '30120', 'JiangSu', '0', '1396159470', '1396160839');
+INSERT INTO `easy_address` VALUES ('4', '1', 'Zonkee', null, '78765332', null, 'JiangSu', '0', '1396159508', '1396160891');
+INSERT INTO `easy_address` VALUES ('5', '1', 'Zonkee', '18989888026', null, null, 'GuangZhou', '0', '1396159551', '1396160943');
 
 -- ----------------------------
 -- Table structure for `easy_admin_user`
@@ -60,8 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396111701', '1', 'Administrator!Do not delete!', '1');
-INSERT INTO `easy_admin_user` VALUES ('4', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', '', '1393059963', '1393060050', '1', '', '0');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396157601', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -165,14 +167,14 @@ CREATE TABLE `easy_member` (
   `last_time` int(11) DEFAULT NULL COMMENT 'user last login time',
   `upgrade_time` int(11) DEFAULT NULL COMMENT 'upgrade time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='member table';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='member table';
 
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', null, null, '1', '1', '1', 'lzjjie@163.com', '1', '1396111564', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396182186', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
-INSERT INTO `easy_member` VALUES ('6', 'tester', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
+INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
 INSERT INTO `easy_member` VALUES ('11', '???', 'b842f1db09ef1bfda2ae1c1f70ec57c7', null, null, null, '0', '0', 'a@a', '1396091448', null, null);
 INSERT INTO `easy_member` VALUES ('12', '???1', '0d1b08c34858921bc7c662b228acb7ba', null, null, null, '0', '0', '229204897@qq.com', '1396091846', null, null);
@@ -199,3 +201,43 @@ CREATE TABLE `easy_parent_category` (
 INSERT INTO `easy_parent_category` VALUES ('1', 'Chemical', '1', '/uploads/cate_13961032061915.jpg', '1396103208', null, '0');
 INSERT INTO `easy_parent_category` VALUES ('2', 'Chemical', '2', '/uploads/cate_13961033087104.jpg', '1396103221', '1396103309', '0');
 INSERT INTO `easy_parent_category` VALUES ('3', 'Agriculture', '1', '/uploads/cate_13961043595595.jpg', '1396104360', null, '0');
+
+-- ----------------------------
+-- Table structure for `easy_publish`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_publish`;
+CREATE TABLE `easy_publish` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) DEFAULT NULL COMMENT 'user id',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'publish type(1:buy,0:sell)',
+  `publisher_second_name` varchar(255) NOT NULL COMMENT 'publisher second name',
+  `publisher_first_name` varchar(255) NOT NULL COMMENT 'publisher first name',
+  `country` varchar(255) NOT NULL COMMENT 'country',
+  `company` varchar(255) DEFAULT NULL COMMENT 'company',
+  `carton` varchar(255) DEFAULT NULL COMMENT 'carton',
+  `telephone` varchar(30) DEFAULT NULL COMMENT 'telephone',
+  `phone` varchar(30) DEFAULT NULL COMMENT 'cellphone',
+  `email` varchar(255) DEFAULT NULL COMMENT 'email',
+  `information` varchar(255) DEFAULT NULL COMMENT 'goods information',
+  `image_1` varchar(255) DEFAULT NULL COMMENT 'goods first image',
+  `image_2` varchar(255) DEFAULT NULL COMMENT 'goods second image',
+  `image_3` varchar(255) DEFAULT NULL COMMENT 'goods third image',
+  `image_4` varchar(255) DEFAULT NULL COMMENT 'goods fourth image',
+  `goods_name` varchar(255) NOT NULL COMMENT 'goods name',
+  `length` varchar(255) DEFAULT NULL COMMENT 'goods length',
+  `width` varchar(255) DEFAULT NULL COMMENT 'goods width',
+  `high` varchar(255) DEFAULT NULL COMMENT 'goods high',
+  `thickness` varchar(255) DEFAULT NULL COMMENT 'goods thickness',
+  `color` varchar(255) DEFAULT NULL COMMENT 'goods color',
+  `use` varchar(255) DEFAULT NULL COMMENT 'goods use',
+  `quantity` varchar(255) DEFAULT NULL COMMENT 'goods quantity',
+  `material` varchar(255) DEFAULT NULL COMMENT 'goods material',
+  `weight` varchar(255) DEFAULT NULL COMMENT 'goods weight',
+  `remark` varchar(255) DEFAULT NULL COMMENT 'remark',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of easy_publish
+-- ----------------------------
+INSERT INTO `easy_publish` VALUES ('1', '1', '0', 'ZonKee', 'Lee', 'China', 'Tencent', 'carton', '020-88776655', '13751643439', 'test@qq.com', 'this is a test', null, '/uploads/publish_13961821309099.png', null, '/uploads/publish_13961821309473.png', 'red apple', null, null, null, null, 'red', 'eating', '1000', null, '2000', 'this is a test');

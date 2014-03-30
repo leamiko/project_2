@@ -25,7 +25,9 @@ class AdminUserModel extends Model {
      * @return array
      */
     public function addAdministrator($username, $password, $realname, $email, $desc) {
-        if ($this->where("username = \"{$username}\"")->count()) {
+        if ($this->where(array(
+            'username' => $username
+        ))->count()) {
             return array(
                 'status' => false,
                 'msg' => 'Account exists!!!'
@@ -67,17 +69,19 @@ class AdminUserModel extends Model {
      * @return array
      */
     public function auth($username, $password) {
-        $result = $this->where("username = '{$username}'")->limit(1)->select();
+        $result = $this->where(array(
+            'username' => $username
+        ))->find();
         if (empty($result)) {
             return array(
                 'status' => false,
                 'msg' => 'User not found'
             );
         } else {
-            if (md5($password) == $result[0]['password']) {
+            if (md5($password) == $result['password']) {
                 return array(
                     'status' => true,
-                    'admin_info' => $result[0]
+                    'admin_info' => $result
                 );
             } else {
                 return array(
@@ -98,16 +102,21 @@ class AdminUserModel extends Model {
      * @return array
      */
     public function changePassword($id, $password) {
+        // Start transaction
         $this->startTrans();
-        if ($this->where("id = {$id}")->save(array(
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
             'password' => md5($password)
         ))) {
+            // Change password successful,commit transaction
             $this->commit();
             return array(
                 'status' => true,
-                'msg' => 'Change password successfully'
+                'msg' => 'Change password successful'
             );
         } else {
+            // Change password failed,rollback transaction
             $this->rollback();
             return array(
                 'status' => false,
@@ -124,23 +133,26 @@ class AdminUserModel extends Model {
      * @return array
      */
     public function deleteAdministrator(array $id) {
-        $map = array();
-        $map['id'] = array(
-            'in',
-            $id
-        );
+        // Start transaction
         $this->startTrans();
-        if ($this->where($map)->delete()) {
+        if ($this->where(array(
+            'id' => array(
+                'in',
+                $id
+            )
+        ))->delete()) {
+            // Delete successful,commit transaction
             $this->commit();
             return array(
                 'status' => true,
-                'msg' => 'Deleted successfully'
+                'msg' => 'Delete administrator(s) successful'
             );
         } else {
+            // Delete failed,rollback transaction
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => 'Deleted failed'
+                'msg' => 'Delete administrator(s) failed'
             );
         }
     }
@@ -165,7 +177,8 @@ class AdminUserModel extends Model {
      *            sort
      */
     public function getAdministratorList($page, $pageSize, $order, $sort) {
-        return $this->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+        $offset = ($page - 1) * $pageSize;
+        return $this->limit($offset, $pageSize)->order($order . " " . $sort)->select();
     }
 
 }

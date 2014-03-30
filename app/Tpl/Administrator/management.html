@@ -10,16 +10,8 @@
         </div>
 
         <div class="top_4">
-            <form method="get" action="" name="search_form">
-                <div style="float: right; margin-right: 5px;">
-                    <input class="btn btn-primary" type="button" value="Delete Administrator"
-                        onclick="javascript:del();">
-                </div>
-                <div style="float: right; margin-right: 5px;">
-                    <input class="btn btn-primary" type="button" value="Add Administrator"
-                        onclick="javascript:add();">
-                </div>
-            </form>
+            <input class="btn btn-primary" type="button" value="Add Administrator" onclick="javascript:add();">&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="Delete Administrator" onclick="javascript:del();">
         </div>
         <div>
             <div id="maingrid4" style="margin: 0px auto; padding: 0px;"></div>
@@ -35,13 +27,13 @@ $(function(){
         columns: [
             {display: "Account", name: 'username', align: 'center', width: '12%'},
             {display: "Real Name", name: 'real_name', align: 'center', width: '12%'},
-            {display: "E-Mail", name: 'email', align: 'center', width: '16%', isSort: false},
-            {display: "Add Time", name: 'add_time', align: 'center', width: '16%'},
-            {display: "Last Login Time", name: 'last_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
-					return value ? value : 'This administrator never login';
-				}
-			},
-            {display: "Description", name: 'desc', align: 'left', width: '20%', isSort: false},
+            {display: "E-Mail", name: 'email', align: 'center', width: '12%', isSort: false},
+            {display: "Add Time", name: 'add_time', align: 'center', width: '12%'},
+            {display: "Last Login Time", name: 'last_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Never logged';
+                }
+            },
+            {display: "Description", name: 'desc', align: 'left', width: '30%', isSort: false},
             ],
             url: '<{:U("Administrator/management")}>',
             dataAction: 'server',

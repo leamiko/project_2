@@ -27,36 +27,36 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "Username", name: 'account', align: 'center', width: '12%', isSort: false},
-            {display: "Sex", name: 'sex', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
-					if (value) {
-						return parseInt(value) ? 'man' : 'woman';
-					} else {
-						return 'unknown';
-					}
-				}
-			},
-			{display: "E-mail", name: 'email', align: 'center', width: '12%', isSort: false},
-			{display: "Status", name: 'status', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
-			        return parseInt(value) ? 'Verified' : 'Unverified';
-			    }
-			},
-			{display: "Phone", name: 'phone', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
-					return value ? value : 'unknown';
-				}
-			},
-			{display: "VIP", name: 'is_vip', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
-					return parseInt(value) ? 'Yes' : 'No';
-				}
-			},
-            {display: "Register Time", name: 'register_time', align: 'center', width: '14%', isSort: true},
-            {display: "Last login Time", name: 'last_time', align: 'center', width: '14%', isSort: true, render: function(rowdata, rowindex, value) {
-					return value ? value : 'This member never logined';
-				}
-			},
-			{display: "Upgrade Time", name: 'upgrade_time', align: 'center', width: '14%', isSort: true, render: function(rowdata, rowindex, value) {
-					return value ? value : 'This member never upgraded';
-				}
-			}
+            {display: "Sex", name: 'sex', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (value) {
+                        return parseInt(value) ? 'Man' : 'Woman';
+                    } else {
+                        return 'Secret';
+                    }
+                }
+            },
+            {display: "E-mail", name: 'email', align: 'center', width: '12%', isSort: false},
+            {display: "Status", name: 'status', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? 'Verified' : 'Unverified';
+                }
+            },
+            {display: "Phone", name: 'phone', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Unknown';
+                }
+            },
+            {display: "VIP", name: 'is_vip', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? 'Yes' : 'No';
+                }
+            },
+            {display: "Register Time", name: 'register_time', align: 'center', width: '12%', isSort: true},
+            {display: "Last login Time", name: 'last_time', align: 'center', width: '12%', isSort: true, render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Never logged';
+                }
+            },
+            {display: "Upgrade Time", name: 'upgrade_time', align: 'center', width: '12%', isSort: true, render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Never upgraded';
+                }
+            }
             ],
             url: '<{:U("Member/index")}>?keyword=<{$keyword}>',
             dataAction: 'server',

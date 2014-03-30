@@ -120,6 +120,39 @@
             <table border="1" width="96%">
                 <tr>
                     <td width="20%">Interface：</td>
+                    <td width="80%">Update an member</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/update_member</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int id : 1(user id which you going to update),<br />
+                        string account: 'xxx',(Optional,can not be empty.)<br />
+                        string phone: 'xxx',(Optional)<br />
+                        string avatar: 'xxx',(Optional,base64 encoding string only)<br />
+                        int sex:1(Optional,1:Man,0:Woman)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_16"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_16"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
                     <td width="80%">Add address</td>
                 </tr>
                 <tr>
@@ -135,8 +168,9 @@
                     <td>
                         int user_id: 1,<br />
                         string name: 'xxx'<font color="#f00;">（Consignee name can not more than 10 Chinese characters or 30 English characters）</font>,<br />
-                        string phone: 'xxx'<font color="#f00;">（Consignee phone only include numbers and underline and can not more than 30 English characters）</font>,<br />
-                        string zip: 'xxx'<font color="#f00;">（Zip code only include number and can not more than 30 English characters）</font>,<br />
+                        string phone: 'xxx'<font color="#f00;">（Can be empty,Consignee phone only include numbers and can not more than 30 characters）</font>,<br />
+                        string telephone: 'xxx'<font color="#f00;">（Can be empty,Consignee telephone only include numbers or '-' and can not more than 30 characters）</font>,<br />
+                        string zip: 'xxx'<font color="#f00;">（Can be empty,Zip code only include number and can not more than 30 English characters）</font>,<br />
                         string address: 'xxx'<font color="#f00;">（Address can not more than 80 Chinese characters or 250 English characters）</font>
                     </td>
                 </tr>
@@ -165,7 +199,7 @@
                 </tr>
                 <tr>
                     <td>Parameters：</td>
-                    <td>int id: 1</td>
+                    <td>int id: 1(address id which you going to delete)</td>
                 </tr>
                 <tr>
                     <td>Successful return：</td>
@@ -193,10 +227,12 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
+                        int id: 1,(address id which you going to update)<br />
                         int user_id: 1,<br />
                         string name: 'xxx'<font color="#f00;">（Consignee name can not more than 10 Chinese characters or 30 English characters）</font>,<br />
-                        string phone: 'xxx'<font color="#f00;">（Consignee phone only include numbers and underline and can not more than 30 English characters）</font>,<br />
-                        string zip: 'xxx'<font color="#f00;">（Zip code only include number and can not more than 30 English characters）</font>,<br />
+                        string phone: 'xxx'<font color="#f00;">（Can be empty,Consignee phone only include numbers and can not more than 30 characters）</font>,<br />
+                        string telephone: 'xxx'<font color="#f00;">（Can be empty,Consignee telephone only include numbers or '-' and can not more than 30 characters）</font>,<br />
+                        string zip: 'xxx'<font color="#f00;">（Can be empty,Zip code only include number and can not more than 30 English characters）</font>,<br />
                         string address: 'xxx'<font color="#f00;">（Address can not more than 80 Chinese characters or 250 English characters）</font>
                     </td>
                 </tr>
@@ -253,7 +289,7 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
-                        int id: 1,<font color="#f00">(address id)</font>
+                        int id: 1,<font color="#f00">(address id which you gong to set to default)</font>
                         int user_id: 1
                     </td>
                 </tr>
@@ -445,6 +481,60 @@
                     <td><div class="failed_return_15"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Publish</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/publish</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,(Optional)<br />
+                        int type: 1(publish type,1:buy,2:sell)<br />
+                        string publisher_second_name: 'xxx',<br />
+                        string publisher_first_name: 'xxx',<br />
+                        string country: 'xxx',<br />
+                        string company: 'xxx',(Optional)<br />
+                        string carton: 'xxx',(Optional)<br />
+                        string telephone: 'xxx',(Optional)<br />
+                        string phone: 'xxx',(Optional)<br />
+                        string email: 'xxx',(Optional)<br />
+                        string information: 'xxx',(Optional)<br />
+                        string image_1: 'xxx',(Optional,base64 encoding image)<br />
+                        string image_2: 'xxx',(Optional,base64 encoding image)<br />
+                        string image_3: 'xxx',(Optional,base64 encoding image)<br />
+                        string image_4: 'xxx',(Optional,base64 encoding image)<br />
+                        string goods_name: 'xxx',<br />
+                        string length: 'xxx',(Optional)<br />
+                        string width: 'xxx',(Optional)<br />
+                        string high: 'xxx',(Optional)<br />
+                        string thickness: 'xxx',(Optional)<br />
+                        string color: 'xxx',(Optional)<br />
+                        string use: 'xxx',(Optional)<br />
+                        string quantity: 'xxx',(Optional)<br />
+                        string material: 'xxx',(Optional)<br />
+                        string weight: 'xxx',(Optional)<br />
+                        string remark: 'xxx',(Optional)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_17"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_17"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -469,7 +559,7 @@ $(function() {
         $(".failed_return_2").JSONView(data);
     }, 'json');
     $(".success_return_3").JSONView({"status":1,"result":"Add address successful"});
-    $.post("<{:U('api/add_address')}>", {user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
+    $.post("<{:U('api/add_address')}>", {user_id: 0, name: '', phone: '', telephone: '', zip: '', address: ''}, function(data) {
         $(".failed_return_3").JSONView(data);
     }, 'json');
     $(".success_return_4").JSONView({"status":1,"result":"Delete address successful"});
@@ -477,7 +567,7 @@ $(function() {
         $(".failed_return_4").JSONView(data);
     }, 'json');
     $(".success_return_5").JSONView({"status":1,"result":"Update address successful"});
-    $.post("<{:U('api/update_address')}>", {id: 0, user_id: 0, name: '', phone: '', zip: '', address: ''}, function(data) {
+    $.post("<{:U('api/update_address')}>", {id: 0, user_id: 0, name: '', phone: '', telephone: '', zip: '', address: ''}, function(data) {
         $(".failed_return_5").JSONView(data);
     }, 'json');
     $.post("<{:U('api/address_list')}>", {user_id: 1, page: 1, pageSize: 15}, function(data) {
@@ -529,6 +619,20 @@ $(function() {
     }, 'json');
     $.post("<{:U('api/goods')}>", {p_cate_id: 0, c_cate_id: 0, page: 0, pageSize: -1}, function(data) {
         $(".failed_return_15").JSONView(data);
+    }, 'json');
+    $(".success_return_16").JSONView({"status":1,"result":[{"id":"1","account":"lzjjie","phone":"13698987864","avatar":null,"sex":"1","status":"1","is_vip":"1","email":"lzjjie@163.com","register_time":"1970-01-01 08:00:01","last_time":"2014-03-30 17:47:45","upgrade_time":"2014-02-24 17:29:46"}]});
+    $.post("<{:U('api/update_member')}>", {id: 0}, function(data) {
+        $(".failed_return_16").JSONView(data);
+    }, 'json');
+    $(".success_return_17").JSONView({"status":1,"result":"Publish successful"});
+    $.post("<{:U('api/publish')}>", {
+        type: 2,
+        publisher_second_name: '',
+        publisher_first_name: '',
+        country: '',
+        goods_name: ''
+    }, function(data) {
+        $(".failed_return_17").JSONView(data);
     }, 'json');
 });
 //]]>

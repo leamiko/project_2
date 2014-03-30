@@ -17,7 +17,17 @@ class MemberModel extends Model {
      * @return number
      */
     public function getMemberCount($keyword) {
-        return (int) (empty($keyword) ? $this->count() : $this->where("account LIKE '%{$keyword}%' OR email LIKE '%{$keyword}%'")->count());
+        return (int) (empty($keyword) ? $this->count() : $this->where(array(
+            'account' => array(
+                'like',
+                "%{$keyword}%"
+            ),
+            'email' => array(
+                'like',
+                "%{$keyword}%"
+            ),
+            '_logic' => 'OR'
+        ))->count());
     }
 
     /**
@@ -27,9 +37,19 @@ class MemberModel extends Model {
      *            keyword
      */
     public function getMemberList($page, $pageSize, $order, $sort, $keyword) {
-        $this->limit(($page - 1), $pageSize)->order($order . " " . $sort);
-        empty($keyword) || $this->where("account LIKE '%{$keyword}%' OR email LIKE '%{$keyword}%'");
-        return $this->select();
+        $offset = ($page - 1) * $pageSize;
+        empty($keyword) || $this->where(array(
+            'account' => array(
+                'like',
+                "%{$keyword}%"
+            ),
+            'email' => array(
+                'like',
+                "%{$keyword}%"
+            ),
+            '_logic' => 'OR'
+        ));
+        return $this->limit($offset, $pageSize)->order($order . " " . $sort)->select();
     }
 
 }

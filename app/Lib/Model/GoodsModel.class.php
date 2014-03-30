@@ -308,7 +308,7 @@ class GoodsModel extends Model {
             'like',
             "%{$keyword}%"
         );
-        return (int) $this->where($condition)->count();
+        return (int) ($this->where($condition)->count());
     }
 
     /**
@@ -354,8 +354,13 @@ class GoodsModel extends Model {
             'c.name' => 'child_category',
             'p.name' => 'parent_category'
         ))->order($order . " " . $sort)->limit($offset, $pageSize);
-        $condition = " g.is_delete = 0 ";
-        empty($keyword) || $condition .= " AND g.name LIKE \"%{$keyword}%\" ";
+        $condition = array(
+            'g.is_delete' => 0
+        );
+        empty($keyword) || $condition['g.name'] = array(
+            'like',
+            "%{$keyword}%"
+        );
         return $this->where($condition)->select();
     }
 

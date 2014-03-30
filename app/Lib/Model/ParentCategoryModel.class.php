@@ -123,7 +123,9 @@ class ParentCategoryModel extends Model {
      * @return int
      */
     public function getParentCategoryCount() {
-        return (int) $this->where("is_delete = 0")->count();
+        return (int) ($this->where(array(
+            'is_delete' => 0
+        ))->count());
     }
 
     /**
@@ -142,10 +144,11 @@ class ParentCategoryModel extends Model {
      * @return array
      */
     public function getParentCategoryList($business_model, $page, $pageSize, $order, $sort) {
+        $offset = ($page - 1) * $pageSize;
         return $this->where(array(
             'is_delete' => 0,
             'business_model' => $business_model
-        ))->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+        ))->limit($offset, $pageSize)->order($order . " " . $sort)->select();
     }
 
     /**

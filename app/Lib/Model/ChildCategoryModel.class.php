@@ -174,7 +174,9 @@ class ChildCategoryModel extends Model {
      * @return int
      */
     public function getChildCategoryCount() {
-        return (int) $this->where("is_delete = 0")->count();
+        return (int) ($this->where(array(
+            'is_delete' => 0
+        ))->count());
     }
 
     /**

@@ -19,20 +19,19 @@ class AdministratorAction extends AdminAction {
             $realname = isset($_POST['realname']) ? trim($_POST['realname']) : $this->redirect('/');
             $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : $this->redirect('/');
-            $adminUser = D('AdminUser');
-            $this->ajaxReturn($adminUser->addAdministrator($username, $password, $realname, $email, $desc));
+            $this->ajaxReturn(D('AdminUser')->addAdministrator($username, $password, $realname, $email, $desc));
         } else {
             $this->display();
         }
     }
 
+    /**
+     * Delete administrator(s)
+     */
     public function delete() {
         if ($this->isAjax()) {
-            $id = isset($_POST['id']) ? $_POST['id'] : '';
-            empty($id) && $this->redirect('/');
-            $id = explode(',', $id);
-            $adminUser = D('AdminUser');
-            echo json_encode($adminUser->deleteAdministrator((array) $id));
+            $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
+            $this->ajaxReturn(D('AdminUser')->deleteAdministrator((array) $id));
         } else {
             $this->redirect('/');
         }
@@ -51,9 +50,9 @@ class AdministratorAction extends AdminAction {
             $total = $adminUser->getAdministratorCount();
             if ($total) {
                 $rows = $adminUser->getAdministratorList($page, $pageSize, $order, $sort);
-                foreach ($rows as &$value) {
-                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-                    $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
+                foreach ($rows as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
                 }
             } else {
                 $rows = null;

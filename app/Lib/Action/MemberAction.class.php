@@ -23,10 +23,10 @@ class MemberAction extends AdminAction {
             $total = $member->getMemberCount($keyword);
             if ($total) {
                 $rows = $member->getMemberList($page, $pageSize, $order, $sort, $keyword);
-                foreach ($rows as &$value) {
-                    $value['register_time'] = date("Y-m-d H:i:s", $value['register_time']);
-                    $value['last_time'] = $value['last_time'] ? date("Y-m-d H:i:s", $value['last_time']) : $value['last_time'];
-                    $value['upgrade_time'] = $value['upgrade_time'] ? date("Y-m-d H:i:s", $value['upgrade_time']) : $value['upgrade_time'];
+                foreach ($rows as &$v) {
+                    $v['register_time'] = date("Y-m-d H:i:s", $v['register_time']);
+                    $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
+                    $v['upgrade_time'] = $v['upgrade_time'] ? date("Y-m-d H:i:s", $v['upgrade_time']) : $v['upgrade_time'];
                 }
             } else {
                 $rows = null;

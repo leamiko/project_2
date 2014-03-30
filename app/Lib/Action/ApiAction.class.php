@@ -23,11 +23,12 @@ class ApiAction extends Action {
                     'result' => 'Invalid parameters'
                 ));
             }
-            $address = M('Address');
-            $result = $address->where("user_id = {$user_id}")->limit(($page - 1) * $pageSize, $pageSize)->order("add_time DESC")->select();
-            foreach ($result as &$value) {
-                $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-                $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+            $result = M('Address')->where(array(
+                'user_id' => $user_id
+            ))->limit(($page - 1) * $pageSize, $pageSize)->order("add_time DESC")->select();
+            foreach ($result as &$v) {
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
             }
             $this->ajaxReturn(array(
                 'status' => 1,
@@ -46,31 +47,38 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            $telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : $this->redirect('/');
             $zip = isset($_POST['zip']) ? trim($_POST['zip']) : $this->redirect('/');
             $address = isset($_POST['address']) ? trim($_POST['address']) : $this->redirect('/');
-            if ($user_id < 1 || empty($name) || empty($phone) || empty($address)) {
+            if ($user_id < 1 || empty($name) || empty($address)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameter'
                 ));
             }
             $addressModel = M('Address');
-            if ($addressModel->where("user_id = {$user_id} AND name = \"{$name}\" AND phone = \"{$phone}\" AND zip = \"{$zip}\" AND address = \"{$address}\"")->count()) {
-                $this->ajaxReturn(array(
-                    'status' => 0,
-                    'result' => 'You have already added this address'
-                ));
-            }
-            // Start transaction
-            $addressModel->startTrans();
-            if ($addressModel->add(array(
+            if ($addressModel->where(array(
                 'user_id' => $user_id,
                 'name' => $name,
-                'phone' => $phone,
-                'zip' => $zip,
+                'address' => $address
+            ))->count()) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'You have already added this address.'
+                ));
+            }
+            $data = array(
+                'user_id' => $user_id,
+                'name' => $name,
                 'address' => $address,
                 'add_time' => time()
-            ))) {
+            );
+            strlen($phone) && $data['phone'] = $phone;
+            strlen($telephone) && $data['telephone'] = $telephone;
+            strlen($zip) && $data['zip'] = $zip;
+            // Start transaction
+            $addressModel->startTrans();
+            if ($addressModel->add($data)) {
                 // Add successful,commit transaction
                 $addressModel->commit();
                 $this->ajaxReturn(array(
@@ -182,7 +190,9 @@ class ApiAction extends Action {
             $address = M('Address');
             // Start transaction
             $address->startTrans();
-            if ($address->where("id = {$id}")->delete()) {
+            if ($address->where(array(
+                'id' => $id
+            ))->delete()) {
                 // Delete successful,commit transaction
                 $address->commit();
                 $this->ajaxReturn(array(
@@ -214,11 +224,13 @@ class ApiAction extends Action {
                     'result' => 'Invalid parameters'
                 ));
             }
-            $address = M('Address');
-            $result = $address->where("user_id = {$user_id} AND is_default = 1")->select();
-            foreach ($result as &$value) {
-                $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-                $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+            $result = M('Address')->where(array(
+                'user_id' => $user_id,
+                'is_default' => 1
+            ))->select();
+            foreach ($result as &$v) {
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
             }
             $this->ajaxReturn(array(
                 'status' => 1,
@@ -347,6 +359,96 @@ class ApiAction extends Action {
     }
 
     /**
+     * Publish
+     */
+    public function publish() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            $publisher_second_name = isset($_POST['publisher_second_name']) ? trim($_POST['publisher_second_name']) : $this->redirect('/');
+            $publisher_first_name = isset($_POST['publisher_first_name']) ? trim($_POST['publisher_first_name']) : $this->redirect('/');
+            $country = isset($_POST['country']) ? trim($_POST['country']) : $this->redirect('/');
+            $company = isset($_POST['company']) ? trim($_POST['company']) : null;
+            $carton = isset($_POST['carton']) ? trim($_POST['carton']) : null;
+            $telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : null;
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : null;
+            $email = isset($_POST['email']) ? trim($_POST['email']) : null;
+            $information = isset($_POST['information']) ? trim($_POST['information']) : null;
+            $image_1 = isset($_POST['image_1']) ? trim($_POST['image_1']) : null;
+            $image_2 = isset($_POST['image_2']) ? trim($_POST['image_2']) : null;
+            $image_3 = isset($_POST['image_3']) ? trim($_POST['image_3']) : null;
+            $image_4 = isset($_POST['image_4']) ? trim($_POST['image_4']) : null;
+            $goods_name = isset($_POST['goods_name']) ? trim($_POST['goods_name']) : $this->redirect('/');
+            $length = isset($_POST['length']) ? trim($_POST['length']) : null;
+            $width = isset($_POST['width']) ? trim($_POST['width']) : null;
+            $high = isset($_POST['high']) ? trim($_POST['high']) : null;
+            $thickness = isset($_POST['thickness']) ? trim($_POST['thickness']) : null;
+            $color = isset($_POST['color']) ? trim($_POST['color']) : null;
+            $use = isset($_POST['use']) ? trim($_POST['use']) : null;
+            $quantity = isset($_POST['quantity']) ? trim($_POST['quantity']) : null;
+            $material = isset($_POST['material']) ? trim($_POST['material']) : null;
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : null;
+            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
+            if (!in_array($type, array(
+                0,
+                1
+            )) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || empty($goods_name)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid paramesters'
+                ));
+            }
+            $data = array(
+                'type' => $type,
+                'publisher_second_name' => $publisher_second_name,
+                'publisher_first_name' => $publisher_first_name,
+                'country' => $country,
+                'goods_name' => $goods_name
+            );
+            $user_id && $data['user_id'] = $user_id;
+            strlen($company) && $data['company'] = $company;
+            strlen($carton) && $data['carton'] = $carton;
+            strlen($telephone) && $data['telephone'] = $telephone;
+            strlen($phone) && $data['phone'] = $phone;
+            strlen($email) && $data['email'] = $email;
+            strlen($information) && $data['information'] = $information;
+            strlen($length) && $data['length'] = $length;
+            strlen($width) && $data['width'] = $width;
+            strlen($high) && $data['high'] = $high;
+            strlen($thickness) && $data['thickness'] = $thickness;
+            strlen($color) && $data['color'] = $color;
+            strlen($use) && $data['use'] = $use;
+            strlen($quantity) && $data['quantity'] = $quantity;
+            strlen($material) && $data['material'] = $material;
+            strlen($weight) && $data['weight'] = $weight;
+            strlen($remark) && $data['remark'] = $remark;
+            strlen($image_1) && $data['image_1'] = $this->saveImage('publish_', $image_1);
+            strlen($image_2) && $data['image_2'] = $this->saveImage('publish_', $image_2);
+            strlen($image_3) && $data['image_3'] = $this->saveImage('publish_', $image_3);
+            strlen($image_4) && $data['image_4'] = $this->saveImage('publish_', $image_4);
+            $publis = M('Publish');
+            // Start transaction
+            if ($publis->add($data)) {
+                // Add successful,commit transaction
+                $publis->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Publish successful'
+                ));
+            } else {
+                // Add failed,rollback transaction
+                $publis->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Publish failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Registration
      */
     public function register() {
@@ -354,6 +456,12 @@ class ApiAction extends Action {
             $account = isset($_POST['account']) ? trim($_POST['account']) : $this->redirect('/');
             $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
             $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
+            if (empty($account) || empty($password) || empty($email)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid paramesters'
+                ));
+            }
             $member = M('Member');
             if ($member->where("account = \"{$account}\"")->count()) {
                 $this->ajaxReturn(array(
@@ -459,69 +567,54 @@ class ApiAction extends Action {
                 ));
             }
             $address = M('Address');
-            // Check whether have default address or not
-            if ($address->where("user_id = {$user_id} AND is_default = 1")->count()) {
-                // Check address with current id is default or not
-                if ($address->where("user_id = {$user_id} AND is_default = 1 AND id = {$id}")->count()) {
-                    $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'This address was the default one'
-                    ));
-                } else {
-                    // Start transaction
-                    $address->startTrans();
-                    // Set the current default one to Non-default
-                    if ($address->where("user_id = {$user_id} AND is_default = 1")->save(array(
-                        'is_default' => 0
-                    ))) {
-                        // Update successful,set the new default address
-                        if ($address->where("id = {$id}")->save(array(
-                            'is_default' => 1,
-                            'update_time' => time()
-                        ))) {
-                            // Set default address successful,commit transaction
-                            $address->commit();
-                            $this->ajaxReturn(array(
-                                'status' => 1,
-                                'result' => 'Set default address successful'
-                            ));
-                        } else {
-                            // Set default address failed,rollback transaction
-                            $address->rollback();
-                            $this->ajaxReturn(array(
-                                'status' => 0,
-                                'result' => 'Unknown error'
-                            ));
-                        }
-                    } else {
-                        // Set the current default address to Non-default failed
-                        $address->rollback();
-                        $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Unknown error'
-                        ));
-                    }
-                }
-            } else {
-                // No default address before,start transaction
-                $address->startTrans();
-                if ($address->where("id = {$id}")->save(array(
-                    'is_default' => 1
+            if ($address->where(array(
+                'user_id' => $user_id,
+                'id' => $id,
+                'is_default' => 1
+            ))->count()) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'This address was the default one'
+                ));
+            }
+            // Start transaction
+            $address->startTrans();
+            if ($address->where(array(
+                'user_id' => $user_id,
+                'is_default' => 1
+            ))->count()) {
+                // Set all address to normal
+                if (!$address->where(array(
+                    'user_id' => $user_id
+                ))->save(array(
+                    'is_default' => 0
                 ))) {
-                    // Set default address successful,commit transaction
-                    $address->commit();
-                    $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Set default address successful'
-                    ));
-                } else {
-                    // Set default address failed,rollback transaction
+                    // Set all addresses to normal failed,rollback transaction
                     $address->rollback();
                     $this->ajaxReturn(array(
                         'status' => 0,
                         'result' => 'Unknown error'
                     ));
                 }
+            }
+            if ($address->where(array(
+                'id' => $id
+            ))->save(array(
+                'is_default' => 1
+            ))) {
+                // Set default address successful,commit transaction
+                $address->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Set default address successful'
+                ));
+            } else {
+                // Set default address failed,rollback transaction
+                $address->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Unknown error'
+                ));
             }
         } else {
             $this->redirect('/');
@@ -537,16 +630,25 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            $telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : $this->redirect('/');
             $zip = isset($_POST['zip']) ? trim($_POST['zip']) : $this->redirect('/');
             $address = isset($_POST['address']) ? trim($_POST['address']) : $this->redirect('/');
-            if ($id < 1 || $user_id < 1 || empty($name) || empty($phone) || empty($address)) {
+            if ($id < 1 || $user_id < 1 || empty($name) || empty($address)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameters'
                 ));
             }
             $addressModel = M('Address');
-            if ($addressModel->where("user_id = {$user_id} AND name = \"{$name}\" AND phone = \"{$phone}\" AND zip = \"{$zip}\" AND address = \"{$address}\" AND id != {$id}")->count()) {
+            if ($addressModel->where(array(
+                'user_id' => $user_id,
+                'name' => $name,
+                'address' => $address,
+                'id' => array(
+                    'neq',
+                    $id
+                )
+            ))->count()) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'You have already added this address'
@@ -554,11 +656,14 @@ class ApiAction extends Action {
             }
             // Start transaction
             $addressModel->startTrans();
-            if ($addressModel->where("id = {$id}")->save(array(
+            if ($addressModel->where(array(
+                'id' => $id
+            ))->save(array(
                 'user_id' => $user_id,
                 'name' => $name,
-                'phone' => $phone,
-                'zip' => $zip,
+                'phone' => strlen($phone) ? $phone : null,
+                'telephone' => strlen($telephone) ? $telephone : null,
+                'zip' => strlen($zip) ? $zip : null,
                 'address' => $address,
                 'update_time' => time()
             ))) {
@@ -574,6 +679,124 @@ class ApiAction extends Action {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Unknown error'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Update a member
+     */
+    public function update_member() {
+        if ($this->isPost() || $this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $account = isset($_POST['account']) ? trim($_POST['account']) : null;
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : null;
+            $avatar = isset($_POST['avatar']) ? trim($_POST['avatar']) : null;
+            $sex = isset($_POST['sex']) ? intval($_POST['sex']) : null;
+            if ($id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $member = M('Member');
+            $data = array();
+            if ($account) {
+                if ($member->where(array(
+                    'account' => $account,
+                    'id' => array(
+                        'neq',
+                        $id
+                    )
+                ))->count()) {
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'This account was used by anothor member.'
+                    ));
+                } else {
+                    $data['account'] = $account;
+                }
+            }
+            $phone && $data['phone'] = $phone;
+            if ($avatar) {
+                $old_avatar = $member->where(array(
+                    'id' => $id
+                ))->field(array(
+                    'avatar'
+                ))->find();
+                if ($old_avatar['avatar']) {
+                    if (file_exists($_SERVER['DOCUMENT_ROOT'] . $old_avatar['avatar'])) {
+                        if (!unlink($_SERVER['DOCUMENT_ROOT'] . $old_avatar['avatar'])) {
+                            $this->ajaxReturn(array(
+                                'status' => 0,
+                                'result' => 'Update member avatar failed'
+                            ));
+                        }
+                    }
+                }
+                $data['avatar'] = $this->saveImage('mem_', $avatar);
+            }
+            if (!is_null($sex)) {
+                if (!in_array($sex, array(
+                    0,
+                    1
+                ))) {
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'Invalid parameters'
+                    ));
+                } else {
+                    $data['sex'] = $sex;
+                }
+            }
+            if (empty($data)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Nothing to update'
+                ));
+            }
+            // Start transaction
+            $member->startTrans();
+            if ($member->where(array(
+                'id' => $id
+            ))->save($data)) {
+                // Update successful,get the new information
+                $result = $member->field(array(
+                    'id',
+                    'account',
+                    'phone',
+                    'avatar',
+                    'sex',
+                    'status',
+                    'is_vip',
+                    'email',
+                    'register_time',
+                    'last_time',
+                    'upgrade_time'
+                ))->where(array(
+                    'id' => $id
+                ))->limit(1)->select();
+                foreach ($result as &$v) {
+                    $v['register_time'] = date("Y-m-d H:i:s", $v['register_time']);
+                    $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
+                    $v['upgrade_time'] = $v['upgrade_time'] ? date("Y-m-d H:i:s", $v['upgrade_time']) : $v['upgrade_time'];
+                    $v['avatar'] = $v['avatar'] ? "http://{$_SERVER['HTTP_HOST']}{$v['avatar']}" : $V['avatar'];
+                }
+                // Commit transaction
+                $member->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => $result
+                ));
+            } else {
+                // Update failed,rollback transaction
+                $member->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Update member failed'
                 ));
             }
         } else {
@@ -715,6 +938,25 @@ class ApiAction extends Action {
      */
     private function generateVerificationCode() {
         return rand(100000, 999999);
+    }
+
+    /**
+     * Save image from base64 encode
+     *
+     * @param string $prefix
+     *            File name prefix
+     * @param string $imgCode
+     *            Base64 encode image
+     * @return string boolean
+     */
+    private function saveImage($prefix, $imgCode) {
+        $fileName = $prefix . time() . rand(1000, 9999) . ".png";
+        $img = base64_decode($imgCode);
+        if (file_put_contents("{$_SERVER['DOCUMENT_ROOT']}/uploads/{$fileName}", $img)) {
+            return "/uploads/{$fileName}";
+        } else {
+            return false;
+        }
     }
 
 }
