@@ -395,7 +395,7 @@ class ApiAction extends Action {
             )) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || empty($goods_name)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
-                    'result' => 'Invalid paramesters'
+                    'result' => 'Invalid parameters'
                 ));
             }
             $data = array(
@@ -459,7 +459,7 @@ class ApiAction extends Action {
             if (empty($account) || empty($password) || empty($email)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
-                    'result' => 'Invalid paramesters'
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');

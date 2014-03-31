@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
-Source Server Version : 50519
+Source Server         : localhost_3306
+Source Server Version : 50534
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50519
+Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-03-30 20:26:29
+Date: 2014-03-31 17:07:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396157601', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396256719', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -172,7 +172,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396182186', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396256833', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -209,7 +209,7 @@ DROP TABLE IF EXISTS `easy_publish`;
 CREATE TABLE `easy_publish` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) DEFAULT NULL COMMENT 'user id',
-  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'publish type(1:buy,0:sell)',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'publish type(1:buy,0:sell)',
   `publisher_second_name` varchar(255) NOT NULL COMMENT 'publisher second name',
   `publisher_first_name` varchar(255) NOT NULL COMMENT 'publisher first name',
   `country` varchar(255) NOT NULL COMMENT 'country',
@@ -240,4 +240,4 @@ CREATE TABLE `easy_publish` (
 -- ----------------------------
 -- Records of easy_publish
 -- ----------------------------
-INSERT INTO `easy_publish` VALUES ('1', '1', '0', 'ZonKee', 'Lee', 'China', 'Tencent', 'carton', '020-88776655', '13751643439', 'test@qq.com', 'this is a test', null, '/uploads/publish_13961821309099.png', null, '/uploads/publish_13961821309473.png', 'red apple', null, null, null, null, 'red', 'eating', '1000', null, '2000', 'this is a test');
+INSERT INTO `easy_publish` VALUES ('1', '1', '0', 'ZonKee', 'Lee', 'China', 'Tencent', null, '123', '789', 'a@a.com', 'this is a test', null, null, null, null, 'red apple', '10', '10', '10', '10', 'red', 'eating', '20', 'apple', '5000', 'this is a test.');
