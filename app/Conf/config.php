@@ -58,6 +58,16 @@ $app_config = array(
                 )
             )
         ),
+        'Publish' => array(
+            'text' => 'Publish',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Publish Overview',
+                    'url' => '/publish/index'
+                )
+            )
+        ),
         'API' => array(
             'text' => 'API',
             'default' => 'index',

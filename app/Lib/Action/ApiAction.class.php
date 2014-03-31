@@ -403,7 +403,8 @@ class ApiAction extends Action {
                 'publisher_second_name' => $publisher_second_name,
                 'publisher_first_name' => $publisher_first_name,
                 'country' => $country,
-                'goods_name' => $goods_name
+                'goods_name' => $goods_name,
+                'publish_time' => time()
             );
             $user_id && $data['user_id'] = $user_id;
             strlen($company) && $data['company'] = $company;

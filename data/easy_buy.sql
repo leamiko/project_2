@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-03-31 17:07:43
+Date: 2014-03-31 18:09:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -234,10 +234,11 @@ CREATE TABLE `easy_publish` (
   `material` varchar(255) DEFAULT NULL COMMENT 'goods material',
   `weight` varchar(255) DEFAULT NULL COMMENT 'goods weight',
   `remark` varchar(255) DEFAULT NULL COMMENT 'remark',
+  `publish_time` int(11) NOT NULL COMMENT 'Publish time',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of easy_publish
 -- ----------------------------
-INSERT INTO `easy_publish` VALUES ('1', '1', '0', 'ZonKee', 'Lee', 'China', 'Tencent', null, '123', '789', 'a@a.com', 'this is a test', null, null, null, null, 'red apple', '10', '10', '10', '10', 'red', 'eating', '20', 'apple', '5000', 'this is a test.');
+INSERT INTO `easy_publish` VALUES ('1', '1', '0', 'ZonKee', 'Lee', 'China', 'Tencent', null, '123', '789', 'a@a.com', 'this is a test', null, null, null, null, 'red apple', '10', '10', '10', '10', 'red', 'eating', '20', 'apple', '5000', 'this is a test.', '0');
