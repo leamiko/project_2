@@ -26,44 +26,50 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Goods Name", name: 'goods_name', align: 'center', width: '12%', isSort: false},
-            {display: "Publisher First Name", name: 'publisher_first_name', align: 'center', width: '12%', isSort: false},
-			{display: "Publisher Second Name", name: 'publisher_second_name', align: 'center', width: '12%', isSort: false},
-            {display: "Sell/Buy", name: 'type', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Goods Name", name: 'goods_name', align: 'center', width: '20%', isSort: false},
+            {display: "Publisher First Name", name: 'publisher_first_name', align: 'center', width: '20%', isSort: false},
+            {display: "Publisher Second Name", name: 'publisher_second_name', align: 'center', width: '20%', isSort: false},
+            {display: "Sell/Buy", name: 'type', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? 'Buy' : 'Sell';
                 }
             },
-            {display: "Country", name: 'country', align: 'center', width: '12%', isSort: false},
-            {display: "Company", name: 'company', align: 'center', width: '12%', isSort: false},
-            {display: "Telephone", name: 'telephone', align: 'center', width: '12%', isSort: false},
-			{display: "Phone", name: 'phone', align: 'center', width: '12%', isSort: false},
-			{display: "Email", name: 'email', align: 'center', width: '12%', isSort: false},
-			{display: "Goods Information", name: 'information', align: 'center', width: '20%', isSort: false},
-			{display: "Length", name: 'length', align: 'center', width: '12%', isSort: false},
-			{display: "Width", name: 'width', align: 'center', width: '12%', isSort: false},
-			{display: "High", name: 'high', align: 'center', width: '12%', isSort: false},
-			{display: "Thickness", name: 'thickness', align: 'center', width: '12%', isSort: false},
-			{display: "Color", name: 'color', align: 'center', width: '12%', isSort: false},
-			{display: "Use", name: 'use', align: 'center', width: '12%', isSort: false},
-			{display: "Quantity", name: 'quantity', align: 'center', width: '12%', isSort: false},
-			{display: "Material", name: 'material', align: 'center', width: '12%', isSort: false},
-			{display: "Weight", name: 'weight', align: 'center', width: '12%', isSort: false},
-			{display: "Remark", name: 'remark', align: 'center', width: '20%', isSort: false},
-            {display: "Publish Time", name: 'publish_time', align: 'center', width: '12%'}
+            {display: "Country", name: 'country', align: 'center', width: '12%', isSort: false}
             ],
             url: '<{:U("Publish/index")}>?keyword=<{$keyword}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',
-            checkbox: true,
-            selectRowButtonOnly: true,
             pageSize:20,
             pageSizeOptions: [20, 50, 100, 200, 500],
-            onAfterShowData:f_change,
-            onAfterChangeColumnWidth:f_change
+            onAfterShowData: f_change,
+            onAfterChangeColumnWidth: f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
     });
     $("#pageloading").hide();
 });
+
+//Show Detail
+function f_onShowDetail(record, container, callback) {
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>Company:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.company + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Telephone:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.telephone + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Phone:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.phone + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Email:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.email + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Goods Information:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.length + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Length:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.length + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Width:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.width + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>High:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.high + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Thickness:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.thickness + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Color:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.color + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Use:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.use + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Quantity:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.quantity + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Material:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.material + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Weight:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.weight + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Remark:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.remark + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Publish Time:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.publish_time + "</td></tr>");
+    out.push("</table>");
+    $(container).html(out.join(''));
+}
 //]]>
 </script>
 <include file="./Public/html/footer.html" />

@@ -138,6 +138,10 @@ class GoodsAction extends AdminAction {
             $total = $goods->getGoodsCount($keyword);
             if ($total) {
                 $rows = $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword);
+                foreach ($rows as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                }
             } else {
                 $rows = null;
             }
