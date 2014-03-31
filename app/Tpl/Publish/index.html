@@ -11,6 +11,7 @@
         <div class="top_4">
             <form method="get" name="search_form">
                 Goods Name：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="submit" value="Search" />
             </form>
         </div>
         <div>
@@ -25,7 +26,7 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Goods Name", name: 'name', align: 'center', width: '12%', isSort: false},
+            {display: "Goods Name", name: 'goods_name', align: 'center', width: '12%', isSort: false},
             {display: "Publisher First Name", name: 'publisher_first_name', align: 'center', width: '12%', isSort: false},
 			{display: "Publisher Second Name", name: 'publisher_second_name', align: 'center', width: '12%', isSort: false},
             {display: "Sell/Buy", name: 'type', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
