@@ -148,7 +148,7 @@ class ApiAction extends Action {
      * Child category list
      */
     public function child_category_list() {
-        if ($this->isAjax()) {
+        if ($this->isPost() || $this->isAjax()) {
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
@@ -245,7 +245,7 @@ class ApiAction extends Action {
      * Goods list
      */
     public function goods() {
-        if ($this->isAjax()) {
+        if ($this->isPost() || $this->isAjax()) {
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
