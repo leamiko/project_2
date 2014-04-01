@@ -23,14 +23,15 @@ class GoodsAction extends AdminAction {
             $sale_amount = isset($_POST['sale_amount']) ? trim($_POST['sale_amount']) : $this->redirect('/');
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $size = isset($_POST['size']) ? trim($_POST['size']) : $this->redirect('/');
-            $quality = isset($_POST['quality']) ? trim($_POST['quality']) : $this->redirect('/');
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $color = isset($_POST['color']) ? trim($_POST['color']) : $this->redirect('/');
             $area = isset($_POST['area']) ? trim($_POST['area']) : $this->redirect('/');
             $pay_method = isset($_POST['pay_method']) ? intval($_POST['pay_method']) : $this->redirect('/');
+            $quality = isset($_POST['quality']) ? trim($_POST['quality']) : $this->redirect('/');
             $guarantee = isset($_POST['guarantee']) ? trim($_POST['guarantee']) : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
             $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $this->ajaxReturn(D('Goods')->addGoods($name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $quality, $color, $area, $pay_method, $guarantee, $description, $image));
+            $this->ajaxReturn(D('Goods')->addGoods($name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, $image));
         } else {
             $this->assign('parent_category', M('ParentCategory')->field(array(
                 'id',
@@ -170,10 +171,11 @@ class GoodsAction extends AdminAction {
             $sale_amount = isset($_POST['sale_amount']) ? trim($_POST['sale_amount']) : $this->redirect('/');
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $size = isset($_POST['size']) ? trim($_POST['size']) : $this->redirect('/');
-            $quality = isset($_POST['quality']) ? trim($_POST['quality']) : $this->redirect('/');
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $color = isset($_POST['color']) ? trim($_POST['color']) : $this->redirect('/');
             $area = isset($_POST['area']) ? trim($_POST['area']) : $this->redirect('/');
             $pay_method = isset($_POST['pay_method']) ? intval($_POST['pay_method']) : $this->redirect('/');
+            $quality = isset($_POST['quality']) ? trim($_POST['quality']) : $this->redirect('/');
             $guarantee = isset($_POST['guarantee']) ? trim($_POST['guarantee']) : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
             $image = isset($_POST['image']) ? $_POST['image'] : $this->redirect('/');
@@ -182,7 +184,7 @@ class GoodsAction extends AdminAction {
             } else {
                 $image = (array) $image;
             }
-            $this->ajaxReturn(D('Goods')->updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $quality, $color, $area, $pay_method, $guarantee, $description, $image));
+            $this->ajaxReturn(D('Goods')->updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, $image));
         } else {
             $goods = M('Goods')->where(array('id' => $id))->find();
             $goods_image = M('GoodsImage')->field(array(

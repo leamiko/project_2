@@ -102,10 +102,10 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    Quality:
+                    Weight:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="quality" />
+                    <input type="text" id="weight" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -138,6 +138,15 @@
                     </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    Quality:
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <textarea id="quality" style="resize: none;" onfocus="javascript:checkLength(this, 'quality_tip');" onkeydown="javascript:checkLength(this, 'quality_tip');" onkeyup="javascript:checkLength(this, 'quality_tip');" maxLength="80"></textarea>
+                </td>
+                <td align="left" class="tipmsg" id="quality_tip"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
@@ -421,29 +430,31 @@ function checkForm() {
     var sale_amount = $.trim($("#sale_amount").val());
     var unit = $.trim($("#unit").val());
     var size = $.trim($("#size").val());
-    var quality = $.trim($("#quality").val());
+    var weight = $.trim($("#weight").val());
     var color = $.trim($("#color").val());
     var area = $.trim($("#area").val());
     var pay_method = parseInt($("#pay_method").val());
+    var quality = $.trim($("#quality").val());
     var guarantee = $.trim($("#guarantee").val());
     var description = $.trim($("#desc").val());
     return {
-        name : name,
+        name: name,
         p_cate_id: p_cate_id,
         c_cate_id: c_cate_id,
-        price : price,
-        stock : stock,
+        price: price,
+        stock: stock,
         business_model: business_model,
         sale_amount: sale_amount,
         unit: unit,
         size: size,
-        quality: quality,
+        weight: weight,
         color: color,
         area: area,
         pay_method: pay_method,
+        quality: quality,
         guarantee: guarantee,
-        description : description,
-        image : image_count
+        description: description,
+        image: image_count
     };
 }
 

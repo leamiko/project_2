@@ -30,14 +30,16 @@ class GoodsModel extends Model {
      *            unit
      * @param string $size
      *            size
-     * @param string $quality
-     *            quality
+     * @param string $weight
+     *            Weight
      * @param string $color
      *            color
      * @param string $area
      *            area
      * @param int $pay_method
      *            pay method(1:Paypal,2:Alipay)
+     * @param string $quality
+     *            Quality
      * @param string $guarantee
      *            guarantee
      * @param string $description
@@ -46,7 +48,7 @@ class GoodsModel extends Model {
      *            goods images
      * @return array
      */
-    public function addGoods($name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $quality, $color, $area, $pay_method, $guarantee, $description, array $image) {
+    public function addGoods($name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, array $image) {
         $data = array(
             'name' => $name,
             'p_cate_id' => $p_cate_id,
@@ -62,9 +64,10 @@ class GoodsModel extends Model {
         );
         strlen($sale_amount) && $data['sale_amount'] = intval($sale_amount);
         strlen($size) && $data['size'] = $size;
+        strlen($weight) && $data['weight'] = intval($weight);
         strlen($color) && $data['color'] = $color;
-        strlen($quality) && $data['quality'] = intval($quality);
         strlen($area) && $data['area'] = $area;
+        strlen($quality) && $data['quality'] = $quality;
         strlen($guarantee) && $data['guarantee'] = $guarantee;
         strlen($description) && $data['description'] = $description;
         // Start transaction
@@ -125,6 +128,7 @@ class GoodsModel extends Model {
             'g.sale_amount',
             'g.unit',
             'g.size',
+            'g.weight',
             'g.quality',
             'g.color',
             'g.area',
@@ -342,6 +346,7 @@ class GoodsModel extends Model {
             'g.sale_amount',
             'g.unit',
             'g.size',
+            'g.weight',
             'g.quality',
             'g.color',
             'g.area',
@@ -387,14 +392,16 @@ class GoodsModel extends Model {
      *            Unit
      * @param string $size
      *            Size
-     * @param string $quality
-     *            Quality
+     * @param string $weight
+     *            Weight
      * @param string $color
      *            Color
      * @param string $area
      *            Area
      * @param int $pay_method
      *            Pay method(1:Paypal,2:Alipay)
+     * @param string $quality
+     *            Quality
      * @param string $guarantee
      *            Guarantee
      * @param string $description
@@ -403,7 +410,7 @@ class GoodsModel extends Model {
      *            Goods images
      * @return array
      */
-    public function updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $quality, $color, $area, $pay_method, $guarantee, $description, $image) {
+    public function updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, $image) {
         $update_time = time();
         // Start transaction
         $this->startTrans();
@@ -418,10 +425,11 @@ class GoodsModel extends Model {
             'sale_amount' => strlen($sale_amount) ? intval($sale_amount) : null,
             'unit' => $unit,
             'size' => strlen($size) ? $size : null,
-            'quality' => strlen($quality) ? intval($quality) : null,
+            'weight' => strlen($weight) ? intval($weight) : null,
             'color' => strlen($color) ? $color : null,
             'area' => strlen($area) ? $area : null,
             'pay_method' => $pay_method,
+            'quality' => strlen($quality) ? $quality : null,
             'guarantee' => strlen($guarantee) ? $guarantee : null,
             'stock' => $stock,
             'description' => strlen($description) ? $description : null,

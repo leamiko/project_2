@@ -73,16 +73,16 @@ function f_onShowDetail(record, container, callback) {
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
     out.push("<tr><td width='20%' align='right'>Unit:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.unit + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Size:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.size + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>Quality:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.quality + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Weight:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.weight + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Color:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.color + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Area:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.area + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Amout for Sale:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + sale_amount + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Quality:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.quality + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Guarantee:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.guarantee + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Description:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.description + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Add Time:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Update Time:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + update_time + "</td></tr>");
     out.push("</table>");
-    grid.options.checkbox = false;
     console.log(grid.options);
     $(container).html(out.join(''));
 }
