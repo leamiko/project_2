@@ -363,65 +363,63 @@ class ApiAction extends Action {
      */
     public function publish() {
         if ($this->isPost() || $this->isAjax()) {
-            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            $goods_name = isset($_POST['goods_name']) ? trim($_POST['goods_name']) : $this->redirect('/');
             $publisher_second_name = isset($_POST['publisher_second_name']) ? trim($_POST['publisher_second_name']) : $this->redirect('/');
             $publisher_first_name = isset($_POST['publisher_first_name']) ? trim($_POST['publisher_first_name']) : $this->redirect('/');
             $country = isset($_POST['country']) ? trim($_POST['country']) : $this->redirect('/');
+            $carton = isset($_POST['carton']) ? intval($_POST['carton']) : $this->redirect('/');
+            $telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : $this->redirect('/');
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
             $company = isset($_POST['company']) ? trim($_POST['company']) : null;
-            $carton = isset($_POST['carton']) ? trim($_POST['carton']) : null;
-            $telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : null;
-            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : null;
-            $email = isset($_POST['email']) ? trim($_POST['email']) : null;
-            $information = isset($_POST['information']) ? trim($_POST['information']) : null;
             $image_1 = isset($_POST['image_1']) ? trim($_POST['image_1']) : null;
             $image_2 = isset($_POST['image_2']) ? trim($_POST['image_2']) : null;
             $image_3 = isset($_POST['image_3']) ? trim($_POST['image_3']) : null;
             $image_4 = isset($_POST['image_4']) ? trim($_POST['image_4']) : null;
-            $goods_name = isset($_POST['goods_name']) ? trim($_POST['goods_name']) : $this->redirect('/');
             $length = isset($_POST['length']) ? trim($_POST['length']) : null;
             $width = isset($_POST['width']) ? trim($_POST['width']) : null;
-            $high = isset($_POST['high']) ? trim($_POST['high']) : null;
+            $height = isset($_POST['height']) ? trim($_POST['height']) : null;
             $thickness = isset($_POST['thickness']) ? trim($_POST['thickness']) : null;
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : null;
             $color = isset($_POST['color']) ? trim($_POST['color']) : null;
             $use = isset($_POST['use']) ? trim($_POST['use']) : null;
             $quantity = isset($_POST['quantity']) ? trim($_POST['quantity']) : null;
             $material = isset($_POST['material']) ? trim($_POST['material']) : null;
-            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : null;
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
-            if (!in_array($type, array(
+            if ($user_id < 1 || !in_array($type, array(
                 0,
                 1
-            )) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || empty($goods_name)) {
+            )) || empty($goods_name) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || $carton < 0 || empty($telephone) || empty($phone) || empty($email)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameters'
                 ));
             }
             $data = array(
+                'user_id' => $user_id,
                 'type' => $type,
+                'goods_name' => $goods_name,
                 'publisher_second_name' => $publisher_second_name,
                 'publisher_first_name' => $publisher_first_name,
                 'country' => $country,
-                'goods_name' => $goods_name,
+                'carton' => $carton,
+                'telephone' => $telephone,
+                'phone' => $phone,
+                'email' => $email,
                 'publish_time' => time()
             );
-            $user_id && $data['user_id'] = $user_id;
             strlen($company) && $data['company'] = $company;
-            strlen($carton) && $data['carton'] = $carton;
-            strlen($telephone) && $data['telephone'] = $telephone;
-            strlen($phone) && $data['phone'] = $phone;
-            strlen($email) && $data['email'] = $email;
-            strlen($information) && $data['information'] = $information;
-            strlen($length) && $data['length'] = $length;
-            strlen($width) && $data['width'] = $width;
-            strlen($high) && $data['high'] = $high;
-            strlen($thickness) && $data['thickness'] = $thickness;
+            strlen($length) && $data['length'] = intval($length);
+            strlen($width) && $data['width'] = intval($width);
+            strlen($height) && $data['height'] = intval($height);
+            strlen($thickness) && $data['thickness'] = intval($thickness);
+            strlen($weight) && $data['weight'] = intval($weight);
             strlen($color) && $data['color'] = $color;
             strlen($use) && $data['use'] = $use;
-            strlen($quantity) && $data['quantity'] = $quantity;
+            strlen($quantity) && $data['quantity'] = intval($quantity);
             strlen($material) && $data['material'] = $material;
-            strlen($weight) && $data['weight'] = $weight;
             strlen($remark) && $data['remark'] = $remark;
             strlen($image_1) && $data['image_1'] = $this->saveImage('publish_', $image_1);
             strlen($image_2) && $data['image_2'] = $this->saveImage('publish_', $image_2);

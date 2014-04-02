@@ -498,31 +498,30 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
-                        int user_id: 1,(Optional)<br />
+                        int user_id: 1<br />
                         int type: 1(publish type,1:buy,0:sell)<br />
+                        string goods_name: 'xxx',<br />
                         string publisher_second_name: 'xxx',<br />
                         string publisher_first_name: 'xxx',<br />
                         string country: 'xxx',<br />
-                        string company: 'xxx',(Optional)<br />
-                        string carton: 'xxx',(Optional)<br />
-                        string telephone: 'xxx',(Optional)<br />
-                        string phone: 'xxx',(Optional)<br />
-                        string email: 'xxx',(Optional)<br />
-                        string information: 'xxx',(Optional)<br />
+                        int carton: 1,<br />
+                        string telephone: 'xxx',<br />
+                        string phone: 'xxx',<br />
+                        string email: 'xxx',<br />
+                        string company: 'xxx',<br />
                         string image_1: 'xxx',(Optional,base64 encoding image)<br />
                         string image_2: 'xxx',(Optional,base64 encoding image)<br />
                         string image_3: 'xxx',(Optional,base64 encoding image)<br />
                         string image_4: 'xxx',(Optional,base64 encoding image)<br />
-                        string goods_name: 'xxx',<br />
-                        string length: 'xxx',(Optional)<br />
-                        string width: 'xxx',(Optional)<br />
-                        string high: 'xxx',(Optional)<br />
-                        string thickness: 'xxx',(Optional)<br />
+                        int length: 1,(Optional)<br />
+                        int width: 1,(Optional)<br />
+                        int height: 1,(Optional)<br />
+                        int thickness: 1,(Optional)<br />
+                        int weight: 1,(Optional)<br />
                         string color: 'xxx',(Optional)<br />
                         string use: 'xxx',(Optional)<br />
-                        string quantity: 'xxx',(Optional)<br />
+                        int quantity: 1,(Optional)<br />
                         string material: 'xxx',(Optional)<br />
-                        string weight: 'xxx',(Optional)<br />
                         string remark: 'xxx',(Optional)<br />
                     </td>
                 </tr>
@@ -626,11 +625,16 @@ $(function() {
     }, 'json');
     $(".success_return_17").JSONView({"status":1,"result":"Publish successful"});
     $.post("<{:U('api/publish')}>", {
-        type: 2,
-        publisher_second_name: '',
-        publisher_first_name: '',
-        country: '',
-        goods_name: ''
+		user_id: 0,
+		type: 2,
+		goods_name: '',
+		publisher_second_name: '',
+		publisher_first_name: '',
+		country: '',
+		carton: -1,
+		telephone: '',
+		phone: '',
+		email: '',
     }, function(data) {
         $(".failed_return_17").JSONView(data);
     }, 'json');
