@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
-Source Server Version : 50519
+Source Server         : localhost_3306
+Source Server Version : 50534
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50519
+Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-04-02 00:30:22
+Date: 2014-04-02 13:27:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396366270', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396415725', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -177,7 +177,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396369705', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396415812', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -213,31 +213,30 @@ INSERT INTO `easy_parent_category` VALUES ('3', 'Agriculture', '1', '/uploads/ca
 DROP TABLE IF EXISTS `easy_publish`;
 CREATE TABLE `easy_publish` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(11) DEFAULT NULL COMMENT 'user id',
+  `user_id` int(11) NOT NULL COMMENT 'user id',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'publish type(1:buy,0:sell)',
+  `goods_name` varchar(255) NOT NULL COMMENT 'goods name',
   `publisher_second_name` varchar(255) NOT NULL COMMENT 'publisher second name',
   `publisher_first_name` varchar(255) NOT NULL COMMENT 'publisher first name',
   `country` varchar(255) NOT NULL COMMENT 'country',
+  `carton` int(11) NOT NULL COMMENT 'carton',
+  `telephone` varchar(30) NOT NULL COMMENT 'telephone',
+  `phone` varchar(30) NOT NULL COMMENT 'cellphone',
+  `email` varchar(255) NOT NULL COMMENT 'email',
   `company` varchar(255) DEFAULT NULL COMMENT 'company',
-  `carton` varchar(255) DEFAULT NULL COMMENT 'carton',
-  `telephone` varchar(30) DEFAULT NULL COMMENT 'telephone',
-  `phone` varchar(30) DEFAULT NULL COMMENT 'cellphone',
-  `email` varchar(255) DEFAULT NULL COMMENT 'email',
-  `information` varchar(255) DEFAULT NULL COMMENT 'goods information',
   `image_1` varchar(255) DEFAULT NULL COMMENT 'goods first image',
   `image_2` varchar(255) DEFAULT NULL COMMENT 'goods second image',
   `image_3` varchar(255) DEFAULT NULL COMMENT 'goods third image',
   `image_4` varchar(255) DEFAULT NULL COMMENT 'goods fourth image',
-  `goods_name` varchar(255) NOT NULL COMMENT 'goods name',
-  `length` varchar(255) DEFAULT NULL COMMENT 'goods length',
-  `width` varchar(255) DEFAULT NULL COMMENT 'goods width',
-  `high` varchar(255) DEFAULT NULL COMMENT 'goods high',
-  `thickness` varchar(255) DEFAULT NULL COMMENT 'goods thickness',
+  `length` int(11) DEFAULT NULL COMMENT 'goods length',
+  `width` int(11) DEFAULT NULL COMMENT 'goods width',
+  `height` int(11) DEFAULT NULL COMMENT 'goods height',
+  `thickness` int(11) DEFAULT NULL COMMENT 'goods thickness',
+  `weight` int(11) DEFAULT NULL COMMENT 'goods weight',
   `color` varchar(255) DEFAULT NULL COMMENT 'goods color',
   `use` varchar(255) DEFAULT NULL COMMENT 'goods use',
-  `quantity` varchar(255) DEFAULT NULL COMMENT 'goods quantity',
+  `quantity` int(11) DEFAULT NULL COMMENT 'goods quantity',
   `material` varchar(255) DEFAULT NULL COMMENT 'goods material',
-  `weight` varchar(255) DEFAULT NULL COMMENT 'goods weight',
   `remark` varchar(255) DEFAULT NULL COMMENT 'remark',
   `publish_time` int(11) NOT NULL COMMENT 'Publish time',
   PRIMARY KEY (`id`)
@@ -246,4 +245,4 @@ CREATE TABLE `easy_publish` (
 -- ----------------------------
 -- Records of easy_publish
 -- ----------------------------
-INSERT INTO `easy_publish` VALUES ('1', '1', '0', 'ZonKee', 'Lee', 'China', 'Tencent', null, '123', '789', 'a@a.com', 'this is a test', null, null, null, null, 'red apple', '10', '10', '10', '10', 'red', 'eating', '20', 'apple', '5000', 'this is a test.', '0');
+INSERT INTO `easy_publish` VALUES ('1', '1', '1', 'Green Apple', 'ZonKee', 'Lee', 'China', '1', '020-88665593', '13751689897', 'abc@abc.com', 'Tencent', null, null, null, null, '10', '20', '30', '40', '500', 'Green', 'Eating', '300', 'apple', 'This is a test', '1396415728');
