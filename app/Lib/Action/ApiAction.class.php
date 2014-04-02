@@ -374,7 +374,7 @@ class ApiAction extends Action {
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
             $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
             $company = isset($_POST['company']) ? trim($_POST['company']) : null;
-            $image_1 = isset($_POST['image_1']) ? trim($_POST['image_1']) : null;
+            $image_1 = isset($_POST['image_1']) ? trim($_POST['image_1']) : $this->redirect('/');
             $image_2 = isset($_POST['image_2']) ? trim($_POST['image_2']) : null;
             $image_3 = isset($_POST['image_3']) ? trim($_POST['image_3']) : null;
             $image_4 = isset($_POST['image_4']) ? trim($_POST['image_4']) : null;
@@ -385,13 +385,13 @@ class ApiAction extends Action {
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : null;
             $color = isset($_POST['color']) ? trim($_POST['color']) : null;
             $use = isset($_POST['use']) ? trim($_POST['use']) : null;
-            $quantity = isset($_POST['quantity']) ? trim($_POST['quantity']) : null;
+            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
             $material = isset($_POST['material']) ? trim($_POST['material']) : null;
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
             if ($user_id < 1 || !in_array($type, array(
                 0,
                 1
-            )) || empty($goods_name) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || $carton < 0 || empty($telephone) || empty($phone) || empty($email)) {
+            )) || empty($goods_name) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || empty($telephone) || empty($phone) || empty($email) || empty($image_1) || $quantity < 0) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameters'
@@ -408,6 +408,8 @@ class ApiAction extends Action {
                 'telephone' => $telephone,
                 'phone' => $phone,
                 'email' => $email,
+                'image_1' => $this->saveImage('publish_', $image_1),
+                'quantity' => $quantity,
                 'publish_time' => time()
             );
             strlen($company) && $data['company'] = $company;
@@ -418,10 +420,8 @@ class ApiAction extends Action {
             strlen($weight) && $data['weight'] = intval($weight);
             strlen($color) && $data['color'] = $color;
             strlen($use) && $data['use'] = $use;
-            strlen($quantity) && $data['quantity'] = intval($quantity);
             strlen($material) && $data['material'] = $material;
             strlen($remark) && $data['remark'] = $remark;
-            strlen($image_1) && $data['image_1'] = $this->saveImage('publish_', $image_1);
             strlen($image_2) && $data['image_2'] = $this->saveImage('publish_', $image_2);
             strlen($image_3) && $data['image_3'] = $this->saveImage('publish_', $image_3);
             strlen($image_4) && $data['image_4'] = $this->saveImage('publish_', $image_4);
@@ -545,6 +545,81 @@ class ApiAction extends Action {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Resend verification email failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Shipping agency
+     */
+    public function shipping_agency() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $first_name = isset($_POST['first_name']) ? trim($_POST['first_name']) : $this->redirect('/');
+            $last_name = isset($_POST['last_name']) ? trim($_POST['last_name']) : $this->redirect('/');
+            $telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : $this->redirect('/');
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
+            $company = isset($_POST['company']) ? trim($_POST['company']) : $this->redirect('/');
+            $country = isset($_POST['country']) ? trim($_POST['country']) : $this->redirect('/');
+            $goods_name = isset($_POST['goods_name']) ? trim($_POST['goods_name']) : $this->redirect('/');
+            $shipping_type = isset($_POST['shipping_type']) ? trim($_POST['shipping_type']) : $this->redirect('/');
+            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
+            $shipping_port = isset($_POST['shipping_port']) ? trim($_POST['shipping_port']) : $this->redirect('/');
+            $destination_port = isset($_POST['destination_port']) ? trim($_POST['destination_port']) : $this->redirect('/');
+            $container = isset($_POST['container']) ? trim($_POST['container']) : null;
+            $wish_shipping_line = isset($_POST['wish_shipping_line']) ? trim($_POST['wish_shipping_line']) : null;
+            $loading_time = isset($_POST['loading_time']) ? trim($_POST['loading_time']) : null;
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : null;
+            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
+            $document_type = isset($_POST['document_type']) ? trim($_POST['document_type']) : null;
+            if ($user_id < 1 || empty($first_name) || empty($last_name) || empty($telephone) || empty($phone) || empty($email) || empty($company) || empty($country) || empty($goods_name) || empty($shipping_type) || $quantity < 0 || empty($shipping_port) || empty($destination_port)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $data = array(
+                'user_id' => $user_id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'telephone' => $telephone,
+                'phone' => $phone,
+                'email' => $email,
+                'company' => $company,
+                'country' => $country,
+                'goods_name' => $goods_name,
+                'shipping_type' => $shipping_type,
+                'quantity' => $quantity,
+                'shipping_port' => $shipping_port,
+                'destination_port' => $destination_port,
+                'add_time' => time()
+            );
+            strlen($container) && $data['container'] = intval($container);
+            strlen($wish_shipping_line) && $data['wish_shipping_line'] = $wish_shipping_line;
+            strlen($loading_time) && $data['loading_time'] = strtotime($loading_time);
+            strlen($weight) && $data['weight'] = intval($weight);
+            strlen($remark) && $data['remark'] = $remark;
+            strlen($document_type) && $data['document_type'] = $document_type;
+            $shipping_agency = M('ShippingAgency');
+            // Start transaction
+            $shipping_agency->startTrans();
+            if ($shipping_agency->add($data)) {
+                // Add successful,commit transaction
+                $shipping_agency->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Apply shipping agency successful'
+                ));
+            } else {
+                // Add failed,rollback transaction
+                $shipping_agency->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Apply shipping agency failed'
                 ));
             }
         } else {

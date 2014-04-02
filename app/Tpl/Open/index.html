@@ -509,7 +509,7 @@
                         string phone: 'xxx',<br />
                         string email: 'xxx',<br />
                         string company: 'xxx',(Optional)<br />
-                        string image_1: 'xxx',(Optional,base64 encoding image)<br />
+                        string image_1: 'xxx',<br />
                         string image_2: 'xxx',(Optional,base64 encoding image)<br />
                         string image_3: 'xxx',(Optional,base64 encoding image)<br />
                         string image_4: 'xxx',(Optional,base64 encoding image)<br />
@@ -520,7 +520,7 @@
                         int weight: 1,(Optional)<br />
                         string color: 'xxx',(Optional)<br />
                         string use: 'xxx',(Optional)<br />
-                        int quantity: 1,(Optional)<br />
+                        int quantity: 1,<br />
                         string material: 'xxx',(Optional)<br />
                         string remark: 'xxx',(Optional)<br />
                     </td>
@@ -532,6 +532,53 @@
                 <tr>
                     <td>Failed return：</td>
                     <td><div class="failed_return_17"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Shipping Agency</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/shipping_agency</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        string first_name: 'xxx',<br />
+                        string last_name: 'xxx',<br />
+                        string telephone: 'xxx',<br />
+                        string phone: 'xxx',<br />
+                        string email: 'xxx',<br />
+                        string company: 'xxx',<br />
+                        string country: 'xxx',<br />
+                        string goods_name: 'xxx',<br />
+                        string shipping_type: 'xxx',<br />
+                        int quantity: 1,<br />
+                        string shipping_port: 'xxx',<br />
+                        string destination_port: 'xxx',<br />
+                        int container: 1,(Optional)<br />
+                        string wish_shipping_line: 'xxx',(Optional,base64 encoding image)<br />
+                        string loading_time: '2012-12-12 00:00:00',(Optional,the format must be 'yyyy-MM-dd hh:mm:ss',like the example)<br />
+                        int weight: 1000,(Optional)<br />
+                        string remark: 'xxx',(Optional)<br />
+                        string document_type: 'xxx',(Optional)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_18"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_18"></div></td>
                 </tr>
             </table>
         </div>
@@ -625,18 +672,38 @@ $(function() {
     }, 'json');
     $(".success_return_17").JSONView({"status":1,"result":"Publish successful"});
     $.post("<{:U('api/publish')}>", {
-		user_id: 0,
-		type: 2,
-		goods_name: '',
-		publisher_second_name: '',
-		publisher_first_name: '',
-		country: '',
-		carton: -1,
-		telephone: '',
-		phone: '',
-		email: '',
+        user_id: 0,
+        type: 2,
+        goods_name: '',
+        publisher_second_name: '',
+        publisher_first_name: '',
+        country: '',
+        carton: -1,
+        telephone: '',
+        phone: '',
+        email: '',
+        image_1: '',
+        quantity: -1
     }, function(data) {
         $(".failed_return_17").JSONView(data);
+    }, 'json');
+    $(".success_return_18").JSONView({"status":1,"result":"Apply shipping agency successful"});
+    $.post("<{:U('api/shipping_agency')}>", {
+        user_id: 0,
+        first_name: '',
+        last_name: '',
+        telephone: '',
+        phone: '',
+        email: '',
+        company: '',
+        country: '',
+        goods_name: '',
+        shipping_type: '',
+        quantity: 0,
+        shipping_port: '',
+        destination_port: ''
+    }, function(data) {
+        $(".failed_return_18").JSONView(data);
     }, 'json');
 });
 //]]>
