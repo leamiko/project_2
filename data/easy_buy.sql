@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-03 22:12:21
+Date: 2014-04-03 23:22:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -137,7 +137,7 @@ CREATE TABLE `easy_goods_image` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='goods image table';
 
 -- ----------------------------
 -- Records of easy_goods_image
@@ -177,7 +177,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396534315', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396538438', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -192,24 +192,39 @@ DROP TABLE IF EXISTS `easy_order`;
 CREATE TABLE `easy_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'user id',
-  `goods_id` int(11) NOT NULL COMMENT 'goods id',
-  `goods_price` decimal(12,2) NOT NULL COMMENT 'goods price',
-  `goods_amount` int(11) NOT NULL COMMENT 'goods amount',
   `address_id` int(11) NOT NULL COMMENT 'address id',
-  `shipping_type` varchar(255) NOT NULL COMMENT 'shipping type',
+  `shipping_type` int(11) NOT NULL COMMENT 'shipping type',
   `pay_method` varchar(255) NOT NULL COMMENT 'pay method',
   `order_number` varchar(255) NOT NULL COMMENT 'order number',
   `status` tinyint(1) NOT NULL COMMENT 'order status(1:paid,0:unpaid)',
   `order_time` int(11) NOT NULL COMMENT 'order time',
   `remark` text COMMENT 'order leave',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='order table';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='order table';
 
 -- ----------------------------
 -- Records of easy_order
 -- ----------------------------
-INSERT INTO `easy_order` VALUES ('1', '1', '1', '20.00', '8', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396534316', 'Please deliver the product ASAP');
-INSERT INTO `easy_order` VALUES ('2', '1', '2', '25.00', '10', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396534316', 'Please deliver the product ASAP');
+INSERT INTO `easy_order` VALUES ('1', '1', '1', '1', 'paypal', '7D86AS75623HASF1623A', '0', '1396538396', 'Please deliver the product ASAP');
+
+-- ----------------------------
+-- Table structure for `easy_order_goods`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_order_goods`;
+CREATE TABLE `easy_order_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) NOT NULL COMMENT 'goods id',
+  `goods_price` decimal(12,2) NOT NULL COMMENT 'goods price',
+  `goods_amount` int(11) NOT NULL COMMENT 'goods amount',
+  `order_id` int(11) NOT NULL COMMENT 'order id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='order goods';
+
+-- ----------------------------
+-- Records of easy_order_goods
+-- ----------------------------
+INSERT INTO `easy_order_goods` VALUES ('1', '1', '20.00', '8', '1');
+INSERT INTO `easy_order_goods` VALUES ('2', '2', '25.00', '10', '1');
 
 -- ----------------------------
 -- Table structure for `easy_parent_category`
@@ -266,7 +281,7 @@ CREATE TABLE `easy_publish` (
   `remark` varchar(255) DEFAULT NULL COMMENT 'remark',
   `publish_time` int(11) NOT NULL COMMENT 'Publish time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='user publish table';
 
 -- ----------------------------
 -- Records of easy_publish
