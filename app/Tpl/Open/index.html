@@ -600,14 +600,12 @@
                     <td>Parameters：</td>
                     <td>
                         int user_id: 1,<br />
-                        json goods_detail: [{"id":"1", "price":"20.00"}, {"id":"2", "price":"25.00"}],<br />
+                        json goods_detail: '[{"id":"1", "price":"20.00"}, {"id":"2", "price":"25.00"}]',<br />
                         int address_id: 1,<br />
                         string shipping_type: 'xxx',<br />
                         string pay_method: 'xxx',<br />
                         string order_number: 'xxx',<br />
                         int status: 1(Order status,1:paid,0:unpaid),<br />
-                        string order_time: '2012-12-12 00:00:00',(the format must be 'yyyy-MM-dd hh:mm:ss',like the example)<br />
-                        float total_price: 12.00,(Total price have two decimal places at most)<br />
                         string remark: 'xxx',(Optional)<br />
                     </td>
                 </tr>
@@ -775,7 +773,18 @@ $(function() {
     }, function(data) {
         $(".failed_return_18").JSONView(data);
     }, 'json');
-    
+    $(".success_return_19").JSONView({"status":1,"result":"Add order successful"});
+    $.post("<{:U('api/order')}>", {
+        user_id: 0,
+        goods_detail: '',
+        address_id: 0,
+        shipping_type: '',
+        pay_method: '',
+        order_number: '',
+        status: 2
+    }, function(data) {
+        $(".failed_return_19").JSONView(data);
+    }, 'json');
     $(".success_return_20").JSONView({"status":1,"result":"Update order status successful"});
     $.post("<{:U('api/update_order_status')}>", {
         id: 0,

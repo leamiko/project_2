@@ -273,6 +273,65 @@ class ApiAction extends Action {
         }
     }
 
+    public function order() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $goods_detail = isset($_POST['goods_detail']) ? trim($_POST['goods_detail']) : $this->redirect('/');
+            $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : $this->redirect('/');
+            $shipping_type = isset($_POST['shipping_type']) ? trim($_POST['shipping_type']) : $this->redirect('/');
+            $pay_method = isset($_POST['pay_method']) ? trim($_POST['pay_method']) : $this->redirect('/');
+            $order_number = isset($_POST['order_number']) ? trim($_POST['order_number']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
+            if ($user_id < 0 || empty($goods_detail) || $address_id < 0 || empty($shipping_type) || empty($pay_method) || !in_array($status, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $goods_detail = json_decode($goods_detail);
+            $data = array();
+            $order_time = time();
+            foreach ($goods_detail as $v) {
+                $data[] = array(
+                    'user_id' => $user_id,
+                    'goods_id' => $v->id,
+                    'goods_price' => $v->price,
+                    'address_id' => $address_id,
+                    'shipping_type' => $shipping_type,
+                    'pay_method' => $pay_method,
+                    'order_number' => $order_number,
+                    'status' => $status,
+                    'order_time' => $order_time,
+                    'remark' => $remark
+                );
+            }
+            $order = M('Order');
+            // Start transaction
+            $order->startTrans();
+            if ($order->addAll($data)) {
+                // Add successful,commit transaction
+                $order->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Add order successful'
+                ));
+            } else {
+                // Add failed,rollback transaction
+                $order->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Add order failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
     /**
      * Login
      */

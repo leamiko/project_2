@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50534
+Source Server         : 本地数据库
+Source Server Version : 50519
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50534
+Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-03 19:06:52
+Date: 2014-04-03 21:57:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396415725', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396531762', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -177,7 +177,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396416741', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396532946', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -193,20 +193,22 @@ CREATE TABLE `easy_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'user id',
   `goods_id` int(11) NOT NULL COMMENT 'goods id',
+  `goods_price` decimal(12,2) NOT NULL COMMENT 'goods price',
   `address_id` int(11) NOT NULL COMMENT 'address id',
   `shipping_type` varchar(255) NOT NULL COMMENT 'shipping type',
   `pay_method` varchar(255) NOT NULL COMMENT 'pay method',
   `order_number` varchar(255) NOT NULL COMMENT 'order number',
   `status` tinyint(1) NOT NULL COMMENT 'order status(1:paid,0:unpaid)',
   `order_time` int(11) NOT NULL COMMENT 'order time',
-  `total_price` decimal(12,2) NOT NULL COMMENT 'total price',
   `remark` text COMMENT 'order leave',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='order table';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='order table';
 
 -- ----------------------------
 -- Records of easy_order
 -- ----------------------------
+INSERT INTO `easy_order` VALUES ('1', '1', '1', '20.00', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396532796', null);
+INSERT INTO `easy_order` VALUES ('2', '1', '2', '25.00', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396532796', null);
 
 -- ----------------------------
 -- Table structure for `easy_parent_category`
@@ -269,3 +271,37 @@ CREATE TABLE `easy_publish` (
 -- Records of easy_publish
 -- ----------------------------
 INSERT INTO `easy_publish` VALUES ('1', '1', '1', 'Green Apple', 'ZonKee', 'Lee', 'China', '1', '020-88665593', '13751689897', 'abc@abc.com', 'Tencent', null, null, null, null, '10', '20', '30', '40', '500', 'Green', 'Eating', '300', 'apple', 'This is a test', '1396415728');
+
+-- ----------------------------
+-- Table structure for `easy_shipping_agency`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_shipping_agency`;
+CREATE TABLE `easy_shipping_agency` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT 'User id',
+  `first_name` varchar(255) NOT NULL COMMENT 'First name',
+  `last_name` varchar(255) NOT NULL COMMENT 'Last name',
+  `telephone` varchar(255) NOT NULL COMMENT 'Telephone',
+  `phone` varchar(255) NOT NULL COMMENT 'Phone',
+  `email` varchar(255) NOT NULL COMMENT 'Email',
+  `company` varchar(255) NOT NULL COMMENT 'Company',
+  `country` varchar(255) NOT NULL COMMENT 'Country',
+  `goods_name` varchar(255) NOT NULL COMMENT 'Goods name',
+  `shipping_type` varchar(255) NOT NULL COMMENT 'Shipping type',
+  `quanlity` int(11) NOT NULL COMMENT 'Quanlity',
+  `shipping_port` varchar(255) NOT NULL COMMENT 'Shipping port',
+  `destination_port` varchar(255) NOT NULL COMMENT 'Destination port',
+  `container` int(11) DEFAULT NULL COMMENT 'Container',
+  `wish_shipping_line` varchar(255) DEFAULT NULL COMMENT 'Wish shipping line',
+  `loading_time` int(11) DEFAULT NULL COMMENT 'Loading time',
+  `weight` int(11) DEFAULT NULL COMMENT 'Weight',
+  `remark` varchar(255) DEFAULT NULL COMMENT 'Remark',
+  `document_type` varchar(255) DEFAULT NULL COMMENT 'Document type',
+  `add_time` int(11) NOT NULL COMMENT 'Add time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='shipping agency table';
+
+-- ----------------------------
+-- Records of easy_shipping_agency
+-- ----------------------------
+INSERT INTO `easy_shipping_agency` VALUES ('1', '1', 'Lee', 'ZonKee', '020-8877965', '18923456789', 'test@test.com', 'Tencent', 'China', 'Red Apple', 'Air', '0', 'HuangPu Port', 'California', '40', 'Pacific Ocean', '1355241600', '1000000', 'This is a test', 'nothing', '1396449300');
