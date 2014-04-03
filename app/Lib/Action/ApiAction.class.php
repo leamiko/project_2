@@ -300,6 +300,7 @@ class ApiAction extends Action {
                     'user_id' => $user_id,
                     'goods_id' => $v->id,
                     'goods_price' => $v->price,
+                    'goods_amount' => $v->amount,
                     'address_id' => $address_id,
                     'shipping_type' => $shipping_type,
                     'pay_method' => $pay_method,

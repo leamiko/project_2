@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-03 21:57:09
+Date: 2014-04-03 22:12:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -177,7 +177,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396532946', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396534315', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -194,6 +194,7 @@ CREATE TABLE `easy_order` (
   `user_id` int(11) NOT NULL COMMENT 'user id',
   `goods_id` int(11) NOT NULL COMMENT 'goods id',
   `goods_price` decimal(12,2) NOT NULL COMMENT 'goods price',
+  `goods_amount` int(11) NOT NULL COMMENT 'goods amount',
   `address_id` int(11) NOT NULL COMMENT 'address id',
   `shipping_type` varchar(255) NOT NULL COMMENT 'shipping type',
   `pay_method` varchar(255) NOT NULL COMMENT 'pay method',
@@ -207,8 +208,8 @@ CREATE TABLE `easy_order` (
 -- ----------------------------
 -- Records of easy_order
 -- ----------------------------
-INSERT INTO `easy_order` VALUES ('1', '1', '1', '20.00', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396532796', null);
-INSERT INTO `easy_order` VALUES ('2', '1', '2', '25.00', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396532796', null);
+INSERT INTO `easy_order` VALUES ('1', '1', '1', '20.00', '8', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396534316', 'Please deliver the product ASAP');
+INSERT INTO `easy_order` VALUES ('2', '1', '2', '25.00', '10', '1', 'air', 'paypal', '7D86AS75623HASF1623A', '0', '1396534316', 'Please deliver the product ASAP');
 
 -- ----------------------------
 -- Table structure for `easy_parent_category`
