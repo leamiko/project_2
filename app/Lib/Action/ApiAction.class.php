@@ -879,6 +879,49 @@ class ApiAction extends Action {
     }
 
     /**
+     * Update order status
+     */
+    public function update_order_status() {
+        if ($this->isPost() || $this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            if ($id < 0 || !in_array($status, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $order = M('Order');
+            // Start transaction
+            $order->startTrans();
+            if ($order->where(array(
+                'id' => $id
+            ))->save(array(
+                'status' => $status
+            ))) {
+                // Update status successful,commit transaction
+                $order->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Update order status successful'
+                ));
+            } else {
+                // Update status failed,rollback transaction
+                $order->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Update order status failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Update user status
      */
     public function update_user_status() {

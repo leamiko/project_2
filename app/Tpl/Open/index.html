@@ -581,6 +581,76 @@
                     <td><div class="failed_return_18"></div></td>
                 </tr>
             </table>
+            
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Add an order</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/order</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        json goods_detail: [{"id":"1", "price":"20.00"}, {"id":"2", "price":"25.00"}],<br />
+                        int address_id: 1,<br />
+                        string shipping_type: 'xxx',<br />
+                        string pay_method: 'xxx',<br />
+                        string order_number: 'xxx',<br />
+                        int status: 1(Order status,1:paid,0:unpaid),<br />
+                        string order_time: '2012-12-12 00:00:00',(the format must be 'yyyy-MM-dd hh:mm:ss',like the example)<br />
+                        float total_price: 12.00,(Total price have two decimal places at most)<br />
+                        string remark: 'xxx',(Optional)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_19"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_19"></div></td>
+                </tr>
+            </table>
+            
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Update order status</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/update_order_status</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int id: 1,(Order id which you going to update status)<br />
+                        int status: 1(Order status,1:paid,0:unpaid)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_20"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_20"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -704,6 +774,14 @@ $(function() {
         destination_port: ''
     }, function(data) {
         $(".failed_return_18").JSONView(data);
+    }, 'json');
+    
+    $(".success_return_20").JSONView({"status":1,"result":"Update order status successful"});
+    $.post("<{:U('api/update_order_status')}>", {
+        id: 0,
+        status: 2
+    }, function(data) {
+        $(".failed_return_20").JSONView(data);
     }, 'json');
 });
 //]]>
