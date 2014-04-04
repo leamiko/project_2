@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
-Source Server Version : 50519
+Source Server         : localhost_3306
+Source Server Version : 50534
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50519
+Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-04-03 23:22:18
+Date: 2014-04-04 13:53:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396531762', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396581821', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -177,7 +177,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396538438', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396590790', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -287,6 +287,25 @@ CREATE TABLE `easy_publish` (
 -- Records of easy_publish
 -- ----------------------------
 INSERT INTO `easy_publish` VALUES ('1', '1', '1', 'Green Apple', 'ZonKee', 'Lee', 'China', '1', '020-88665593', '13751689897', 'abc@abc.com', 'Tencent', null, null, null, null, '10', '20', '30', '40', '500', 'Green', 'Eating', '300', 'apple', 'This is a test', '1396415728');
+
+-- ----------------------------
+-- Table structure for `easy_shipping`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_shipping`;
+CREATE TABLE `easy_shipping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `business_model` tinyint(1) NOT NULL COMMENT 'business model(1:b2c,2:b2b)',
+  `type` tinyint(1) NOT NULL COMMENT 'shipping type(1:air,2:ship,3:highway)',
+  `name` varchar(255) NOT NULL COMMENT 'shipping company name',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of easy_shipping
+-- ----------------------------
+INSERT INTO `easy_shipping` VALUES ('4', '1', '1', 'ASA', '1396590786', null);
 
 -- ----------------------------
 -- Table structure for `easy_shipping_agency`

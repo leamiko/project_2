@@ -68,6 +68,16 @@ $app_config = array(
                 )
             )
         ),
+        'Shipping' => array(
+            'text' => 'Shipping',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Shipping Type Overview',
+                    'url' => '/shipping/index'
+                )
+            )
+        ),
         'API' => array(
             'text' => 'API',
             'default' => 'index',

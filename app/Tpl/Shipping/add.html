@@ -1,0 +1,135 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{width:130px}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px}.l-verify-tip{left:230px;top:120px}.l-table-edit tr td span{color:#f30;padding-left:5px}.tipmsg{color:#f30}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Shipping company name:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="name" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Business model:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <select id="business_model" style="width:160px;">
+                <option value="0">--Business model--</option>
+                <option value="1">B2C</option>
+                <option value="2">B2B</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Shipping type:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <select id="shipping_type" style="width:160px;">
+                <option value="0">--Shipping type--</option>
+                <option value="1">Air</option>
+                <option value="2">Ship</option>
+                <option value="3">Highway</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#name").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckName();
+    });
+    $("#business_model").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckBusinessModel();
+    });
+    $("#shipping_type").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckShippingType();
+    });
+});
+
+//Add tips
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//Delete tips
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//Check name
+function ckName() {
+    var name = $.trim($("#name").val());
+    if (name.length <= 0) {
+        addTip($("#name").parent('td').next('td:last'), 'Shipping company name can not be empty.');
+        return false;
+    }
+    if (name.length > 80) {
+        addTip($("#name").parent('td').next('td:last'), 'Shipping company name can not more than 80 characters.');
+        return false;
+    }
+    return true;
+}
+
+//Check business model
+function ckBusinessModel() {
+    var business_model = $.trim($("#business_model").val());
+    if (business_model == 0) {
+        addTip($("#business_model").parent('td').next('td:last'), 'Please choose a business model.');
+        return false;        
+    }
+    return true;
+}
+
+//Check shipping type
+function ckShippingType() {
+    var shipping_type = $.trim($("#shipping_type").val());
+    if (shipping_type == 0) {
+        addTip($("#shipping_type").parent('td').next('td:last'), 'Please choose a shipping type.');
+        return false;        
+    }
+    return true;
+}
+
+
+//Check form
+function checkForm() {
+    if (!ckName()) return false;
+    if (!ckBusinessModel()) return false;
+    if (!ckShippingType()) return false;
+    var name = $.trim($("#name").val());
+    var business_model = $("#business_model").val();
+    var shipping_type = $("#shipping_type").val();
+    return {
+        name: name,
+        business_model: business_model,
+        shipping_type: shipping_type
+    };
+}
+
+//Submit form
+function addShippingFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("Shipping/add")}>', checkForm(), function(data) {
+            window.parent.addShippingCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

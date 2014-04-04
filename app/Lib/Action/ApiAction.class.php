@@ -711,6 +711,39 @@ class ApiAction extends Action {
     }
 
     /**
+     * Shipping type list
+     */
+    public function shipping_type_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
+            if (!in_array($business_model, array(
+                1,
+                2
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('Shipping')->where(array(
+                'business_model' => $business_model
+            ))->order("id ASC")->select();
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Set default address
      */
     public function set_default_address() {

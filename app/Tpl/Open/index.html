@@ -581,7 +581,6 @@
                     <td><div class="failed_return_18"></div></td>
                 </tr>
             </table>
-            
             <div class="api_hr"></div>
             <table border="1" width="96%">
                 <tr>
@@ -618,7 +617,6 @@
                     <td><div class="failed_return_19"></div></td>
                 </tr>
             </table>
-            
             <div class="api_hr"></div>
             <table border="1" width="96%">
                 <tr>
@@ -647,6 +645,35 @@
                 <tr>
                     <td>Failed return：</td>
                     <td><div class="failed_return_20"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Shipping type at add order</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/shipping_type_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int business_model(1:b2c, 2:b2b)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_21"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_21"></div></td>
                 </tr>
             </table>
         </div>
@@ -791,6 +818,23 @@ $(function() {
         status: 2
     }, function(data) {
         $(".failed_return_20").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/update_order_status')}>", {
+        id: 0,
+        status: 2
+    }, function(data) {
+        $(".failed_return_20").JSONView(data);
+    }, 'json');
+    
+    $.post("<{:U('api/shipping_type_list')}>", {
+        business_model: 1
+    }, function(data) {
+        $(".success_return_21").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/shipping_type_list')}>", {
+        business_model: 0
+    }, function(data) {
+        $(".failed_return_21").JSONView(data);
     }, 'json');
 });
 //]]>

@@ -1,0 +1,152 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>Shipping type overview
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <form method="get" name="search_form">
+                Shipping company name:<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="submit" value="Search" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="Add Shipping type" onclick="javascript:add();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="Delete Shipping type" onclick="javascript:del();" />
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "Shipping company name", name: 'name', align: 'center', width: '20%', isSort: false},
+            {display: "Business model", name: 'business_model', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                    switch (parseInt(value)) {
+                        case 1 :
+                            return 'B2C';
+                        case 2 :
+                            return 'B2B';
+                    }
+                }
+            },
+            {display: "Shipping type", name: 'type', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                    switch (parseInt(value)) {
+                        case 1 :
+                            return 'air';
+                        case 2 :
+                            return 'ship';
+                        case 3 :
+                            return 'highway';
+                    }
+                }
+            },
+            {display: "Add time", name: 'add_time', align: 'center', width: '14%'},
+            {display: "Update time", name: 'update_time', align: 'center', width: '14%', render: function(rowdata, rowindex, value) {
+                    return value ? value : 'Never updated';
+                }
+            },
+            {display: "Edit", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a>';
+                }
+            }
+            ],
+            url: '<{:U("Shipping/index")}>?keyword=<{$keyword}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//Add shipping type
+var addShippingDialog;
+function add() {
+    addShippingDialog = $.ligerDialog.open({
+        url: '<{:U("Shipping/add")}>', height: 300, width: 700,
+        isDrag: false, title: 'Add shpping type',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {addShippingDialog.frame.addShippingFormSubmit();}},
+                  {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//Add shipping type callback
+function addShippingCallback(obj) {
+    addShippingDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
+        return false;
+    }
+}
+
+//Delete shipping type
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('Please select one shipping type at least', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('Are you sure to delete the shipping type you selected?', function(yes) {
+        if (yes) {
+            $.post('<{:U("Shipping/delete")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//Edit shipping type
+var updateShippingDialog;
+function update(id) {
+    updateShippingDialog = $.ligerDialog.open({
+        url: '<{:U("Shipping/update")}>?id='+id, height: 300, width: 700,
+        isDrag: false, title: 'Edit shipping type',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {updateShippingDialog.frame.updateShippingFormSubmit();}},
+                  {text: 'Cancel', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//Edit shipping type callback
+function updateShippingCallback(obj) {
+    updateShippingDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
+        return false;
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
