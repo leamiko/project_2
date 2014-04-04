@@ -603,7 +603,6 @@
                         int address_id: 1,<br />
                         int shipping_type: 1,<br />
                         string pay_method: 'xxx',<br />
-                        string order_number: 'xxx',<br />
                         int status: 1(Order status,1:paid,0:unpaid),<br />
                         string remark: 'xxx',(Optional)<br />
                     </td>
@@ -836,7 +835,7 @@ $(function() {
         $(".failed_return_18").JSONView(data);
     }, 'json');
     $(".success_return_19").JSONView({"status":1,"result":{"order_id":1}});
-    $.post("<{:U('api/order')}>", {user_id: 0, goods_detail: '', address_id: 0, shipping_type: '', pay_method: '', order_number: '', status: 2}, function(data) {
+    $.post("<{:U('api/order')}>", {user_id: 0, goods_detail: '', address_id: 0, shipping_type: '', pay_method: '', status: 2}, function(data) {
         $(".failed_return_19").JSONView(data);
     }, 'json');
     $(".success_return_20").JSONView({"status":1,"result":"Update order status successful"});

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-04-04 13:53:50
+Date: 2014-04-04 15:45:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396581821', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396592519', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -177,7 +177,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396590790', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396597456', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
@@ -195,7 +195,7 @@ CREATE TABLE `easy_order` (
   `address_id` int(11) NOT NULL COMMENT 'address id',
   `shipping_type` int(11) NOT NULL COMMENT 'shipping type',
   `pay_method` varchar(255) NOT NULL COMMENT 'pay method',
-  `order_number` varchar(255) NOT NULL COMMENT 'order number',
+  `order_number` varchar(32) NOT NULL COMMENT 'order number',
   `status` tinyint(1) NOT NULL COMMENT 'order status(1:paid,0:unpaid)',
   `order_time` int(11) NOT NULL COMMENT 'order time',
   `remark` text COMMENT 'order leave',
@@ -205,7 +205,7 @@ CREATE TABLE `easy_order` (
 -- ----------------------------
 -- Records of easy_order
 -- ----------------------------
-INSERT INTO `easy_order` VALUES ('1', '1', '1', '1', 'paypal', '7D86AS75623HASF1623A', '0', '1396538396', 'Please deliver the product ASAP');
+INSERT INTO `easy_order` VALUES ('1', '1', '1', '4', 'paypal', 'DA761F2DFEB0AA8C0DC7D765C4C1D2E8', '0', '1396597457', null);
 
 -- ----------------------------
 -- Table structure for `easy_order_goods`
@@ -223,8 +223,8 @@ CREATE TABLE `easy_order_goods` (
 -- ----------------------------
 -- Records of easy_order_goods
 -- ----------------------------
-INSERT INTO `easy_order_goods` VALUES ('1', '1', '20.00', '8', '1');
-INSERT INTO `easy_order_goods` VALUES ('2', '2', '25.00', '10', '1');
+INSERT INTO `easy_order_goods` VALUES ('1', '1', '12.00', '2', '1');
+INSERT INTO `easy_order_goods` VALUES ('2', '2', '22.00', '8', '1');
 
 -- ----------------------------
 -- Table structure for `easy_parent_category`

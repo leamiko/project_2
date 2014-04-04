@@ -314,10 +314,9 @@ class ApiAction extends Action {
             $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : $this->redirect('/');
             $shipping_type = isset($_POST['shipping_type']) ? intval($_POST['shipping_type']) : $this->redirect('/');
             $pay_method = isset($_POST['pay_method']) ? trim($_POST['pay_method']) : $this->redirect('/');
-            $order_number = isset($_POST['order_number']) ? trim($_POST['order_number']) : $this->redirect('/');
             $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
-            if ($user_id < 0 || empty($goods_detail) || $address_id < 0 || $shipping_type < 0 || empty($pay_method) || empty($order_number) || !in_array($status, array(
+            if ($user_id < 0 || empty($goods_detail) || $address_id < 0 || $shipping_type < 0 || empty($pay_method) || !in_array($status, array(
                 0,
                 1
             ))) {
@@ -326,6 +325,7 @@ class ApiAction extends Action {
                     'result' => 'Invalid parameters'
                 ));
             }
+            $order_number = $this->generateOrderNumber($user_id);
             $data = array(
                 'user_id' => $user_id,
                 'address_id' => $address_id,
@@ -1228,6 +1228,17 @@ class ApiAction extends Action {
      */
     private function generateVerificationCode() {
         return rand(100000, 999999);
+    }
+
+    /**
+     * Generate the order number
+     *
+     * @param int $user_id
+     *            Order user id
+     * @return string
+     */
+    private function generateOrderNumber($user_id) {
+        return strtoupper(md5(substr((rand(10000000, 99999999) . $user_id . time()), 0, 16)));
     }
 
     /**
