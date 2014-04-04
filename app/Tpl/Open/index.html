@@ -664,7 +664,7 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
-                        int business_model(1:b2c, 2:b2b)
+                        int business_model: 1(1:b2c, 2:b2b)
                     </td>
                 </tr>
                 <tr>
@@ -674,6 +674,68 @@
                 <tr>
                     <td>Failed return：</td>
                     <td><div class="failed_return_21"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">My order list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/my_order_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,
+                        int page: 1,
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_22"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_22"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Order goods list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/order_goods_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int order_id: 1,
+                        int page: 1,
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_23"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_23"></div></td>
                 </tr>
             </table>
         </div>
@@ -766,75 +828,41 @@ $(function() {
         $(".failed_return_16").JSONView(data);
     }, 'json');
     $(".success_return_17").JSONView({"status":1,"result":"Publish successful"});
-    $.post("<{:U('api/publish')}>", {
-        user_id: 0,
-        type: 2,
-        goods_name: '',
-        publisher_second_name: '',
-        publisher_first_name: '',
-        country: '',
-        carton: -1,
-        telephone: '',
-        phone: '',
-        email: '',
-        image_1: '',
-        quantity: -1
-    }, function(data) {
+    $.post("<{:U('api/publish')}>", {user_id: 0, type: 2, goods_name: '', publisher_second_name: '', publisher_first_name: '', country: '', carton: -1, telephone: '', phone: '', email: '', image_1: '', quantity: -1}, function(data) {
         $(".failed_return_17").JSONView(data);
     }, 'json');
     $(".success_return_18").JSONView({"status":1,"result":"Apply shipping agency successful"});
-    $.post("<{:U('api/shipping_agency')}>", {
-        user_id: 0,
-        first_name: '',
-        last_name: '',
-        telephone: '',
-        phone: '',
-        email: '',
-        company: '',
-        country: '',
-        goods_name: '',
-        shipping_type: '',
-        quantity: 0,
-        shipping_port: '',
-        destination_port: ''
-    }, function(data) {
+    $.post("<{:U('api/shipping_agency')}>", {user_id: 0, first_name: '', last_name: '', telephone: '', phone: '', email: '', company: '', country: '', goods_name: '', shipping_type: '', quantity: 0, shipping_port: '', destination_port: ''}, function(data) {
         $(".failed_return_18").JSONView(data);
     }, 'json');
     $(".success_return_19").JSONView({"status":1,"result":{"order_id":1}});
-    $.post("<{:U('api/order')}>", {
-        user_id: 0,
-        goods_detail: '',
-        address_id: 0,
-        shipping_type: '',
-        pay_method: '',
-        order_number: '',
-        status: 2
-    }, function(data) {
+    $.post("<{:U('api/order')}>", {user_id: 0, goods_detail: '', address_id: 0, shipping_type: '', pay_method: '', order_number: '', status: 2}, function(data) {
         $(".failed_return_19").JSONView(data);
     }, 'json');
     $(".success_return_20").JSONView({"status":1,"result":"Update order status successful"});
-    $.post("<{:U('api/update_order_status')}>", {
-        id: 0,
-        status: 2
-    }, function(data) {
+    $.post("<{:U('api/update_order_status')}>", {id: 0, status: 2}, function(data) {
         $(".failed_return_20").JSONView(data);
     }, 'json');
-    $.post("<{:U('api/update_order_status')}>", {
-        id: 0,
-        status: 2
-    }, function(data) {
+    $.post("<{:U('api/update_order_status')}>", {id: 0, status: 2}, function(data) {
         $(".failed_return_20").JSONView(data);
     }, 'json');
-    
-    $.post("<{:U('api/shipping_type_list')}>", {
-        business_model: 1
-    }, function(data) {
+    $.post("<{:U('api/shipping_type_list')}>", {business_model: 1}, function(data) {
         $(".success_return_21").JSONView(data);
     }, 'json');
-    $.post("<{:U('api/shipping_type_list')}>", {
-        business_model: 0
-    }, function(data) {
+    $.post("<{:U('api/shipping_type_list')}>", {business_model: 0}, function(data) {
         $(".failed_return_21").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/my_order_list')}>", {user_id: 1, page: 1, pageSize: 15}, function(data) {
+        $(".success_return_22").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/my_order_list')}>", {user_id: 0, page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_22").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/order_goods_list')}>", {order_id: 1, page: 1, pageSize: 15}, function(data) {
+        $(".success_return_23").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/order_goods_list')}>", {order_id: 0, page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_23").JSONView(data);
     }, 'json');
 });
 //]]>

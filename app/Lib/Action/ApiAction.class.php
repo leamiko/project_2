@@ -274,6 +274,37 @@ class ApiAction extends Action {
     }
 
     /**
+     * My order list
+     */
+    public function my_order_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($user_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('Order')->where(array(
+                'user_id' => $user_id
+            ))->order("order_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['order_time'] = date("Y-m-d H:i:s", $v['order_time']);
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Order
      */
     public function order() {
@@ -351,6 +382,32 @@ class ApiAction extends Action {
                     'result' => 'Add order failed'
                 ));
             }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Order goods list
+     */
+    public function order_goods_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $order_id = isset($_POST['order_id']) ? intval($_POST['order_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($order_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('OrderGoods')->where(array(
+                'order_id' => $order_id
+            ))->order("id ASC")->limit(($page - 1) * $pageSize, $pageSize)->select();
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
         } else {
             $this->redirect('/');
         }
