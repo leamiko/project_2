@@ -10,6 +10,34 @@
 class ApiAction extends Action {
 
     /**
+     * Address detail
+     */
+    public function address_detail() {
+        if ($this->isPost() || $this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            if ($id < 1) {
+                $this->ajaxReturn(array(
+                    'statu' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('Address')->where(array(
+                'id' => $id
+            ))->select();
+            foreach ($result as &$v) {
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Address list
      */
     public function address_list() {
@@ -293,6 +321,12 @@ class ApiAction extends Action {
             if (!empty($result)) {
                 foreach ($result as &$v) {
                     $v['order_time'] = date("Y-m-d H:i:s", $v['order_time']);
+                    $total_price = M('OrderGoods')->field(array(
+                        'SUM(goods_price)' => 'total_price'
+                    ))->where(array(
+                        'order_id' => $v['id']
+                    ))->select();
+                    $v['total_price'] = $total_price[0]['total_price'];
                 }
             }
             $this->ajaxReturn(array(
@@ -404,6 +438,13 @@ class ApiAction extends Action {
             $result = M('OrderGoods')->where(array(
                 'order_id' => $order_id
             ))->order("id ASC")->limit(($page - 1) * $pageSize, $pageSize)->select();
+            foreach ($result as &$v) {
+                $v['goods_image'] = M('GoodsImage')->field(array(
+                    'CONCAT("' . "http://{$_SERVER['HTTP_HOST']}" . '", image)' => 'image'
+                ))->where(array(
+                    'goods_id' => $v['goods_id']
+                ))->select();
+            }
             $this->ajaxReturn(array(
                 'status' => 1,
                 'result' => $result
@@ -420,18 +461,31 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $account = isset($_POST['account']) ? trim($_POST['account']) : $this->redirect('/');
             $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
+            if (empty($account) || empty($password)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
             $member = M('Member');
-            if ($member->where("account = \"{$account}\" AND password = \"" . md5($password) . "\"")->count()) {
+            if ($member->where(array(
+                'account' => $account,
+                'password' => md5($password)
+            ))->count()) {
                 $result = $member->field(array(
                     'id',
                     'account',
                     'phone',
                     'avatar',
                     'sex',
+                    'is_vip',
                     'register_time',
                     'upgrade_time',
                     'last_time'
-                ))->where("account = \"{$account}\" AND password = \"" . md5($password) . "\"")->select();
+                ))->where(array(
+                    'account' => $account,
+                    'password' => md5($password)
+                ))->select();
                 foreach ($result as &$value) {
                     $value['password'] = $password;
                     $value['register_time'] = date("Y-m-d H:i:s", $value['register_time']);
@@ -441,7 +495,9 @@ class ApiAction extends Action {
                 }
                 // Update user last login time,start transaction
                 $member->startTrans();
-                if ($member->where("id = {$result[0]['id']}")->save(array(
+                if ($member->where(array(
+                    'id' => $result[0]['id']
+                ))->save(array(
                     'last_time' => time()
                 ))) {
                     // Update successful,commit transaction
@@ -461,7 +517,7 @@ class ApiAction extends Action {
             } else {
                 $this->ajaxReturn(array(
                     'status' => 0,
-                    'result' => 'Invalid password'
+                    'result' => 'Account and the password are not match.'
                 ));
             }
         } else {

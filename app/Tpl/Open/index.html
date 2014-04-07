@@ -276,6 +276,33 @@
             <table border="1" width="96%">
                 <tr>
                     <td width="20%">Interface：</td>
+                    <td width="80%">Get address detail</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/address_detail</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>int id: 1(address id)</td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_24"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_24"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
                     <td width="80%">Set default address</td>
                 </tr>
                 <tr>
@@ -862,6 +889,12 @@ $(function() {
     }, 'json');
     $.post("<{:U('api/order_goods_list')}>", {order_id: 0, page: 0, pageSize: -1}, function(data) {
         $(".failed_return_23").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/address_detail')}>", {id: 1}, function(data) {
+        $(".success_return_24").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/address_detail')}>", {id: 0}, function(data) {
+        $(".failed_return_24").JSONView(data);
     }, 'json');
 });
 //]]>
