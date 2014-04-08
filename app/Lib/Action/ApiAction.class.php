@@ -439,6 +439,12 @@ class ApiAction extends Action {
                 'order_id' => $order_id
             ))->order("id ASC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
+                $temp = M('Goods')->field(array(
+                    'name'
+                ))->where(array(
+                    'id' => $v['goods_id']
+                ))->find();
+                $v['goods_name'] = $temp['name'];
                 $v['goods_image'] = M('GoodsImage')->field(array(
                     'CONCAT("' . "http://{$_SERVER['HTTP_HOST']}" . '", image)' => 'image'
                 ))->where(array(
