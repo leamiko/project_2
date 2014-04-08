@@ -327,6 +327,8 @@ class ApiAction extends Action {
                         'order_id' => $v['id']
                     ))->select();
                     $v['total_price'] = $total_price[0]['total_price'];
+                    $temp = M('Shipping')->field(array('name'))->where(array('id' => $v['shipping_type']))->find();
+                    $v['shipping_type'] = $temp['name'];
                 }
             }
             $this->ajaxReturn(array(
