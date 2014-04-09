@@ -28,16 +28,20 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Goods Name", name: 'name', align: 'center', width: '16%', isSort: false},
-            {display: "Parent category", name: 'parent_category', align: 'center', width: '12%', isSort: false},
-            {display: "Child category", name: 'child_category', align: 'center', width: '12%', isSort: false},
-            {display: "Business Model", name: 'business_model', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Goods Name", name: 'name', align: 'center', width: '12%', isSort: false},
+            {display: "Parent category", name: 'parent_category', align: 'center', width: '10%', isSort: false},
+            {display: "Child category", name: 'child_category', align: 'center', width: '10%', isSort: false},
+            {display: "Business Model", name: 'business_model', align: 'center', width: '10%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) == 1 ? 'B2C' : 'B2B';
                 }
             },
-            {display: "Price", name: 'price', align: 'center', width: '12%'},
-            {display: "Item number", name: 'item_number', align: 'center', width: '12%'},
-            {display: "Pay Method", name: 'pay_method', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Price", name: 'price', align: 'center', width: '8%'},
+            {display: "Bidding", name: 'is_bidding', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
+					return parseInt(value) ? 'Yes' : 'No';
+				}
+			},
+			{display: "Item number", name: 'item_number', align: 'center', width: '12%'},
+            {display: "Pay Method", name: 'pay_method', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
                         case 1 :
                             return 'Paypal';
@@ -47,8 +51,8 @@ $(function(){
                 }
             },
             {display: "Stock", name: 'stock', align: 'center', width: '6%'},
-            {display: "Edit", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">Edit</a>';
+            {display: "Edit", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">Edit</a> | <a href="javascript:void(0);" onclick="setBidding('+rowdata.id+', '+rowdata.c_cate_id+')">Set bidding</a>';
                 }
             }
             ],
@@ -120,6 +124,23 @@ function del() {
 //Edit goods
 function update(id) {
     top.f_addTab(null, 'Edit a goods', '<{:U("Goods/update")}>/id/'+id);
+}
+
+//Set bidding
+function setBidding(id, c_cate_id) {
+	$.ligerDialog.confirm('One child category only have one goods can set to bidding goods.Are you sure to set this goods to bidding goods?', function(yes) {
+        if (yes) {
+            $.post('<{:U("Goods/set_bidding")}>', {id: id, c_cate_id: c_cate_id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
 }
 //]]>
 </script>

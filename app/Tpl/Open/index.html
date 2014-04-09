@@ -764,6 +764,70 @@
                     <td><div class="failed_return_23"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Get bidding goods</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/get_bidding_goods</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int c_cate_id: 1,
+                        int page: 1,
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_25"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_25"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Bidding a goods</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/bidding</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int goods_id: 1, (bidding goods id)<br />
+                        int c_cate_id: 1,(bidding goods child category id)<br />
+                        int user_id: 1,<br />
+                        float price: 1.00,(two decimal places at most)<br />
+                        string remark: 'xxx'(Optional)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_26"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_26"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -896,6 +960,19 @@ $(function() {
     $.post("<{:U('api/address_detail')}>", {id: 0}, function(data) {
         $(".failed_return_24").JSONView(data);
     }, 'json');
+    
+    $.post("<{:U('api/get_bidding_goods')}>", {c_cate_id: 1, page: 1, pageSize: 15}, function(data) {
+        $(".success_return_25").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/get_bidding_goods')}>", {c_cate_id: 0, page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_25").JSONView(data);
+    }, 'json');
+    
+    $(".success_return_26").JSONView({"status":1,"result":"Bidding successful"});
+    $.post("<{:U('api/bidding')}>", {goods_id: 0, c_cate_id: 0, user_id: 0, price: -1}, function(data) {
+        $(".failed_return_26").JSONView(data);
+    }, 'json');
+    
 });
 //]]>
 </script>

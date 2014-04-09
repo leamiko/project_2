@@ -345,6 +345,7 @@ class GoodsModel extends Model {
             'g.price',
             'g.sale_amount',
             'g.unit',
+            'g.is_bidding',
             'g.size',
             'g.weight',
             'g.quality',
@@ -367,6 +368,50 @@ class GoodsModel extends Model {
             "%{$keyword}%"
         );
         return $this->where($condition)->select();
+    }
+
+    /**
+     * Set bidding goods
+     *
+     * @param int $id
+     *            Bidding goods id
+     * @param int $c_cate_id
+     *            Bidding goods child category id
+     * @return array
+     */
+    public function setBiddingGoods($id, $c_cate_id) {
+        // Check is exists bidding goods in this child category,start transaction
+        $this->startTrans();
+        if ($this->where(array(
+            'c_cate_id' => $c_cate_id
+        ))->count()) {
+            // Set all the goods in this child category to no bidding
+            $this->where(array(
+                'c_cate_id' => $c_cate_id
+            ))->save(array(
+                'is_bidding' => 0
+            ));
+        }
+        // Set the special goods to bidding
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'is_bidding' => 1
+        ))) {
+            // Set bidding goods successful, commit transaction
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => 'Set bidding goods successful.'
+            );
+        } else {
+            // Set bidding goods failed, rollback transaction
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => 'Set bidding goods failed.'
+            );
+        }
     }
 
     /**

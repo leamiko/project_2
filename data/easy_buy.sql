@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-04-04 15:45:14
+Date: 2014-04-09 14:08:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,28 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1396592519', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1397018049', '1', 'Administrator!Do not delete!', '1');
+
+-- ----------------------------
+-- Table structure for `easy_bidding`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_bidding`;
+CREATE TABLE `easy_bidding` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) NOT NULL COMMENT 'goods id',
+  `c_cate_id` int(11) NOT NULL COMMENT 'goods child category id',
+  `user_id` int(11) NOT NULL COMMENT 'user id',
+  `price` decimal(12,2) NOT NULL COMMENT 'bid price',
+  `bidding_time` int(11) NOT NULL COMMENT 'bidding time',
+  `remark` text COMMENT 'Bidding remark',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='bidding goods table';
+
+-- ----------------------------
+-- Records of easy_bidding
+-- ----------------------------
+INSERT INTO `easy_bidding` VALUES ('1', '1', '1', '1', '12.00', '1397020764', 'Testing');
+INSERT INTO `easy_bidding` VALUES ('2', '1', '1', '1', '15.00', '1397020820', null);
 
 -- ----------------------------
 -- Table structure for `easy_child_category`
@@ -101,6 +122,7 @@ CREATE TABLE `easy_goods` (
   `stock` int(11) NOT NULL COMMENT 'goods stock',
   `business_model` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'goods''s business model(1:b2c,2:b2b)',
   `unit` varchar(30) NOT NULL COMMENT 'goods unit',
+  `is_bidding` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is bidding goods?(1:yes,0:no)',
   `pay_method` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'pay method(1:paypal, 2:alipay)',
   `sale_amount` int(11) DEFAULT NULL COMMENT 'amount for sale',
   `size` varchar(30) DEFAULT NULL COMMENT 'goods size',
@@ -119,9 +141,9 @@ CREATE TABLE `easy_goods` (
 -- ----------------------------
 -- Records of easy_goods
 -- ----------------------------
-INSERT INTO `easy_goods` VALUES ('1', '1', '3', 'Red Apple', '16E9E6812604419F', '12.00', '1000', '1', '30', '2', null, '12', '100', 'red', 'China', '120', 'nothing', 'very good', '0', '1396107481', '1396111129');
-INSERT INTO `easy_goods` VALUES ('2', '2', '2', 'SkII', '9A7B3FAC5B75ABD6', '1200.00', '100000', '2', 'g', '1', null, '50', '500', 'while', 'Japan', '1000', 'nothing', 'very good', '0', '1396108398', null);
-INSERT INTO `easy_goods` VALUES ('3', '1', '3', 'Green Apple', 'CA1C871B7129A769', '13.00', '1000', '1', 'g', '1', null, '30', '200', 'Green', 'China', 'very good', 'very good', 'very good', '0', '1396368171', '1396369445');
+INSERT INTO `easy_goods` VALUES ('1', '1', '3', 'Red Apple', '16E9E6812604419F', '12.00', '1000', '1', '30', '1', '2', null, '12', '100', 'red', 'China', '120', 'nothing', 'very good', '0', '1396107481', '1396111129');
+INSERT INTO `easy_goods` VALUES ('2', '2', '2', 'SkII', '9A7B3FAC5B75ABD6', '1200.00', '100000', '2', 'g', '1', '1', null, '50', '500', 'while', 'Japan', '1000', 'nothing', 'very good', '0', '1396108398', null);
+INSERT INTO `easy_goods` VALUES ('3', '1', '3', 'Green Apple', 'CA1C871B7129A769', '13.00', '1000', '1', 'g', '0', '1', null, '30', '200', 'Green', 'China', 'very good', 'very good', 'very good', '0', '1396368171', '1396369445');
 
 -- ----------------------------
 -- Table structure for `easy_goods_image`
@@ -177,7 +199,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1396597456', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1397023505', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);

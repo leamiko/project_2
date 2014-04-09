@@ -157,6 +157,19 @@ class GoodsAction extends AdminAction {
     }
 
     /**
+     * Set bidding goods
+     */
+    public function set_bidding() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Goods')->setBiddingGoods($id, $c_cate_id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Update a goods
      */
     public function update() {
@@ -186,7 +199,9 @@ class GoodsAction extends AdminAction {
             }
             $this->ajaxReturn(D('Goods')->updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, $image));
         } else {
-            $goods = M('Goods')->where(array('id' => $id))->find();
+            $goods = M('Goods')->where(array(
+                'id' => $id
+            ))->find();
             $goods_image = M('GoodsImage')->field(array(
                 'id',
                 'image'

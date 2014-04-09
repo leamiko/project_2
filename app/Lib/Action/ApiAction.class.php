@@ -127,6 +127,52 @@ class ApiAction extends Action {
     }
 
     /**
+     * Bidding
+     */
+    public function bidding() {
+        if ($this->isPost() || $this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $price = isset($_POST['price']) ? floatval($_POST['price']) : $this->redirect('/');
+            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
+            if ($goods_id < 1 || $c_cate_id < 1 || $user_id < 1 || $price < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $bidding = M('Bidding');
+            // Start transaction
+            $bidding->startTrans();
+            if ($bidding->add(array(
+                'goods_id' => $goods_id,
+                'c_cate_id' => $c_cate_id,
+                'user_id' => $user_id,
+                'price' => $price,
+                'remark' => strlen($remark) ? $remark : null,
+                'bidding_time' => time()
+            ))) {
+                // Add bidding successful,commit transaction
+                $bidding->commit();
+                $this->ajaxReturn(array(
+                    'status' => 1,
+                    'result' => 'Bidding successful'
+                ));
+            } else {
+                // Add bidding failed,rollback transaction
+                $bidding->rollback();
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Bidding failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Change password
      */
     public function change_password() {
@@ -241,6 +287,53 @@ class ApiAction extends Action {
     }
 
     /**
+     * Get bidding goods
+     */
+    public function get_bidding_goods() {
+        if ($this->isPost() || $this->isAjax()) {
+            $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($c_cate_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('Goods')->where(array(
+                'c_cate_id' => $c_cate_id,
+                'is_bidding' => 1
+            ))->select();
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['image'] = M('GoodsImage')->field(array(
+                        'image'
+                    ))->where(array(
+                        'goods_id' => $v['id'],
+                        'is_delete' => 0
+                    ))->order("id ASC")->select();
+                    foreach ($v['image'] as &$v_1) {
+                        $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
+                    }
+                    $v['bidding_list'] = D('Bidding')->getBiddingListByGoodsId($v['id'], $page, $pageSize);
+                    foreach ($v['bidding_list'] as &$v_1) {
+                        $v_1['avatar'] = $v_1['avatar'] ? "http://{$_SERVER['HTTP_HOST']}{$v_1['avatar']}" : $v_1['avatar'];
+                        $v_1['register_time'] = date("Y-m-d H:i:s", $v_1['register_time']);
+                        $v_1['last_time'] = $v_1['last_time'] ? date("Y-m-d H:i:s", $v_1['last_time']) : $v_1['last_time'];
+                        $v_1['upgrade_time'] = $v_1['upgrade_time'] ? date("Y-m-d H:i:s", $v_1['upgrade_time']) : $v_1['upgrade_time'];
+                    }
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Get default address
      */
     public function get_default_address() {
@@ -327,7 +420,11 @@ class ApiAction extends Action {
                         'order_id' => $v['id']
                     ))->select();
                     $v['total_price'] = $total_price[0]['total_price'];
-                    $temp = M('Shipping')->field(array('name'))->where(array('id' => $v['shipping_type']))->find();
+                    $temp = M('Shipping')->field(array(
+                        'name'
+                    ))->where(array(
+                        'id' => $v['shipping_type']
+                    ))->find();
                     $v['shipping_type'] = $temp['name'];
                 }
             }
