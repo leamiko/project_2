@@ -371,6 +371,57 @@ class GoodsModel extends Model {
     }
 
     /**
+     * Search goods
+     *
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
+     * @param string $keyword
+     *            Keyword
+     * @param int $page
+     *            Current page
+     * @param int $pageSize
+     *            Page size
+     */
+    public function searchGoods($business_model, $keyword, $page, $pageSize) {
+        $offset = ($page - 1) * $pageSize;
+        return $this->table($this->getTableName() . " AS g")->join(array(
+            "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON p.id = g.p_cate_id",
+            "INNER JOIN " . M('ChildCategory')->getTableName() . " AS c ON c.id = g.c_cate_id"
+        ))->field(array(
+            'g.id',
+            'g.c_cate_id',
+            'g.p_cate_id',
+            'g.name',
+            'g.business_model',
+            'g.item_number',
+            'g.price',
+            'g.business_model',
+            'g.sale_amount',
+            'g.unit',
+            'g.size',
+            'g.weight',
+            'g.quality',
+            'g.color',
+            'g.area',
+            'g.pay_method',
+            'g.guarantee',
+            'g.stock',
+            'g.description',
+            'g.add_time',
+            'g.update_time',
+            'c.name' => 'child_category',
+            'p.name' => 'parent_category'
+        ))->where(array(
+            'g.business_model' => $business_model,
+            'g.is_delete' => 0,
+            'g.name' => array(
+                'like',
+                "%{$keyword}%"
+            )
+        ))->order("id ASC")->limit($offset, $pageSize)->select();
+    }
+
+    /**
      * Set bidding goods
      *
      * @param int $id

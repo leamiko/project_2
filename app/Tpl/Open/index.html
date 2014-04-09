@@ -828,6 +828,38 @@
                     <td><div class="failed_return_26"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Search goods</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/search</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int business_model: 1, (1:b2c,2:b2b)<br />
+                        string keyword: 'xxx',<br />
+                        int page: 1,<br />
+                        int pageSize: 15<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_27"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_27"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -960,19 +992,22 @@ $(function() {
     $.post("<{:U('api/address_detail')}>", {id: 0}, function(data) {
         $(".failed_return_24").JSONView(data);
     }, 'json');
-    
     $.post("<{:U('api/get_bidding_goods')}>", {c_cate_id: 1, page: 1, pageSize: 15}, function(data) {
         $(".success_return_25").JSONView(data);
     }, 'json');
     $.post("<{:U('api/get_bidding_goods')}>", {c_cate_id: 0, page: 0, pageSize: -1}, function(data) {
         $(".failed_return_25").JSONView(data);
     }, 'json');
-    
     $(".success_return_26").JSONView({"status":1,"result":"Bidding successful"});
     $.post("<{:U('api/bidding')}>", {goods_id: 0, c_cate_id: 0, user_id: 0, price: -1}, function(data) {
         $(".failed_return_26").JSONView(data);
     }, 'json');
-    
+    $.post("<{:U('api/search')}>", {business_model: 1, keyword: 'apple', page: 1, pageSize: 15}, function(data) {
+        $(".success_return_27").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/search')}>", {business_model: 0, keyword: '', page: 0, pageSize: -1}, function(data) {
+        $(".failed_return_27").JSONView(data);
+    }, 'json');
 });
 //]]>
 </script>
