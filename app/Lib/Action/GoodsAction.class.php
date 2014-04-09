@@ -156,6 +156,19 @@ class GoodsAction extends AdminAction {
         }
     }
 
+    public function push() {
+        vendor('jpush.JPushClient');
+        $jPush_config = C('JPush');
+        $client = new JPushClient($jPush_config['app_key'], $jPush_config['master_secret']);
+        $params = array("receiver_type" => 3,
+            "receiver_value" => "alias_api",
+            "sendno" => 1,
+            "send_description" => "",
+            "override_msg_id" => "");
+        $msgResult3 = $client->sendNotification("alias notify content", $params, $extras);
+        $msgResult4 = $client->sendCustomMessage("tag title","tag notify content", $params, $extras);
+    }
+
     /**
      * Set bidding goods
      */
