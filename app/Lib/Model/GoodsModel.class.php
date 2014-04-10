@@ -77,6 +77,8 @@ class GoodsModel extends Model {
             if (D('GoodsImage')->addGoodsImage($this->getLastInsID(), $p_cate_id, $c_cate_id, $data['add_time'], $image)) {
                 // Add image successful,commit transaction
                 $this->commit();
+                // Push to vip user
+                push('Hey!This is a test', 3, '1', 0, 2);
                 return array(
                     'status' => true,
                     'msg' => 'Add goods successful'
