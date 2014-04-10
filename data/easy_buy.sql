@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50534
+Source Server         : 本地数据库
+Source Server Version : 50519
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50534
+Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-09 14:08:16
+Date: 2014-04-10 23:49:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1397018049', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1397142234', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_bidding`
@@ -136,7 +136,7 @@ CREATE TABLE `easy_goods` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='goods table';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='goods table';
 
 -- ----------------------------
 -- Records of easy_goods
@@ -144,6 +144,7 @@ CREATE TABLE `easy_goods` (
 INSERT INTO `easy_goods` VALUES ('1', '1', '3', 'Red Apple', '16E9E6812604419F', '12.00', '1000', '1', '30', '1', '2', null, '12', '100', 'red', 'China', '120', 'nothing', 'very good', '0', '1396107481', '1396111129');
 INSERT INTO `easy_goods` VALUES ('2', '2', '2', 'SkII', '9A7B3FAC5B75ABD6', '1200.00', '100000', '2', 'g', '1', '1', null, '50', '500', 'while', 'Japan', '1000', 'nothing', 'very good', '0', '1396108398', null);
 INSERT INTO `easy_goods` VALUES ('3', '1', '3', 'Green Apple', 'CA1C871B7129A769', '13.00', '1000', '1', 'g', '0', '1', null, '30', '200', 'Green', 'China', 'very good', 'very good', 'very good', '0', '1396368171', '1396369445');
+INSERT INTO `easy_goods` VALUES ('4', '1', '3', 'test', '3513F740FFB0D661', '12.00', '1000', '1', 'g', '0', '1', null, '121', '12', 'yellow', 'China', 'sasas', 'asasas', 'asasas', '0', '1397144503', null);
 
 -- ----------------------------
 -- Table structure for `easy_goods_image`
@@ -159,7 +160,7 @@ CREATE TABLE `easy_goods_image` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='goods image table';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='goods image table';
 
 -- ----------------------------
 -- Records of easy_goods_image
@@ -175,6 +176,9 @@ INSERT INTO `easy_goods_image` VALUES ('8', '2', '2', '2', '/uploads/goods_13961
 INSERT INTO `easy_goods_image` VALUES ('9', '3', '3', '1', '/uploads/goods_13963681691656.jpg', '0', '1396368171', '1396369445');
 INSERT INTO `easy_goods_image` VALUES ('10', '3', '3', '1', '/uploads/goods_13963681692633.jpg', '0', '1396368171', '1396369445');
 INSERT INTO `easy_goods_image` VALUES ('11', '3', '3', '1', '/uploads/goods_13963681704356.jpg', '0', '1396368171', '1396369445');
+INSERT INTO `easy_goods_image` VALUES ('12', '4', '3', '1', '/uploads/goods_13971444986822.jpg', '0', '1397144503', null);
+INSERT INTO `easy_goods_image` VALUES ('13', '4', '3', '1', '/uploads/goods_13971444999023.jpg', '0', '1397144503', null);
+INSERT INTO `easy_goods_image` VALUES ('14', '4', '3', '1', '/uploads/goods_13971444994133.jpg', '0', '1397144503', null);
 
 -- ----------------------------
 -- Table structure for `easy_member`
@@ -199,7 +203,7 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1397023505', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1397140597', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
