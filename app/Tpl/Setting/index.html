@@ -1,0 +1,115 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>System notification overview
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <input class="btn btn-primary" type="button" value="Add a notification" onclick="add();" />&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="Delete notification" onclick="del();" />
+        </div>
+        <div>
+            <div id="maingrid4" style="margin: 0px auto; padding: 0px;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "Content", name: 'content', align: 'left', width: '70%', isSort: false},
+            {display: "Add time", name: 'add_time', align: 'center', width: '12%'},
+            {display: "Push", align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="pushNotification('+rowdata.id+')">push</a>';
+                }
+            }
+            ],
+            url: '<{:U("Setting/index")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//Add notification
+var addNotificationDialog;
+function add() {
+    addNotificationDialog = $.ligerDialog.open({
+        url: '<{:U("Setting/add_notification")}>', height: 200, width: 700,
+        isDrag: false, title: 'Add a notification',
+        buttons: [{text: 'Ok', onclick: function(item, dialog) {addNotificationDialog.frame.addNotificationFormSubmit();}},
+                  {text: 'Cancle', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//Add notification callback
+function addNotificationCallback(obj) {
+    addNotificationDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, 'Success(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, 'Error(>_<)', 'error');
+        return false;
+    }
+}
+
+//Delete notification
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('Please select one notification at least', 'Tips', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('Are you sure to delete the selected notification(s)?', function(yes) {
+        if (yes) {
+            $.post('<{:U("Setting/delete_notification")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//Push notification
+function pushNotification(id) {
+    $.post('<{:U("Setting/push_notification")}>', {id:id}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+            location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-10 23:49:39
+Date: 2014-04-12 12:55:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1397142234', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1397268276', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_bidding`
@@ -203,13 +203,30 @@ CREATE TABLE `easy_member` (
 -- ----------------------------
 -- Records of easy_member
 -- ----------------------------
-INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1397140597', '1393234186');
+INSERT INTO `easy_member` VALUES ('1', 'lzjjie', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, '1', '1', '1', 'lzjjie@163.com', '1', '1397268339', '1393234186');
 INSERT INTO `easy_member` VALUES ('2', 'hxk', 'e10adc3949ba59abbe56e057f20f883e', '134565655', null, '0', '0', '0', 'dfdfdsfsdf', '0', null, null);
 INSERT INTO `easy_member` VALUES ('6', 'temo', 'e10adc3949ba59abbe56e057f20f883e', '13698987864', null, null, '0', '0', '971318606@qq.com', '1393688224', null, null);
 INSERT INTO `easy_member` VALUES ('10', 'demo', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '0', '971318606@qq.com', '1396084684', null, null);
 INSERT INTO `easy_member` VALUES ('11', '???', 'b842f1db09ef1bfda2ae1c1f70ec57c7', null, null, null, '0', '0', 'a@a', '1396091448', null, null);
 INSERT INTO `easy_member` VALUES ('12', '???1', '0d1b08c34858921bc7c662b228acb7ba', null, null, null, '0', '0', '229204897@qq.com', '1396091846', null, null);
 INSERT INTO `easy_member` VALUES ('13', '???2', '0d1b08c34858921bc7c662b228acb7ba', null, null, null, '0', '0', '229204897@qq.com', '1396092492', null, null);
+
+-- ----------------------------
+-- Table structure for `easy_notification`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_notification`;
+CREATE TABLE `easy_notification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `content` varchar(255) NOT NULL COMMENT 'notification content',
+  `add_time` int(11) NOT NULL COMMENT 'add notification time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='system notification table\r\n';
+
+-- ----------------------------
+-- Records of easy_notification
+-- ----------------------------
+INSERT INTO `easy_notification` VALUES ('5', 'this is a test', '1397277609');
+INSERT INTO `easy_notification` VALUES ('6', 'this is a system notification', '1397278159');
 
 -- ----------------------------
 -- Table structure for `easy_order`
@@ -326,7 +343,7 @@ CREATE TABLE `easy_shipping` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='shipping type table';
 
 -- ----------------------------
 -- Records of easy_shipping
@@ -366,3 +383,21 @@ CREATE TABLE `easy_shipping_agency` (
 -- Records of easy_shipping_agency
 -- ----------------------------
 INSERT INTO `easy_shipping_agency` VALUES ('1', '1', 'Lee', 'ZonKee', '020-8877965', '18923456789', 'test@test.com', 'Tencent', 'China', 'Red Apple', 'Air', '0', 'HuangPu Port', 'California', '40', 'Pacific Ocean', '1355241600', '1000000', 'This is a test', 'nothing', '1396449300');
+
+-- ----------------------------
+-- Table structure for `easy_subscription`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_subscription`;
+CREATE TABLE `easy_subscription` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `p_cate_id` int(11) NOT NULL COMMENT 'parent category id',
+  `c_cate_id` int(11) NOT NULL COMMENT 'child category id',
+  `user_id` int(11) NOT NULL COMMENT 'user id',
+  `subscribe_time` int(11) NOT NULL COMMENT 'subscribe time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='vip user subscription table';
+
+-- ----------------------------
+-- Records of easy_subscription
+-- ----------------------------
+INSERT INTO `easy_subscription` VALUES ('1', '1', '1', '1', '1397235544');

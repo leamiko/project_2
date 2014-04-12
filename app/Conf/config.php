@@ -78,6 +78,16 @@ $app_config = array(
                 )
             )
         ),
+        'Setting' => array(
+            'text' => 'Setting',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'System notifications',
+                    'url' => '/setting/index'
+                )
+            )
+        ),
         'API' => array(
             'text' => 'API',
             'default' => 'index',

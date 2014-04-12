@@ -860,6 +860,67 @@
                     <td><div class="failed_return_27"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Vip user subscription</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/subscription</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1, (Only accept the vip user's id)<br />
+                        int p_cate_id: 1,<br />
+                        int c_cate_id: 1,<br />
+                        int type: 1(1:subscribe,0:unsubscribe)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_28"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_28"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Goods detail</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/goods_detail</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int goods_id:1
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_29"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_29"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1007,6 +1068,16 @@ $(function() {
     }, 'json');
     $.post("<{:U('api/search')}>", {business_model: 0, keyword: '', page: 0, pageSize: -1}, function(data) {
         $(".failed_return_27").JSONView(data);
+    }, 'json');
+    $(".success_return_28").JSONView({"status":1,"result":"Subscribe successful"});
+    $.post("<{:U('api/subscription')}>", {user_id: 0, p_cate_id: 0, c_cate_id: 0, type: 2}, function(data) {
+        $(".failed_return_28").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/goods_detail')}>", {goods_id: 1}, function(data) {
+        $(".success_return_29").JSONView(data);
+    }, 'json');
+    $.post("<{:U('api/goods_detail')}>", {goods_id: 0}, function(data) {
+        $(".failed_return_29").JSONView(data);
     }, 'json');
 });
 //]]>

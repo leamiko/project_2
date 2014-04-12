@@ -395,6 +395,35 @@ class ApiAction extends Action {
     }
 
     /**
+     * Goods detail
+     */
+    public function goods_detail() {
+        if ($this->isPost() || $this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            if ($goods_id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = D('Goods')->getGoodsDetail($goods_id);
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $v['image'] = D('GoodsImage')->apiGetGoodsImageList($v['id']);
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * My order list
      */
     public function my_order_list() {
@@ -1059,6 +1088,98 @@ class ApiAction extends Action {
                 'status' => 1,
                 'result' => $result
             ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Subscription
+     */
+    public function subscription() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
+            $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if ($user_id < 1 || $c_cate_id < 1 || $p_cate_id < 1 || !in_array($type, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $is_vip = M('Member')->field(array(
+                'is_vip'
+            ))->where(array(
+                'id' => $user_id
+            ))->find();
+            if (!$is_vip['is_vip']) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'this user is not a vip user'
+                ));
+            }
+            $subscription = M('Subscription');
+            // subscribe
+            if ($type) {
+                if ($subscription->where(array(
+                    'user_id' => $user_id,
+                    'p_cate_id' => $p_cate_id,
+                    'c_cate_id' => $c_cate_id
+                ))->count()) {
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'You have already subscribe this child category'
+                    ));
+                }
+                // Start transaction
+                $subscription->startTrans();
+                if ($subscription->add(array(
+                    'p_cate_id' => $p_cate_id,
+                    'c_cate_id' => $c_cate_id,
+                    'user_id' => $user_id,
+                    'subscribe_time' => time()
+                ))) {
+                    // Add successful,commit transaction
+                    $subscription->commit();
+                    $this->ajaxReturn(array(
+                        'status' => 1,
+                        'result' => 'Subscribe successful'
+                    ));
+                } else {
+                    // Add failed,rollback transaction
+                    $subscription->rollback();
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'Subscribe failed'
+                    ));
+                }
+            } else {
+                // Start transaction
+                $subscription->startTrans();
+                if ($subscription->where(array(
+                    'user_id' => $user_id,
+                    'p_cate_id' => $p_cate_id,
+                    'c_cate_id' => $c_cate_id
+                ))->delete()) {
+                    // Delete successful,commit transaction
+                    $subscription->commit();
+                    $this->ajaxReturn(array(
+                        'status' => 1,
+                        'result' => 'Unsubscribe successful'
+                    ));
+                } else {
+                    // Delete failed,rollback transaction
+                    $subscription->rollback();
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => 'Unsubscribe failed'
+                    ));
+                }
+            }
         } else {
             $this->redirect('/');
         }

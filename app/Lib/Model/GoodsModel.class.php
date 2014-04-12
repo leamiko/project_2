@@ -73,12 +73,13 @@ class GoodsModel extends Model {
         // Start transaction
         $this->startTrans();
         if ($this->add($data)) {
+            $goods_id = $this->getLastInsID();
             // Add successful,add goods image
-            if (D('GoodsImage')->addGoodsImage($this->getLastInsID(), $p_cate_id, $c_cate_id, $data['add_time'], $image)) {
+            if (D('GoodsImage')->addGoodsImage($goods_id, $p_cate_id, $c_cate_id, $data['add_time'], $image)) {
                 // Add image successful,commit transaction
                 $this->commit();
-                // Push to vip user
-                push('Hey!This is a test', 3, '1', 0, 2);
+                // Push to vip
+                $this->pushGoods($p_cate_id, $c_cate_id, $goods_id);
                 return array(
                     'status' => true,
                     'msg' => 'Add goods successful'
@@ -300,6 +301,45 @@ class GoodsModel extends Model {
     }
 
     /**
+     * Get goods detail
+     *
+     * @param int $id
+     *            Goods id
+     */
+    public function getGoodsDetail($id) {
+        return $this->table($this->getTableName() . " AS g")->join(array(
+            "INNER JOIN " . M('ChildCategory')->getTableName() . " AS c ON g.c_cate_id = c. id",
+            "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON g.p_cate_id = p. id"
+        ))->field(array(
+            'g.id',
+            'g.c_cate_id',
+            'g.p_cate_id',
+            'g.name',
+            'g.business_model',
+            'g.item_number',
+            'g.price',
+            'g.sale_amount',
+            'g.unit',
+            'g.is_bidding',
+            'g.size',
+            'g.weight',
+            'g.quality',
+            'g.color',
+            'g.area',
+            'g.pay_method',
+            'g.guarantee',
+            'g.stock',
+            'g.description',
+            'g.add_time',
+            'g.update_time',
+            'c.name' => 'child_category',
+            'p.name' => 'parent_category'
+        ))->where(array(
+            'g.id' => $id
+        ))->limit(1)->select();
+    }
+
+    /**
      * Get goods count
      *
      * @param string $keyword
@@ -370,6 +410,43 @@ class GoodsModel extends Model {
             "%{$keyword}%"
         );
         return $this->where($condition)->select();
+    }
+
+    /**
+     * Push new goods to vip user
+     *
+     * @param int $p_cate_id
+     *            Parent category
+     * @param int $c_cate_id
+     *            Child category
+     * @param int $goods_id
+     *            Goods id
+     */
+    public function pushGoods($p_cate_id, $c_cate_id, $goods_id) {
+        $result = M('Subscription')->field(array(
+            'user_id'
+        ))->where(array(
+            'p_cate_id' => $p_cate_id,
+            'c_cate_id' => $c_cate_id
+        ))->select();
+        if (!empty($result)) {
+            $i = ceil(count($result) / 1000);
+            for ($j = 1; $j <= $i; $j++) {
+                $alias = "";
+                $length = min(array(
+                    ($j * 1000),
+                    count($result)
+                ));
+                for ($k = ($j - 1) * 1000; $k < $length; $k++) {
+                    if ($k != ($length - 1)) {
+                        $alias .= $result[$k]['user_id'] . ",";
+                    } else {
+                        $alias .= $result[$k]['user_id'];
+                    }
+                }
+                push("Hey!Here comes some new goods,let's shopping now.", 3, $alias, 0, $goods_id);
+            }
+        }
     }
 
     /**

@@ -1,0 +1,108 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body {
+    font-size: 12px;
+}
+
+.l-table-edit-td {
+    padding: 10px 20px;
+}
+
+.l-table-edit-td input {
+    width: 130px;
+}
+
+.l-button-submit,.l-button-test {
+    width: 80px;
+    float: left;
+    margin-left: 10px;
+    padding-bottom: 2px;
+}
+
+.l-verify-tip {
+    left: 230px;
+    top: 120px;
+}
+
+.l-table-edit tr td span {
+    color: #f30;
+    padding-left: 5px;
+}
+
+.tipmsg {
+    color: #f30;
+}
+
+#content {
+    height:100px;
+    width:300px;
+}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Content:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <textarea id="content" style="resize: none;" onfocus="javascript:checkLength(this, 'content_tip');" onkeydown="javascript:checkLength(this, 'content_tip');" onkeyup="javascript:checkLength(this, 'content_tip');" maxLength="80"></textarea>
+        </td>
+        <td align="left" class="tipmsg" id="content_tip"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+//Add tips
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//Remove tips
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//Check Length
+function checkLength(obj, id) {
+    var maxLength = obj.maxLength;
+    var desc = obj.value;
+    if (desc.length <= maxLength) {
+        $("#"+id).html((maxLength - desc.length) + 'word(s) left');
+    }
+    obj.onblur = function() {
+        $("#"+id).empty();
+    }
+}
+
+// Check content
+function ckContent() {
+    var content = $.trim($("#content").val());
+    if (content.length == 0) {
+        addTip($("#content").parent('td').next('td:last'), 'Notification content can not be empty.');
+        return false;
+    }
+    return true;
+}
+
+//Check Form
+function checkForm() {
+    if (!ckContent()) return false;
+    var content = $.trim($("#content").val());
+    return {content: content};
+}
+
+//Submit form
+function addNotificationFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("Setting/add_notification")}>', checkForm(), function(data) {
+            window.parent.addNotificationCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
