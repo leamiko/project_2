@@ -113,13 +113,14 @@ $app_config = array(
     'CATEGORY_MAX_UPLOAD_FILE_SIZE' => 2097152,
     // Mail
     'EMAIL' => array(
-        'SMTP_HOST' => 'smtp.qq.com',
-        'SMTP_PORT' => '465',
-        'SENDER_MAIL' => '635420322@qq.com',
-        'SENDER_PWD' => 'zonkee@gmail.com',
-        'SENDER_NAME' => 'Lzjjie',
+        'SMTP_HOST' => 'smtp.live.com',
+        'SMTP_PORT' => '587',
+        'SENDER_MAIL' => 'easybuybuy@hotmail.com',
+        'SENDER_PWD' => 'MAXS204gems',
+        'SENDER_NAME' => 'EasyBuyBuy',
         'REPLY_EMAIL' => '',
-        'REPLY_NAME' => ''
+        'REPLY_NAME' => '',
+        'SECURE_PRO' => 'tls'
     ),
     // JPush configuration
     'JPush' => array(
