@@ -1,0 +1,158 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{width:130px}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px}.l-verify-tip{left:230px;top:120px}.l-table-edit tr td span{color:#f30;padding-left:5px}.tipmsg{color:#f30}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Zip code:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="zip_code" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Chinese name:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="name_zh" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>English name:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="name_en" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>Arabic name:
+        </td>
+        <td align="left" class="l-table-edit-td">
+            <input type="text" id="name_ar" />
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#zip_code").focus(function() {
+        addTip($(this).parent('td').next('td:last'), 'Zip code only contains upppercase letters and can not more than 30 characters.');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckZipCode();
+    });
+    $("#name_zh").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckNameZh();
+    });
+    $("#name_en").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckNameEn();
+    });
+    $("#name_ar").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckNameAr();
+    });
+});
+
+//Add tips
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//Delete tips
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//Check zip code
+function ckZipCode() {
+    var zip_code = $.trim($("#zip_code").val());
+    if (zip_code.length <= 0) {
+        addTip($("#zip_code").parent('td').next('td:last'), 'Zip code can not be empty.');
+        return false;
+    }
+    if (zip_code.length > 30) {
+        addTip($("#zip_code").parent('td').next('td:last'), 'Zip code can not more than 30 characters.');
+        return false;
+    }
+    var reg = /^[A-Z]+$/;
+    if (!reg.test(zip_code)) {
+        addTip($("#zip_code").parent('td').next('td:last'), 'Zip code only contains uppercase letters.');
+        return false;
+    }
+    return true;
+}
+
+//Check Chinese name
+function ckNameZh() {
+    var name_zh = $.trim($("#name_zh").val());
+    if (name_zh.length <= 0) {
+        addTip($("#name_zh").parent('td').next('td:last'), 'Chinese name can not be empty.');
+        return false;
+    }
+    return true;
+}
+
+//Check English name
+function ckNameEn() {
+    var name_en = $.trim($("#name_en").val());
+    if (name_en.length <= 0) {
+        addTip($("#name_en").parent('td').next('td:last'), 'English name can not be empty.');
+        return false;
+    }
+    return true;
+}
+
+//Check Arabic name
+function ckNameAr() {
+    var name_ar = $.trim($("#name_ar").val());
+    if (name_ar.length <= 0) {
+        addTip($("#name_ar").parent('td').next('td:last'), 'Arabic name can not be empty.');
+        return false;
+    }
+    return true;
+}
+
+//Check form
+function checkForm() {
+    if (!ckZipCode()) return false;
+    if (!ckNameZh()) return false;
+    if (!ckNameEn()) return false;
+    if (!ckNameAr()) return false;
+    var zip_code = $.trim($("#zip_code").val());
+    var name_zh = $.trim($("#name_zh").val());
+    var name_en = $.trim($("#name_en").val());
+    var name_ar = $.trim($("#name_ar").val());
+    return {
+        zip_code: zip_code,
+        name_zh: name_zh,
+        name_en: name_en,
+        name_ar: name_ar
+    };
+}
+
+//Submit form
+function addAreaFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("Area/add")}>', checkForm(), function(data) {
+            window.parent.addAreaCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
