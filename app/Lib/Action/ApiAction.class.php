@@ -127,6 +127,25 @@ class ApiAction extends Action {
     }
 
     /**
+     * Area list
+     */
+    public function area_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $result = D('Area')->order("name_en ASC")->select();
+            foreach ($result as &$v) {
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Bidding
      */
     public function bidding() {
@@ -612,7 +631,9 @@ class ApiAction extends Action {
                     'phone',
                     'avatar',
                     'sex',
+                    'status',
                     'is_vip',
+                    'email',
                     'register_time',
                     'upgrade_time',
                     'last_time'
