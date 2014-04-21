@@ -88,6 +88,20 @@ $app_config = array(
                 )
             )
         ),
+        'News' => array(
+            'text' => 'News',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'News overview',
+                    'url' => '/news/index'
+                ),
+                'add' => array(
+                    'text' => 'Add a news',
+                    'url' => '/news/add'
+                )
+            )
+        ),
         'Setting' => array(
             'text' => 'Setting',
             'default' => 'index',
@@ -119,8 +133,14 @@ $app_config = array(
         'jpeg',
         'png'
     ),
+    'NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION' => array(
+        'jpg',
+        'jpeg',
+        'png'
+    ),
     'GOODS_MAX_UPLOAD_FILE_SIZE' => 2097152,
     'CATEGORY_MAX_UPLOAD_FILE_SIZE' => 2097152,
+    'NEWS_MAX_UPLOAD_FILE_SIZE' => 2097152,
     // Mail
     'EMAIL' => array(
         'SMTP_HOST' => 'smtp.live.com',

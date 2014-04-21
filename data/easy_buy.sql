@@ -1,31 +1,25 @@
--- phpMyAdmin SQL Dump
--- version 3.3.10
--- http://www.phpmyadmin.net
---
--- 主机: localhost
--- 生成日期: 2014 年 04 月 21 日 11:46
--- 服务器版本: 5.5.35
--- PHP 版本: 5.4.24
+/*
+Navicat MySQL Data Transfer
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+Source Server         : 本地数据库
+Source Server Version : 50519
+Source Host           : localhost:3306
+Source Database       : easy_buy
 
+Target Server Type    : MYSQL
+Target Server Version : 50519
+File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+Date: 2014-04-22 00:16:16
+*/
 
---
--- 数据库: `easy_buy`
---
+SET FOREIGN_KEY_CHECKS=0;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_address`
---
-
-CREATE TABLE IF NOT EXISTS `easy_address` (
+-- ----------------------------
+-- Table structure for `easy_address`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_address`;
+CREATE TABLE `easy_address` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'user_id',
   `name` varchar(30) NOT NULL COMMENT 'consignee name',
@@ -37,20 +31,17 @@ CREATE TABLE IF NOT EXISTS `easy_address` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='user address table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='user address table';
 
---
--- 转存表中的数据 `easy_address`
---
+-- ----------------------------
+-- Records of easy_address
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_admin_user`
---
-
-CREATE TABLE IF NOT EXISTS `easy_admin_user` (
+-- ----------------------------
+-- Table structure for `easy_admin_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_admin_user`;
+CREATE TABLE `easy_admin_user` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `username` varchar(20) NOT NULL COMMENT '用户名',
   `password` varchar(32) NOT NULL COMMENT '密码',
@@ -62,22 +53,18 @@ CREATE TABLE IF NOT EXISTS `easy_admin_user` (
   `desc` varchar(255) DEFAULT NULL COMMENT '管理员描述',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '管理员类型，1为系统管理员，0为普通管理员',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='administrators table' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='administrators table';
 
---
--- 转存表中的数据 `easy_admin_user`
---
+-- ----------------------------
+-- Records of easy_admin_user
+-- ----------------------------
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398090791', '1', 'Administrator!Do not delete!', '1');
 
-INSERT INTO `easy_admin_user` (`id`, `username`, `password`, `real_name`, `email`, `add_time`, `last_time`, `status`, `desc`, `type`) VALUES
-(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', 0, 1398055867, 1, 'Administrator!Do not delete!', 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_area`
---
-
-CREATE TABLE IF NOT EXISTS `easy_area` (
+-- ----------------------------
+-- Table structure for `easy_area`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_area`;
+CREATE TABLE `easy_area` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `zip_code` varchar(30) NOT NULL COMMENT 'Zip code',
   `name_zh` varchar(255) NOT NULL COMMENT 'Chinese name',
@@ -86,23 +73,19 @@ CREATE TABLE IF NOT EXISTS `easy_area` (
   `add_time` int(11) NOT NULL COMMENT 'Add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'Update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='area table' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='area table';
 
---
--- 转存表中的数据 `easy_area`
---
+-- ----------------------------
+-- Records of easy_area
+-- ----------------------------
+INSERT INTO `easy_area` VALUES ('1', 'CH', '中国', 'China', 'hfdjfh', '1398064424', null);
+INSERT INTO `easy_area` VALUES ('2', 'AR', '阿拉伯', 'Arab', 'shjdhfj', '1398064481', null);
 
-INSERT INTO `easy_area` (`id`, `zip_code`, `name_zh`, `name_en`, `name_ar`, `add_time`, `update_time`) VALUES
-(1, 'CH', '中国', 'China', 'hfdjfh', 1398064424, NULL),
-(2, 'AR', '阿拉伯', 'Arab', 'shjdhfj', 1398064481, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_bidding`
---
-
-CREATE TABLE IF NOT EXISTS `easy_bidding` (
+-- ----------------------------
+-- Table structure for `easy_bidding`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_bidding`;
+CREATE TABLE `easy_bidding` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `goods_id` int(11) NOT NULL COMMENT 'goods id',
   `c_cate_id` int(11) NOT NULL COMMENT 'goods child category id',
@@ -111,20 +94,17 @@ CREATE TABLE IF NOT EXISTS `easy_bidding` (
   `bidding_time` int(11) NOT NULL COMMENT 'bidding time',
   `remark` text COMMENT 'Bidding remark',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='bidding goods table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='bidding goods table';
 
---
--- 转存表中的数据 `easy_bidding`
---
+-- ----------------------------
+-- Records of easy_bidding
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_child_category`
---
-
-CREATE TABLE IF NOT EXISTS `easy_child_category` (
+-- ----------------------------
+-- Table structure for `easy_child_category`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_child_category`;
+CREATE TABLE `easy_child_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'child category id',
   `parent_id` int(11) NOT NULL COMMENT 'parent category id',
   `name` varchar(255) NOT NULL COMMENT 'child category name',
@@ -134,23 +114,19 @@ CREATE TABLE IF NOT EXISTS `easy_child_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='child category table' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='child category table';
 
---
--- 转存表中的数据 `easy_child_category`
---
+-- ----------------------------
+-- Records of easy_child_category
+-- ----------------------------
+INSERT INTO `easy_child_category` VALUES ('1', '1', 'Apple', '1', '/uploads/cate_13980664927271.png', '1398066494', null, '0');
+INSERT INTO `easy_child_category` VALUES ('2', '2', 'Orange', '2', '/uploads/cate_13980799548395.png', '1398079956', null, '0');
 
-INSERT INTO `easy_child_category` (`id`, `parent_id`, `name`, `business_model`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
-(1, 1, 'Apple', 1, '/uploads/cate_13980664927271.png', 1398066494, NULL, 0),
-(2, 2, 'Orange', 2, '/uploads/cate_13980799548395.png', 1398079956, NULL, 0);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_goods`
---
-
-CREATE TABLE IF NOT EXISTS `easy_goods` (
+-- ----------------------------
+-- Table structure for `easy_goods`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_goods`;
+CREATE TABLE `easy_goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'goods id',
   `c_cate_id` int(11) NOT NULL COMMENT 'child category id',
   `p_cate_id` int(11) NOT NULL COMMENT 'parent category id',
@@ -174,24 +150,20 @@ CREATE TABLE IF NOT EXISTS `easy_goods` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods table' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='goods table';
 
---
--- 转存表中的数据 `easy_goods`
---
+-- ----------------------------
+-- Records of easy_goods
+-- ----------------------------
+INSERT INTO `easy_goods` VALUES ('1', '1', '1', 'Red apple', '04E760908C18818A', '12.00', '12222', '1', 'g', '0', '1', null, '343', '44', 'red', '1', 'this is a test', 'very good', 'very good', '0', '1398066650', null);
+INSERT INTO `easy_goods` VALUES ('2', '1', '1', 'Green apple', '80563A51F6182594', '11.00', '23324', '1', 'g', '1', '1', null, '1212', '43', 'green', '2', 'dfgf', 'gfgfds', 'asdasd', '0', '1398066929', '1398069660');
+INSERT INTO `easy_goods` VALUES ('3', '2', '2', 'orange', 'FDC1CBDA8F8095DD', '13.00', '434343', '2', 'g', '0', '1', '45454', '1232', '112', 'orange', '2', 'dshjf', 'sdfsdfs', 'hjhgjghj', '0', '1398080047', null);
 
-INSERT INTO `easy_goods` (`id`, `c_cate_id`, `p_cate_id`, `name`, `item_number`, `price`, `stock`, `business_model`, `unit`, `is_bidding`, `pay_method`, `sale_amount`, `size`, `weight`, `color`, `area`, `quality`, `guarantee`, `description`, `is_delete`, `add_time`, `update_time`) VALUES
-(1, 1, 1, 'Red apple', '04E760908C18818A', 12.00, 12222, 1, 'g', 0, 1, NULL, '343', 44, 'red', 1, 'this is a test', 'very good', 'very good', 0, 1398066650, NULL),
-(2, 1, 1, 'Green apple', '80563A51F6182594', 11.00, 23324, 1, 'g', 1, 1, NULL, '1212', 43, 'green', 2, 'dfgf', 'gfgfds', 'asdasd', 0, 1398066929, 1398069660),
-(3, 2, 2, 'orange', 'FDC1CBDA8F8095DD', 13.00, 434343, 2, 'g', 0, 1, 45454, '1232', 112, 'orange', 2, 'dshjf', 'sdfsdfs', 'hjhgjghj', 0, 1398080047, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_goods_image`
---
-
-CREATE TABLE IF NOT EXISTS `easy_goods_image` (
+-- ----------------------------
+-- Table structure for `easy_goods_image`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_goods_image`;
+CREATE TABLE `easy_goods_image` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `goods_id` int(11) NOT NULL COMMENT 'Goods Id',
   `p_cate_id` int(11) NOT NULL COMMENT 'parent category id',
@@ -201,28 +173,24 @@ CREATE TABLE IF NOT EXISTS `easy_goods_image` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods image table' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='goods image table';
 
---
--- 转存表中的数据 `easy_goods_image`
---
+-- ----------------------------
+-- Records of easy_goods_image
+-- ----------------------------
+INSERT INTO `easy_goods_image` VALUES ('1', '1', '1', '1', '/uploads/goods_13980666476621.png', '0', '1398066650', null);
+INSERT INTO `easy_goods_image` VALUES ('2', '1', '1', '1', '/uploads/goods_13980666477477.png', '0', '1398066650', null);
+INSERT INTO `easy_goods_image` VALUES ('3', '1', '1', '1', '/uploads/goods_13980666476380.png', '0', '1398066650', null);
+INSERT INTO `easy_goods_image` VALUES ('4', '2', '1', '1', '/uploads/goods_13980669275008.png', '0', '1398066929', '1398069660');
+INSERT INTO `easy_goods_image` VALUES ('5', '2', '1', '1', '/uploads/goods_13980669278096.png', '0', '1398066929', '1398069660');
+INSERT INTO `easy_goods_image` VALUES ('6', '3', '2', '2', '/uploads/goods_13980800275785.png', '0', '1398080047', null);
+INSERT INTO `easy_goods_image` VALUES ('7', '3', '2', '2', '/uploads/goods_13980800274091.png', '0', '1398080047', null);
 
-INSERT INTO `easy_goods_image` (`id`, `goods_id`, `p_cate_id`, `c_cate_id`, `image`, `is_delete`, `add_time`, `update_time`) VALUES
-(1, 1, 1, 1, '/uploads/goods_13980666476621.png', 0, 1398066650, NULL),
-(2, 1, 1, 1, '/uploads/goods_13980666477477.png', 0, 1398066650, NULL),
-(3, 1, 1, 1, '/uploads/goods_13980666476380.png', 0, 1398066650, NULL),
-(4, 2, 1, 1, '/uploads/goods_13980669275008.png', 0, 1398066929, 1398069660),
-(5, 2, 1, 1, '/uploads/goods_13980669278096.png', 0, 1398066929, 1398069660),
-(6, 3, 2, 2, '/uploads/goods_13980800275785.png', 0, 1398080047, NULL),
-(7, 3, 2, 2, '/uploads/goods_13980800274091.png', 0, 1398080047, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_member`
---
-
-CREATE TABLE IF NOT EXISTS `easy_member` (
+-- ----------------------------
+-- Table structure for `easy_member`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_member`;
+CREATE TABLE `easy_member` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'user_id',
   `account` varchar(20) NOT NULL COMMENT 'user account',
   `password` varchar(32) NOT NULL COMMENT 'user password',
@@ -236,38 +204,32 @@ CREATE TABLE IF NOT EXISTS `easy_member` (
   `last_time` int(11) DEFAULT NULL COMMENT 'user last login time',
   `upgrade_time` int(11) DEFAULT NULL COMMENT 'upgrade time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='member table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='member table';
 
---
--- 转存表中的数据 `easy_member`
---
+-- ----------------------------
+-- Records of easy_member
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_notification`
---
-
-CREATE TABLE IF NOT EXISTS `easy_notification` (
+-- ----------------------------
+-- Table structure for `easy_notification`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_notification`;
+CREATE TABLE `easy_notification` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `content` varchar(255) NOT NULL COMMENT 'notification content',
   `add_time` int(11) NOT NULL COMMENT 'add notification time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='system notification table\r\n' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='system notification table\r\n';
 
---
--- 转存表中的数据 `easy_notification`
---
+-- ----------------------------
+-- Records of easy_notification
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_order`
---
-
-CREATE TABLE IF NOT EXISTS `easy_order` (
+-- ----------------------------
+-- Table structure for `easy_order`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_order`;
+CREATE TABLE `easy_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'user id',
   `address_id` int(11) NOT NULL COMMENT 'address id',
@@ -278,40 +240,34 @@ CREATE TABLE IF NOT EXISTS `easy_order` (
   `order_time` int(11) NOT NULL COMMENT 'order time',
   `remark` text COMMENT 'order leave',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='order table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='order table';
 
---
--- 转存表中的数据 `easy_order`
---
+-- ----------------------------
+-- Records of easy_order
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_order_goods`
---
-
-CREATE TABLE IF NOT EXISTS `easy_order_goods` (
+-- ----------------------------
+-- Table structure for `easy_order_goods`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_order_goods`;
+CREATE TABLE `easy_order_goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `goods_id` int(11) NOT NULL COMMENT 'goods id',
   `goods_price` decimal(12,2) NOT NULL COMMENT 'goods price',
   `goods_amount` int(11) NOT NULL COMMENT 'goods amount',
   `order_id` int(11) NOT NULL COMMENT 'order id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='order goods' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='order goods';
 
---
--- 转存表中的数据 `easy_order_goods`
---
+-- ----------------------------
+-- Records of easy_order_goods
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_parent_category`
---
-
-CREATE TABLE IF NOT EXISTS `easy_parent_category` (
+-- ----------------------------
+-- Table structure for `easy_parent_category`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_parent_category`;
+CREATE TABLE `easy_parent_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'parent category id',
   `name` varchar(255) NOT NULL COMMENT 'parent category name',
   `business_model` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'business model(1:b2c,2:b2b)',
@@ -320,23 +276,19 @@ CREATE TABLE IF NOT EXISTS `easy_parent_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='parent category table' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='parent category table';
 
---
--- 转存表中的数据 `easy_parent_category`
---
+-- ----------------------------
+-- Records of easy_parent_category
+-- ----------------------------
+INSERT INTO `easy_parent_category` VALUES ('1', 'Agriculture', '1', '/uploads/cate_13980656277630.png', '1398065629', null, '0');
+INSERT INTO `easy_parent_category` VALUES ('2', 'Agriculture', '2', '/uploads/cate_13980799301237.png', '1398079932', null, '0');
 
-INSERT INTO `easy_parent_category` (`id`, `name`, `business_model`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
-(1, 'Agriculture', 1, '/uploads/cate_13980656277630.png', 1398065629, NULL, 0),
-(2, 'Agriculture', 2, '/uploads/cate_13980799301237.png', 1398079932, NULL, 0);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_publish`
---
-
-CREATE TABLE IF NOT EXISTS `easy_publish` (
+-- ----------------------------
+-- Table structure for `easy_publish`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_publish`;
+CREATE TABLE `easy_publish` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'user id',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'publish type(1:buy,0:sell)',
@@ -365,20 +317,17 @@ CREATE TABLE IF NOT EXISTS `easy_publish` (
   `remark` varchar(255) DEFAULT NULL COMMENT 'remark',
   `publish_time` int(11) NOT NULL COMMENT 'Publish time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='user publish table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='user publish table';
 
---
--- 转存表中的数据 `easy_publish`
---
+-- ----------------------------
+-- Records of easy_publish
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_shipping`
---
-
-CREATE TABLE IF NOT EXISTS `easy_shipping` (
+-- ----------------------------
+-- Table structure for `easy_shipping`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_shipping`;
+CREATE TABLE `easy_shipping` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `business_model` tinyint(1) NOT NULL COMMENT 'business model(1:b2c,2:b2b)',
   `type` tinyint(1) NOT NULL COMMENT 'shipping type(1:air,2:ship,3:highway)',
@@ -386,20 +335,17 @@ CREATE TABLE IF NOT EXISTS `easy_shipping` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='shipping type table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='shipping type table';
 
---
--- 转存表中的数据 `easy_shipping`
---
+-- ----------------------------
+-- Records of easy_shipping
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_shipping_agency`
---
-
-CREATE TABLE IF NOT EXISTS `easy_shipping_agency` (
+-- ----------------------------
+-- Table structure for `easy_shipping_agency`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_shipping_agency`;
+CREATE TABLE `easy_shipping_agency` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT 'User id',
   `first_name` varchar(255) NOT NULL COMMENT 'First name',
@@ -422,29 +368,25 @@ CREATE TABLE IF NOT EXISTS `easy_shipping_agency` (
   `document_type` varchar(255) DEFAULT NULL COMMENT 'Document type',
   `add_time` int(11) NOT NULL COMMENT 'Add time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='shipping agency table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='shipping agency table';
 
---
--- 转存表中的数据 `easy_shipping_agency`
---
+-- ----------------------------
+-- Records of easy_shipping_agency
+-- ----------------------------
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `easy_subscription`
---
-
-CREATE TABLE IF NOT EXISTS `easy_subscription` (
+-- ----------------------------
+-- Table structure for `easy_subscription`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_subscription`;
+CREATE TABLE `easy_subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `p_cate_id` int(11) NOT NULL COMMENT 'parent category id',
   `c_cate_id` int(11) NOT NULL COMMENT 'child category id',
   `user_id` int(11) NOT NULL COMMENT 'user id',
   `subscribe_time` int(11) NOT NULL COMMENT 'subscribe time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='vip user subscription table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='vip user subscription table';
 
---
--- 转存表中的数据 `easy_subscription`
---
-
+-- ----------------------------
+-- Records of easy_subscription
+-- ----------------------------
