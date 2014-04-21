@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 04 月 21 日 09:39
+-- 生成日期: 2014 年 04 月 21 日 11:46
 -- 服务器版本: 5.5.35
 -- PHP 版本: 5.4.24
 
@@ -134,14 +134,15 @@ CREATE TABLE IF NOT EXISTS `easy_child_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='child category table' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='child category table' AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `easy_child_category`
 --
 
 INSERT INTO `easy_child_category` (`id`, `parent_id`, `name`, `business_model`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
-(1, 1, 'Apple', 1, '/uploads/cate_13980664927271.png', 1398066494, NULL, 0);
+(1, 1, 'Apple', 1, '/uploads/cate_13980664927271.png', 1398066494, NULL, 0),
+(2, 2, 'Orange', 2, '/uploads/cate_13980799548395.png', 1398079956, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -173,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `easy_goods` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods table' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods table' AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `easy_goods`
@@ -181,7 +182,8 @@ CREATE TABLE IF NOT EXISTS `easy_goods` (
 
 INSERT INTO `easy_goods` (`id`, `c_cate_id`, `p_cate_id`, `name`, `item_number`, `price`, `stock`, `business_model`, `unit`, `is_bidding`, `pay_method`, `sale_amount`, `size`, `weight`, `color`, `area`, `quality`, `guarantee`, `description`, `is_delete`, `add_time`, `update_time`) VALUES
 (1, 1, 1, 'Red apple', '04E760908C18818A', 12.00, 12222, 1, 'g', 0, 1, NULL, '343', 44, 'red', 1, 'this is a test', 'very good', 'very good', 0, 1398066650, NULL),
-(2, 1, 1, 'Green apple', '80563A51F6182594', 11.00, 23324, 1, 'g', 0, 1, NULL, '1212', 43, 'green', 2, 'dfgf', 'gfgfds', 'asdasd', 0, 1398066929, 1398069660);
+(2, 1, 1, 'Green apple', '80563A51F6182594', 11.00, 23324, 1, 'g', 1, 1, NULL, '1212', 43, 'green', 2, 'dfgf', 'gfgfds', 'asdasd', 0, 1398066929, 1398069660),
+(3, 2, 2, 'orange', 'FDC1CBDA8F8095DD', 13.00, 434343, 2, 'g', 0, 1, 45454, '1232', 112, 'orange', 2, 'dshjf', 'sdfsdfs', 'hjhgjghj', 0, 1398080047, NULL);
 
 -- --------------------------------------------------------
 
@@ -199,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `easy_goods_image` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods image table' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='goods image table' AUTO_INCREMENT=8 ;
 
 --
 -- 转存表中的数据 `easy_goods_image`
@@ -210,7 +212,9 @@ INSERT INTO `easy_goods_image` (`id`, `goods_id`, `p_cate_id`, `c_cate_id`, `ima
 (2, 1, 1, 1, '/uploads/goods_13980666477477.png', 0, 1398066650, NULL),
 (3, 1, 1, 1, '/uploads/goods_13980666476380.png', 0, 1398066650, NULL),
 (4, 2, 1, 1, '/uploads/goods_13980669275008.png', 0, 1398066929, 1398069660),
-(5, 2, 1, 1, '/uploads/goods_13980669278096.png', 0, 1398066929, 1398069660);
+(5, 2, 1, 1, '/uploads/goods_13980669278096.png', 0, 1398066929, 1398069660),
+(6, 3, 2, 2, '/uploads/goods_13980800275785.png', 0, 1398080047, NULL),
+(7, 3, 2, 2, '/uploads/goods_13980800274091.png', 0, 1398080047, NULL);
 
 -- --------------------------------------------------------
 
@@ -316,14 +320,15 @@ CREATE TABLE IF NOT EXISTS `easy_parent_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='parent category table' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='parent category table' AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `easy_parent_category`
 --
 
 INSERT INTO `easy_parent_category` (`id`, `name`, `business_model`, `image`, `add_time`, `update_time`, `is_delete`) VALUES
-(1, 'Agriculture', 1, '/uploads/cate_13980656277630.png', 1398065629, NULL, 0);
+(1, 'Agriculture', 1, '/uploads/cate_13980656277630.png', 1398065629, NULL, 0),
+(2, 'Agriculture', 2, '/uploads/cate_13980799301237.png', 1398079932, NULL, 0);
 
 -- --------------------------------------------------------
 
