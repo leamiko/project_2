@@ -44,6 +44,16 @@ $app_config = array(
                 )
             )
         ),
+        'Area' => array(
+            'text' => 'Area',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Area Management',
+                    'url' => '/area/index'
+                )
+            )
+        ),
         'Category' => array(
             'text' => 'Goods Category',
             'default' => 'parent',
