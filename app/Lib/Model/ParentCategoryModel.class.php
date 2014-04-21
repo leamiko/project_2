@@ -131,8 +131,6 @@ class ParentCategoryModel extends Model {
     /**
      * Get Parent category list
      *
-     * @param int $business_model
-     *            Business model(1:b2c,2:b2b)
      * @param int $page
      *            current page
      * @param int $pageSize
@@ -141,14 +139,17 @@ class ParentCategoryModel extends Model {
      *            order field
      * @param string $sort
      *            sort
+     * @param int|null $business_model
+     *            Business model(1:b2c,2:b2b)
      * @return array
      */
-    public function getParentCategoryList($business_model, $page, $pageSize, $order, $sort) {
+    public function getParentCategoryList($page, $pageSize, $order, $sort, $business_model = null) {
         $offset = ($page - 1) * $pageSize;
-        return $this->where(array(
-            'is_delete' => 0,
-            'business_model' => $business_model
-        ))->limit($offset, $pageSize)->order($order . " " . $sort)->select();
+        $condition = array(
+            'is_delete' => 0
+        );
+        $business_model && $condition['business_model'] = $business_model;
+        return $this->where($condition)->limit($offset, $pageSize)->order($order . " " . $sort)->select();
     }
 
     /**

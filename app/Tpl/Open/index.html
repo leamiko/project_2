@@ -847,6 +847,7 @@
                     <td>
                         int business_model: 1, (1:b2c,2:b2b)<br />
                         string keyword: 'xxx',<br />
+                        int zip_code_id: 1,（Optional）<br />
                         int page: 1,<br />
                         int pageSize: 15<br />
                     </td>
@@ -958,7 +959,7 @@ $(function() {
     $(".failed_return_11").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_12").JSONView({"status":1,"result":"Update user status successful"});
     $(".failed_return_12").JSONView({"status":0,"result":"Invalid parameters"});
-    $(".success_return_13").JSONView({"status":1,"result":[{"id":"1","name":"Chemical","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13961032061915.jpg","add_time":"2014-03-29 22:26:48","update_time":null,"is_delete":"0"},{"id":"3","name":"Agriculture","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13961043595595.jpg","add_time":"2014-03-29 22:46:00","update_time":null,"is_delete":"0"}]});
+    $(".success_return_13").JSONView({"status":1,"result":[{"id":"1","name":"Agriculture","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13980656277630.png","add_time":"2014-04-21 15:33:49","update_time":null,"is_delete":"0"}]});
     $(".failed_return_13").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_14").JSONView({"status":1,"result":[{"id":"1","parent_id":"3","name":"Apple","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13961062273505.jpg","add_time":"2014-03-29 22:57:35","update_time":"2014-03-29 23:17:31","is_delete":"0","parent_name":"Agriculture"}]});
     $(".failed_return_14").JSONView({"status":0,"result":"Invalid parameters"});
@@ -986,7 +987,7 @@ $(function() {
     $(".failed_return_25").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_26").JSONView({"status":1,"result":"Bidding successful"});
     $(".failed_return_26").JSONView({"status":0,"result":"Invalid parameters"});
-    $(".success_return_27").JSONView({"status":1,"result":[{"id":"1","c_cate_id":"1","p_cate_id":"3","name":"Red Apple","business_model":"1","item_number":"16E9E6812604419F","price":"12.00","sale_amount":null,"unit":"30","size":"12","weight":"100","quality":"120","color":"red","area":"China","pay_method":"2","guarantee":"nothing","stock":"1000","description":"very good","add_time":"2014-03-29 23:38:01","update_time":"2014-03-30 00:38:49","child_category":"Apple","parent_category":"Agriculture","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13961074791465.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13961074798873.jpg"}]},{"id":"3","c_cate_id":"1","p_cate_id":"3","name":"Green Apple","business_model":"1","item_number":"CA1C871B7129A769","price":"13.00","sale_amount":null,"unit":"g","size":"30","weight":"200","quality":"very good","color":"Green","area":"China","pay_method":"1","guarantee":"very good","stock":"1000","description":"very good","add_time":"2014-04-02 00:02:51","update_time":"2014-04-02 00:24:05","child_category":"Apple","parent_category":"Agriculture","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13963681691656.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13963681692633.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13963681704356.jpg"}]}]});
+    $(".success_return_27").JSONView({"status":1,"result":[{"id":"1","c_cate_id":"1","p_cate_id":"1","name":"Red apple","business_model":"1","item_number":"04E760908C18818A","price":"12.00","sale_amount":null,"unit":"g","size":"343","weight":"44","quality":"this is a test","color":"red","pay_method":"1","guarantee":"very good","stock":"12222","description":"very good","add_time":"2014-04-21 15:50:50","update_time":null,"child_category":"Apple","parent_category":"Agriculture","area":"China","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13980666476621.png"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13980666477477.png"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13980666476380.png"}]}]});
     $(".failed_return_27").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_28").JSONView({"status":1,"result":"Subscribe successful"});
     $(".failed_return_28").JSONView({"status":0,"result":"Invalid parameters"});

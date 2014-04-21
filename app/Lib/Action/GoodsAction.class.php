@@ -25,7 +25,7 @@ class GoodsAction extends AdminAction {
             $size = isset($_POST['size']) ? trim($_POST['size']) : $this->redirect('/');
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $color = isset($_POST['color']) ? trim($_POST['color']) : $this->redirect('/');
-            $area = isset($_POST['area']) ? trim($_POST['area']) : $this->redirect('/');
+            $area = isset($_POST['area']) ? intval($_POST['area']) : $this->redirect('/');
             $pay_method = isset($_POST['pay_method']) ? intval($_POST['pay_method']) : $this->redirect('/');
             $quality = isset($_POST['quality']) ? trim($_POST['quality']) : $this->redirect('/');
             $guarantee = isset($_POST['guarantee']) ? trim($_POST['guarantee']) : $this->redirect('/');
@@ -40,6 +40,10 @@ class GoodsAction extends AdminAction {
                 'is_delete' => 0,
                 'business_model' => 1
             ))->select());
+            $this->assign('area', M('Area')->field(array(
+                'id',
+                'name_en'
+            ))->order('name_en ASC')->select());
             $this->display();
         }
     }
@@ -186,7 +190,7 @@ class GoodsAction extends AdminAction {
             $size = isset($_POST['size']) ? trim($_POST['size']) : $this->redirect('/');
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $color = isset($_POST['color']) ? trim($_POST['color']) : $this->redirect('/');
-            $area = isset($_POST['area']) ? trim($_POST['area']) : $this->redirect('/');
+            $area = isset($_POST['area']) ? intval($_POST['area']) : $this->redirect('/');
             $pay_method = isset($_POST['pay_method']) ? intval($_POST['pay_method']) : $this->redirect('/');
             $quality = isset($_POST['quality']) ? trim($_POST['quality']) : $this->redirect('/');
             $guarantee = isset($_POST['guarantee']) ? trim($_POST['guarantee']) : $this->redirect('/');
@@ -229,6 +233,10 @@ class GoodsAction extends AdminAction {
                 'is_delete' => 0,
                 'parent_id' => $goods['p_cate_id']
             ))->select());
+            $this->assign('area', M('Area')->field(array(
+                'id',
+                'name_en'
+            ))->order('name_en ASC')->select());
             $this->assign('goods_image', $goods_image);
             $this->assign('image_count', $image_count);
             $this->display();

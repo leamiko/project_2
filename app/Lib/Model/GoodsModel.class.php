@@ -34,7 +34,7 @@ class GoodsModel extends Model {
      *            Weight
      * @param string $color
      *            color
-     * @param string $area
+     * @param int $area
      *            area
      * @param int $pay_method
      *            pay method(1:Paypal,2:Alipay)
@@ -57,6 +57,7 @@ class GoodsModel extends Model {
             'price' => $price,
             'business_model' => $business_model,
             'unit' => $unit,
+            'area' => $area,
             'pay_method' => $pay_method,
             'stock' => $stock,
             'is_delete' => 0,
@@ -66,7 +67,6 @@ class GoodsModel extends Model {
         strlen($size) && $data['size'] = $size;
         strlen($weight) && $data['weight'] = intval($weight);
         strlen($color) && $data['color'] = $color;
-        strlen($area) && $data['area'] = $area;
         strlen($quality) && $data['quality'] = $quality;
         strlen($guarantee) && $data['guarantee'] = $guarantee;
         strlen($description) && $data['description'] = $description;
@@ -376,7 +376,8 @@ class GoodsModel extends Model {
         $offset = ($page - 1) * $pageSize;
         $this->table($this->getTableName() . " AS g")->join(array(
             "INNER JOIN " . M('ChildCategory')->getTableName() . " AS c ON g.c_cate_id = c. id",
-            "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON g.p_cate_id = p. id"
+            "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON g.p_cate_id = p. id",
+            "INNER JOIN " . M('Area')->getTableName() . " AS a ON g.area = a.id"
         ))->field(array(
             'g.id',
             'g.c_cate_id',
@@ -392,7 +393,6 @@ class GoodsModel extends Model {
             'g.weight',
             'g.quality',
             'g.color',
-            'g.area',
             'g.pay_method',
             'g.guarantee',
             'g.stock',
@@ -400,7 +400,8 @@ class GoodsModel extends Model {
             'g.add_time',
             'g.update_time',
             'c.name' => 'child_category',
-            'p.name' => 'parent_category'
+            'p.name' => 'parent_category',
+            'a.name_en' => 'area'
         ))->order($order . " " . $sort)->limit($offset, $pageSize);
         $condition = array(
             'g.is_delete' => 0
@@ -456,16 +457,28 @@ class GoodsModel extends Model {
      *            Business model(1:b2c,2:b2b)
      * @param string $keyword
      *            Keyword
+     * @param int $zip_code_id
+     *            area id
      * @param int $page
      *            Current page
      * @param int $pageSize
      *            Page size
      */
-    public function searchGoods($business_model, $keyword, $page, $pageSize) {
+    public function searchGoods($business_model, $keyword, $zip_code_id, $page, $pageSize) {
         $offset = ($page - 1) * $pageSize;
+        $condition = array(
+            'g.business_model' => $business_model,
+            'g.is_delete' => 0,
+            'g.name' => array(
+                'like',
+                "%{$keyword}%"
+            )
+        );
+        $zip_code_id && $condition['a.id'] = $zip_code_id;
         return $this->table($this->getTableName() . " AS g")->join(array(
             "INNER JOIN " . M('ParentCategory')->getTableName() . " AS p ON p.id = g.p_cate_id",
-            "INNER JOIN " . M('ChildCategory')->getTableName() . " AS c ON c.id = g.c_cate_id"
+            "INNER JOIN " . M('ChildCategory')->getTableName() . " AS c ON c.id = g.c_cate_id",
+            "INNER JOIN " . M('Area')->getTableName() . " AS a ON a.id = g.area"
         ))->field(array(
             'g.id',
             'g.c_cate_id',
@@ -481,7 +494,6 @@ class GoodsModel extends Model {
             'g.weight',
             'g.quality',
             'g.color',
-            'g.area',
             'g.pay_method',
             'g.guarantee',
             'g.stock',
@@ -489,15 +501,9 @@ class GoodsModel extends Model {
             'g.add_time',
             'g.update_time',
             'c.name' => 'child_category',
-            'p.name' => 'parent_category'
-        ))->where(array(
-            'g.business_model' => $business_model,
-            'g.is_delete' => 0,
-            'g.name' => array(
-                'like',
-                "%{$keyword}%"
-            )
-        ))->order("id ASC")->limit($offset, $pageSize)->select();
+            'p.name' => 'parent_category',
+            'a.name_en' => 'area'
+        ))->where($condition)->order("id ASC")->limit($offset, $pageSize)->select();
     }
 
     /**
@@ -571,7 +577,7 @@ class GoodsModel extends Model {
      *            Weight
      * @param string $color
      *            Color
-     * @param string $area
+     * @param int $area
      *            Area
      * @param int $pay_method
      *            Pay method(1:Paypal,2:Alipay)
@@ -602,7 +608,7 @@ class GoodsModel extends Model {
             'size' => strlen($size) ? $size : null,
             'weight' => strlen($weight) ? intval($weight) : null,
             'color' => strlen($color) ? $color : null,
-            'area' => strlen($area) ? $area : null,
+            'area' => $area,
             'pay_method' => $pay_method,
             'quality' => strlen($quality) ? $quality : null,
             'guarantee' => strlen($guarantee) ? $guarantee : null,

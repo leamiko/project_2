@@ -123,10 +123,15 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    Area:
+                    <span>*</span>Area:
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="area" value="<{$goods['area']}>" />
+                    <select id="area" style="width:160px;">
+                        <option value="0">SELECT AN AREA</option>
+                        <volist name = "area" id = "val">
+                        <option value="<{$val['id']}>"<if condition="$goods['area'] eq $val['id']"> selected</if>><{$val['name_en']}></option>
+                        </volist>
+                    </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -262,6 +267,10 @@ $(function() {
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckUnit();
+    });
+    $("#area").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckArea();
     });
     $('#fileupload').fileupload({
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
@@ -403,6 +412,16 @@ function ckUnit() {
     return true;
 }
 
+//Check Area
+function ckArea() {
+    var area = $("#area").val();
+    if (parseInt(area) == 0) {
+        addTip($("#area").parent('td').next('td:last'), 'You must select an area for this goods.');
+        return false;
+    }
+    return true;
+}
+
 //Check Length
 function checkLength(obj, id) {
     var maxLength = obj.maxLength;
@@ -432,6 +451,8 @@ function checkForm() {
     if (!ckPrice()) return false;
     if (!ckStock()) return false;
     if (!ckSaleAmount()) return false;
+    if (!ckUnit()) return false;
+    if (!ckArea()) return false;
     if (!ckImage()) return false;
     var name = $.trim($("#name").val());
     var p_cate_id = parseInt($("#p_cate_id").val());
@@ -444,7 +465,7 @@ function checkForm() {
     var size = $.trim($("#size").val());
     var weight = $.trim($("#weight").val());
     var color = $.trim($("#color").val());
-    var area = $.trim($("#area").val());
+    var area = $("#area").val();
     var pay_method = parseInt($("#pay_method").val());
     var quality = $.trim($("#quality").val());
     var guarantee = $.trim($("#guarantee").val());

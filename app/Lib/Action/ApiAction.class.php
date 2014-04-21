@@ -673,7 +673,7 @@ class ApiAction extends Action {
                     'result' => 'Invalid parameters'
                 ));
             }
-            $result = D('ParentCategory')->getParentCategoryList($business_model, $page, $pageSize, "id", "ASC");
+            $result = D('ParentCategory')->getParentCategoryList($page, $pageSize, "id", "ASC", $business_model);
             foreach ($result as &$v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
@@ -889,6 +889,7 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $keyword = isset($_POST['keyword']) ? trim($_POST['keyword']) : $this->redirect('/');
+            $zip_code_id = isset($_POST['zip_code_id']) ? intval($_POST['zip_code_id']) : null;
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if (!in_array($business_model, array(
@@ -900,7 +901,7 @@ class ApiAction extends Action {
                     'result' => 'Invalid parameters'
                 ));
             }
-            $result = D('Goods')->searchGoods($business_model, $keyword, $page, $pageSize);
+            $result = D('Goods')->searchGoods($business_model, $keyword, $zip_code_id, $page, $pageSize);
             if (!empty($result)) {
                 foreach ($result as &$v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
