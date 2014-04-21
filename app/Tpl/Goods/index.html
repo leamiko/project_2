@@ -37,10 +37,10 @@ $(function(){
             },
             {display: "Price", name: 'price', align: 'center', width: '8%'},
             {display: "Bidding", name: 'is_bidding', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
-					return parseInt(value) ? 'Yes' : 'No';
-				}
-			},
-			{display: "Item number", name: 'item_number', align: 'center', width: '12%'},
+                    return parseInt(value) ? 'Yes' : 'No';
+                }
+            },
+            {display: "Item number", name: 'item_number', align: 'center', width: '12%'},
             {display: "Pay Method", name: 'pay_method', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
                         case 1 :
@@ -52,7 +52,11 @@ $(function(){
             },
             {display: "Stock", name: 'stock', align: 'center', width: '6%'},
             {display: "Edit", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">Edit</a> | <a href="javascript:void(0);" onclick="setBidding('+rowdata.id+', '+rowdata.c_cate_id+')">Set bidding</a>';
+                    var str = '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">Edit</a>';
+                    if (rowdata.business_model == 1) {
+                        str += ' | <a href="javascript:void(0);" onclick="setBidding('+rowdata.id+', '+rowdata.c_cate_id+')">Set bidding</a>';
+                    }
+                    return str;
                 }
             }
             ],
@@ -128,7 +132,7 @@ function update(id) {
 
 //Set bidding
 function setBidding(id, c_cate_id) {
-	$.ligerDialog.confirm('One child category only have one goods can set to bidding goods.Are you sure to set this goods to bidding goods?', function(yes) {
+    $.ligerDialog.confirm('One child category only have one goods can set to bidding goods.Are you sure to set this goods to bidding goods?', function(yes) {
         if (yes) {
             $.post('<{:U("Goods/set_bidding")}>', {id: id, c_cate_id: c_cate_id}, function(data) {
                 if (data.status) {
