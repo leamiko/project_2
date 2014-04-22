@@ -12,75 +12,170 @@
             <table cellpadding="10" cellspacing="10" class="tab">
                 <tr height="60px">
                     <td align="right">Title:&nbsp;&nbsp;</td>
-                    <td><input type="text" id="title" /></td>
+                    <td><input type="text" id="title" />&nbsp;&nbsp;</td>
                 </tr>
                 <tr height="60px">
                     <td align="right">Language:&nbsp;&nbsp;</td>
                     <td>
-                        &nbsp;&nbsp;<input type="checkbox" value="1" />&nbsp;&nbsp;Chinese
-                        &nbsp;&nbsp;<input type="checkbox" value="2" checked="checked" />&nbsp;&nbsp;English
-                        &nbsp;&nbsp;<input type="checkbox" value="3" />&nbsp;&nbsp;Arabic
+                    	<input type="radio" value="1" name="language" />&nbsp;&nbsp;Chinese
+                        <input type="radio" value="2" name="language" checked="checked" />&nbsp;&nbsp;English
+                        <input type="radio" value="3" name="language" />&nbsp;&nbsp;Arabic
                     </td>
                 </tr>
                 <tr>
                     <td align="right">Content:&nbsp;&nbsp;</td>
                     <td><textarea id="content"></textarea></td>
                 </tr>
+                <tr>
+                    <td align="right" class="l-table-edit-td">
+                        News Picture：
+                    </td>
+                    <td align="left" class="l-table-edit-td">
+                        <span class="btn btn-success fileinput-button" style="color: #fff;">
+                            &nbsp;&nbsp;Select
+                            <input id="fileupload" type="file" name="files[]" multiple />
+                        </span>&nbsp;&nbsp;<span id="image_tip" class="tipmsg"></span><br /><br />
+                        <div id="progress" class="progress" style="display: none;">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                	<td colspan="2">
+                    	<ul id="image_box">
+    					</ul>
+                    </td>
+                </tr>
                 <tr height="60px">
-                    <td colspan="2" align="center"><input class="btn btn-primary" type="button" value="Save" id="save" /></td>
+                    <td colspan="2" align="center"><input class="btn btn-primary" type="button" value="Save" onclick="saveNews()" /></td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
+<style type="text/css">
+<!--
+body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{width:130px}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px}.l-verify-tip{left:230px;top:120px}.l-table-edit tr td span{color:#f30;padding-left:5px}.tipmsg{color:#f30}#image_box{width:90%;clear:both;margin:12px auto}#image_box li{display:inline-block;position:relative;margin:6px 3px}#image_box li a img{width:160px;height:90px}.image-preview{position:relative;margin-top:16px}.image-preview-outter{display:block}.image-preview-delete{display:block;position:absolute;top:0;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px}#add_goods_button{width:100%;text-align:center;margin:12px auto}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
+-->
+</style>
 <script type="text/javascript" src="__PUBLIC__/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="__PUBLIC__/ckeditor/adapters/jquery.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 CKEDITOR.disableAutoInline = true;
+var image_count = new Array();
 $(function() {
-	$("input[type=text]").focus(function() {
-		$(this).next().show();
-	}).blur(function() {
-		$(this).next().hide();
-	});
-	$("#content").ckeditor({
+	var editor = $("#content").ckeditor({
 		width		: 700,
 		height		: 300,
 		language	: 'en',
     	filebrowserUploadUrl: '<{:U("news/upload")}>'
 	});
-	$("#save").click(function() {
-		var title = $.trim($("#title").val());
-		var author = $.trim($("#author").val());
-		var content = $("#content").val();
-		if (title.length <= 0) {
-			$.ligerDialog.alert('文章标题不能为空', '温馨提示', 'warn');
-			return false;
-		}
-		if (title.length > 20) {
-			$.ligerDialog.alert('文章标题不能超过20个字', '温馨提示', 'warn');
-			return false;
-		}
-		if ((author.length == 1) || author.length > 6) {
-			$.ligerDialog.alert('作者名字为2-6个字', '温馨提示', 'warn');
-			return false;
-		}
-		if (content.length <= 0) {
-			$.ligerDialog.alert('正文内容不能为空', '温馨提示', 'warn');
-			return false;
-		}
-		$.post("<{:U('news/add')}>", {title: title, author: author, content: content}, function(data) {
-			if (data.status) {
-				$.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
-				location.reload(true);
-			} else {
-				$.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
-                return false;
-			}
-		}, 'json');
-	});
+	$('#fileupload').fileupload({
+        acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
+        maxFileSize : 2097152,
+        minFileSize : 1,
+        url : '<{:U("News/upload_news_image")}>',
+        dataType : 'json',
+        send : function(e, data) {
+            $("#progress").show();
+        },
+        done : function(e, data) {
+            if (data.result.status) {
+                $("#progress").hide();
+				if (image_count.length < 6) {
+					image_count.push(data.result.filename);
+					$("#image_box").append("<li>" +
+										   "<a href='" + data.result.src + "' target='_blank' title='Click to see the source' class='image-preview-outter'>" +
+										   "<img src='" + data.result.src + "' width='160' height='90' border='0' />" +
+										   "</a>" + 
+										   "<a href='javascript:void(0);' onclick=\"delete_image(\'" + data.result.filename + "\', $(this));\" class='image-preview-delete' title='Delete'>" +
+										   "</a>" + 
+										   "</li>");
+				} else {
+					delete_another_image(data.result.filename);
+				}
+            } else {
+                $("#image_tip").html(data.result.msg);
+            }
+        },
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css('width', progress + '%');
+        }
+    });
 });
+
+//Check title
+function ckTitle() {
+	var title = $.trim($("#title").val());
+	if (title.length <= 0) {
+		$.ligerDialog.alert('News title can not be empty.');
+		return false;
+	}
+	return true;
+}
+
+//Check content
+function ckContent() {
+	var content = $.trim($("#content").val());
+	if (content.length <= 0) {
+		$.ligerDialog.alert('News content can not be empty.');
+		return false;
+	}
+	return true;
+}
+
+//Check Images
+function ckImage() {
+    if (image_count.length <= 0) {
+        $.ligerDialog.alert('Please upload one news picture at least.');
+        return false;
+    }
+    return true;
+}
+
+// Save news
+function saveNews() {
+	if (!ckTitle()) return false;
+	if (!ckContent()) return false;
+	if (!ckImage()) return false;
+	var title = $.trim($("#title").val());
+	var language = $("input[name='language']").filter(":checked").val();
+	var content = $.trim($("#content").val());
+	$.post("<{:U('news/add')}>", {title: title, language: language, content: content, image: image_count}, function(data) {
+		if (data.status) {
+			$.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+			window.location.reload(true);
+		} else {
+			$.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+			return false;
+		}
+	}, 'json');
+}
+
+//Delete image
+function delete_image(filename, obj) {
+    $.post('<{:U("News/delete_image")}>', {
+        filename : filename
+    }, function(data) {
+        if (data.status) {
+            obj.parent().remove();
+            var index = image_count.indexOf(filename);
+            image_count.splice(index, 1);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+
+//Delete excess image
+function delete_another_image(filename) {
+    $.post('<{:U("News/delete_image")}>', {
+        filename: filename
+    });
+}
 //]]>
 </script>
 <include file="./Public/html/footer.html" />
