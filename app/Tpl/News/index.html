@@ -4,15 +4,15 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>文章管理
+                    <span class="icon icon8"></span>News overview
                 </div>
             </div>
         </div>
         <div class="top_4">
             <form>
-                文章标题：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
-                <input type="submit" value="搜索" class="btn btn-primary" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="删除文章" onclick="javascript:del();" />
+                Title：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input type="submit" value="Search" class="btn btn-primary" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="Delete news" onclick="javascript:del();" />
             </form>
         </div>
         <div>
@@ -27,16 +27,25 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "文章标题", name: 'title', align: 'center', width: '20%', isSort: false},
-			{display: "作者", name: 'author', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
-					return value ? value : '暂无';
+            {display: "Title", name: 'title', align: 'center', width: '20%', isSort: false},
+			{display: "Language", name: 'language', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+					switch (parseInt(value)) {
+						case 1 :
+							return 'Chinese';
+						case 2 :
+							return 'English';
+						case 3 :
+							return 'Arabic';
+					}
 				}
 			},
-			{display: "文章预览", name: 'content', align: 'left', width: '30%', isSort: false},
-            {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
-			{display: "更新时间", name: 'update_time', align: 'center', width: '12%'},
-            {display: "操作", align: 'center', width: '14%', render: function(rowdata, rowindex, value) {
-					return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a> | <a href="'+rowdata.url+'" target="_blank">查看文章</a>';
+            {display: "Add time", name: 'add_time', align: 'center', width: '12%'},
+			{display: "Update time", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+					return value ? value : 'Never update';
+				}
+			},
+            {display: "Edit", align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
+					return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a>';
 				}
 			}
             ],
@@ -54,11 +63,11 @@ $(function(){
     $("#pageloading").hide();
 });
 
-//删除文章
+//Delete news
 function del() {
 	var data = getCheckedData('id');
 	if (data.length <= 0) {
-		$.ligerDialog.alert('请至少选中一篇文章', '温馨提示', 'warn');
+		$.ligerDialog.alert('Please select one news at least', 'Tips', 'warn');
         return false;
 	}
 	var id = '';
@@ -69,14 +78,14 @@ function del() {
 			id += data[i]+',';
 		}
 	}
-	$.ligerDialog.confirm('您确定要删除选中的文章吗？', function(yes) {
+	$.ligerDialog.confirm('Are you sure to delete the news you selected?', function(yes) {
 		if (yes) {
 			$.post('<{:U("news/delete")}>', {id:id}, function(data) {
 				if (data.status) {
-					$.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+					$.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
 					location.reload(true);
 				} else {
-					$.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+					$.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
 					return false;
 				}
 			}, 'json');
@@ -84,9 +93,9 @@ function del() {
 	});
 }
 
-//编辑文章
+//Edit news
 function update(id) {
-	top.f_addTab(null, '编辑公司文章', '<{:U("news/update")}>?id='+id);
+	top.f_addTab(null, 'Edit a news', '<{:U("news/update")}>?id='+id);
 }
 //]]>
 </script>

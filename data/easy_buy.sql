@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
-Source Server Version : 50519
+Source Server         : localhost_3306
+Source Server Version : 50534
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50519
+Target Server Version : 50534
 File Encoding         : 65001
 
-Date: 2014-04-22 00:16:16
+Date: 2014-04-22 17:40:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398090791', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398137593', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_area`
@@ -73,13 +73,11 @@ CREATE TABLE `easy_area` (
   `add_time` int(11) NOT NULL COMMENT 'Add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'Update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='area table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='area table';
 
 -- ----------------------------
 -- Records of easy_area
 -- ----------------------------
-INSERT INTO `easy_area` VALUES ('1', 'CH', '中国', 'China', 'hfdjfh', '1398064424', null);
-INSERT INTO `easy_area` VALUES ('2', 'AR', '阿拉伯', 'Arab', 'shjdhfj', '1398064481', null);
 
 -- ----------------------------
 -- Table structure for `easy_bidding`
@@ -114,13 +112,11 @@ CREATE TABLE `easy_child_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='child category table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='child category table';
 
 -- ----------------------------
 -- Records of easy_child_category
 -- ----------------------------
-INSERT INTO `easy_child_category` VALUES ('1', '1', 'Apple', '1', '/uploads/cate_13980664927271.png', '1398066494', null, '0');
-INSERT INTO `easy_child_category` VALUES ('2', '2', 'Orange', '2', '/uploads/cate_13980799548395.png', '1398079956', null, '0');
 
 -- ----------------------------
 -- Table structure for `easy_goods`
@@ -150,14 +146,11 @@ CREATE TABLE `easy_goods` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='goods table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='goods table';
 
 -- ----------------------------
 -- Records of easy_goods
 -- ----------------------------
-INSERT INTO `easy_goods` VALUES ('1', '1', '1', 'Red apple', '04E760908C18818A', '12.00', '12222', '1', 'g', '0', '1', null, '343', '44', 'red', '1', 'this is a test', 'very good', 'very good', '0', '1398066650', null);
-INSERT INTO `easy_goods` VALUES ('2', '1', '1', 'Green apple', '80563A51F6182594', '11.00', '23324', '1', 'g', '1', '1', null, '1212', '43', 'green', '2', 'dfgf', 'gfgfds', 'asdasd', '0', '1398066929', '1398069660');
-INSERT INTO `easy_goods` VALUES ('3', '2', '2', 'orange', 'FDC1CBDA8F8095DD', '13.00', '434343', '2', 'g', '0', '1', '45454', '1232', '112', 'orange', '2', 'dshjf', 'sdfsdfs', 'hjhgjghj', '0', '1398080047', null);
 
 -- ----------------------------
 -- Table structure for `easy_goods_image`
@@ -173,18 +166,11 @@ CREATE TABLE `easy_goods_image` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='goods image table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='goods image table';
 
 -- ----------------------------
 -- Records of easy_goods_image
 -- ----------------------------
-INSERT INTO `easy_goods_image` VALUES ('1', '1', '1', '1', '/uploads/goods_13980666476621.png', '0', '1398066650', null);
-INSERT INTO `easy_goods_image` VALUES ('2', '1', '1', '1', '/uploads/goods_13980666477477.png', '0', '1398066650', null);
-INSERT INTO `easy_goods_image` VALUES ('3', '1', '1', '1', '/uploads/goods_13980666476380.png', '0', '1398066650', null);
-INSERT INTO `easy_goods_image` VALUES ('4', '2', '1', '1', '/uploads/goods_13980669275008.png', '0', '1398066929', '1398069660');
-INSERT INTO `easy_goods_image` VALUES ('5', '2', '1', '1', '/uploads/goods_13980669278096.png', '0', '1398066929', '1398069660');
-INSERT INTO `easy_goods_image` VALUES ('6', '3', '2', '2', '/uploads/goods_13980800275785.png', '0', '1398080047', null);
-INSERT INTO `easy_goods_image` VALUES ('7', '3', '2', '2', '/uploads/goods_13980800274091.png', '0', '1398080047', null);
 
 -- ----------------------------
 -- Table structure for `easy_member`
@@ -208,6 +194,42 @@ CREATE TABLE `easy_member` (
 
 -- ----------------------------
 -- Records of easy_member
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `easy_news`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_news`;
+CREATE TABLE `easy_news` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `title` varchar(255) NOT NULL COMMENT 'news title',
+  `content` text NOT NULL COMMENT 'news content',
+  `language` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'news language(1:Chinese,2:English,3:Arabic)',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='news table\r\n';
+
+-- ----------------------------
+-- Records of easy_news
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `easy_news_image`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_news_image`;
+CREATE TABLE `easy_news_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `news_id` int(11) NOT NULL COMMENT 'news id',
+  `image` varchar(255) NOT NULL COMMENT 'news image',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is deleted?(0:no,1:yes)',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='news images table';
+
+-- ----------------------------
+-- Records of easy_news_image
 -- ----------------------------
 
 -- ----------------------------
@@ -276,13 +298,11 @@ CREATE TABLE `easy_parent_category` (
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'deleted?(0:no,1:yes)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='parent category table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='parent category table';
 
 -- ----------------------------
 -- Records of easy_parent_category
 -- ----------------------------
-INSERT INTO `easy_parent_category` VALUES ('1', 'Agriculture', '1', '/uploads/cate_13980656277630.png', '1398065629', null, '0');
-INSERT INTO `easy_parent_category` VALUES ('2', 'Agriculture', '2', '/uploads/cate_13980799301237.png', '1398079932', null, '0');
 
 -- ----------------------------
 -- Table structure for `easy_publish`

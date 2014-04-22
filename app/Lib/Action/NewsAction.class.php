@@ -18,8 +18,7 @@ class NewsAction extends AdminAction {
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $news = D('News');
-            $this->ajaxReturn($news->addNews($title, $language, $content, $image));
+            $this->ajaxReturn(D('News')->addNews($title, $language, $content, $image));
         } else {
             $this->display();
         }
@@ -31,8 +30,7 @@ class NewsAction extends AdminAction {
     public function delete() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
-            $article = D('Article');
-            $this->ajaxReturn($article->deleteArticle((array) $id));
+            $this->ajaxReturn(D('News')->deleteNews((array) $id));
         } else {
             $this->redirect('/');
         }
@@ -81,13 +79,13 @@ class NewsAction extends AdminAction {
             $pageSize = isset($_GET['pageSize']) ? $_GET['pageSize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
-            $article = D('Article');
-            $total = $article->getArticleCount($keyword, 2);
+            $news = D('News');
+            $total = $news->getNewsCount($keyword);
             if ($total) {
-                $rows = $article->getArticleList($page, $pageSize, $order, $sort, $keyword, 2);
+                $rows = $news->getNewsList($page, $pageSize, $order, $sort, $keyword);
                 foreach ($rows as &$v) {
-                    $v['content'] = mb_substr(strip_tags($v['content']), 0, 36, "utf-8");
-                    $v['url'] = "http://{$_SERVER['HTTP_HOST']}/news/detail/type/{$v['type']}/id/{$v['id']}.html";
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                 }
             } else {
                 $rows = null;
