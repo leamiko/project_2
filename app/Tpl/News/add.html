@@ -12,12 +12,12 @@
             <table cellpadding="10" cellspacing="10" class="tab">
                 <tr height="60px">
                     <td align="right">Title:&nbsp;&nbsp;</td>
-                    <td><input type="text" id="title" />&nbsp;&nbsp;</td>
+                    <td><input type="text" id="title" /></td>
                 </tr>
                 <tr height="60px">
                     <td align="right">Language:&nbsp;&nbsp;</td>
                     <td>
-                    	<input type="radio" value="1" name="language" />&nbsp;&nbsp;Chinese
+                        <input type="radio" value="1" name="language" />&nbsp;&nbsp;Chinese
                         <input type="radio" value="2" name="language" checked="checked" />&nbsp;&nbsp;English
                         <input type="radio" value="3" name="language" />&nbsp;&nbsp;Arabic
                     </td>
@@ -34,16 +34,16 @@
                         <span class="btn btn-success fileinput-button" style="color: #fff;">
                             &nbsp;&nbsp;Select
                             <input id="fileupload" type="file" name="files[]" multiple />
-                        </span>&nbsp;&nbsp;<span id="image_tip" class="tipmsg"></span><br /><br />
+                        </span><span class="tipmsg">&nbsp;&nbsp;Only can upload 6 pictures at most</span><br /><br />
                         <div id="progress" class="progress" style="display: none;">
                             <div class="progress-bar progress-bar-success"></div>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                	<td colspan="2">
-                    	<ul id="image_box">
-    					</ul>
+                    <td colspan="2">
+                        <ul id="image_box">
+                        </ul>
                     </td>
                 </tr>
                 <tr height="60px">
@@ -65,13 +65,13 @@ body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{wi
 CKEDITOR.disableAutoInline = true;
 var image_count = new Array();
 $(function() {
-	var editor = $("#content").ckeditor({
-		width		: 700,
-		height		: 300,
-		language	: 'en',
-    	filebrowserUploadUrl: '<{:U("news/upload")}>'
-	});
-	$('#fileupload').fileupload({
+    var editor = $("#content").ckeditor({
+        width         : 700,
+        height        : 300,
+        language      : 'en',
+        filebrowserUploadUrl: '<{:U("news/upload")}>'
+    });
+    $('#fileupload').fileupload({
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
         maxFileSize : 2097152,
         minFileSize : 1,
@@ -83,18 +83,18 @@ $(function() {
         done : function(e, data) {
             if (data.result.status) {
                 $("#progress").hide();
-				if (image_count.length < 6) {
-					image_count.push(data.result.filename);
-					$("#image_box").append("<li>" +
-										   "<a href='" + data.result.src + "' target='_blank' title='Click to see the source' class='image-preview-outter'>" +
-										   "<img src='" + data.result.src + "' width='160' height='90' border='0' />" +
-										   "</a>" + 
-										   "<a href='javascript:void(0);' onclick=\"delete_image(\'" + data.result.filename + "\', $(this));\" class='image-preview-delete' title='Delete'>" +
-										   "</a>" + 
-										   "</li>");
-				} else {
-					delete_another_image(data.result.filename);
-				}
+                if (image_count.length < 6) {
+                    image_count.push(data.result.filename);
+                    $("#image_box").append("<li>" +
+                                           "<a href='" + data.result.src + "' target='_blank' title='Click to see the source' class='image-preview-outter'>" +
+                                           "<img src='" + data.result.src + "' width='160' height='90' border='0' />" +
+                                           "</a>" + 
+                                           "<a href='javascript:void(0);' onclick=\"delete_image(\'" + data.result.filename + "\', $(this));\" class='image-preview-delete' title='Delete'>" +
+                                           "</a>" + 
+                                           "</li>");
+                } else {
+                    delete_another_image(data.result.filename);
+                }
             } else {
                 $("#image_tip").html(data.result.msg);
             }
@@ -108,22 +108,22 @@ $(function() {
 
 //Check title
 function ckTitle() {
-	var title = $.trim($("#title").val());
-	if (title.length <= 0) {
-		$.ligerDialog.alert('News title can not be empty.');
-		return false;
-	}
-	return true;
+    var title = $.trim($("#title").val());
+    if (title.length <= 0) {
+        $.ligerDialog.alert('News title can not be empty.');
+        return false;
+    }
+    return true;
 }
 
 //Check content
 function ckContent() {
-	var content = $.trim($("#content").val());
-	if (content.length <= 0) {
-		$.ligerDialog.alert('News content can not be empty.');
-		return false;
-	}
-	return true;
+    var content = $.trim($("#content").val());
+    if (content.length <= 0) {
+        $.ligerDialog.alert('News content can not be empty.');
+        return false;
+    }
+    return true;
 }
 
 //Check Images
@@ -137,21 +137,21 @@ function ckImage() {
 
 // Save news
 function saveNews() {
-	if (!ckTitle()) return false;
-	if (!ckContent()) return false;
-	if (!ckImage()) return false;
-	var title = $.trim($("#title").val());
-	var language = $("input[name='language']").filter(":checked").val();
-	var content = $.trim($("#content").val());
-	$.post("<{:U('news/add')}>", {title: title, language: language, content: content, image: image_count}, function(data) {
-		if (data.status) {
-			$.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
-			window.location.reload(true);
-		} else {
-			$.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
-			return false;
-		}
-	}, 'json');
+    if (!ckTitle()) return false;
+    if (!ckContent()) return false;
+    if (!ckImage()) return false;
+    var title = $.trim($("#title").val());
+    var language = $("input[name='language']").filter(":checked").val();
+    var content = $.trim($("#content").val());
+    $.post("<{:U('news/add')}>", {title: title, language: language, content: content, image: image_count}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+            window.location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
 }
 
 //Delete image

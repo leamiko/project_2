@@ -238,7 +238,7 @@ class GoodsAction extends AdminAction {
                 'name_en'
             ))->order('name_en ASC')->select());
             $this->assign('goods_image', $goods_image);
-            $this->assign('image_count', $image_count);
+            $this->assign('image_count', rtrim($image_count, ","));
             $this->display();
         }
     }

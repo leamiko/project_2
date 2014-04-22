@@ -131,10 +131,20 @@ class ApiAction extends Action {
      */
     public function area_list() {
         if ($this->isPost() || $this->isAjax()) {
-            $result = D('Area')->order("name_en ASC")->select();
-            foreach ($result as &$v) {
-                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
-                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameter'
+                ));
+            }
+            $result = D('Area')->getAreaList($page, $pageSize, "name_en", "ASC");
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                }
             }
             $this->ajaxReturn(array(
                 'status' => 1,
@@ -443,6 +453,35 @@ class ApiAction extends Action {
     }
 
     /**
+     * Home page news list
+     */
+    public function home_page_news_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $result = M('News')->where(array(
+                'type' => 1
+            ))->order("add_time DESC")->limit(6)->select();
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $image = M('NewsImage')->field(array(
+                        'image'
+                    ))->where(array(
+                        'news_id' => $v['id'],
+                        'is_delete' => 0
+                    ))->order("id ASC")->find();
+                    $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$image['image']}";
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+        }
+    }
+
+    /**
      * My order list
      */
     public function my_order_list() {
@@ -675,6 +714,42 @@ class ApiAction extends Action {
                     'result' => 'Account and the password are not match.'
                 ));
             }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * News list
+     */
+    public function news_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameter'
+                ));
+            }
+            $result = D('News')->getNewsList($page, $pageSize, "add_time", "DESC", '');
+            foreach ($result as &$v) {
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                $v['image'] = M('NewsImage')->field(array(
+                    'image'
+                ))->where(array(
+                    'news_id' => $v['id'],
+                    'is_delete' => 0
+                ))->select();
+                foreach ($v['image'] as &$v_1) {
+                    $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
         } else {
             $this->redirect('/');
         }

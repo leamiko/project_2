@@ -70,4 +70,38 @@ class NewsImageModel extends Model {
         }
     }
 
+    /**
+     * Update news image
+     *
+     * @param int $news_id
+     *            News id
+     * @param int $update_time
+     *            Update time
+     * @return boolean
+     */
+    public function updateNewsImage($news_id, $update_time) {
+        if (!$this->where(array(
+            'is_delete' => 0,
+            'news_id' => $news_id
+        ))->count()) {
+            return true;
+        }
+        // Start transaction
+        $this->startTrans();
+        if ($this->where(array(
+            'news_id' => $news_id,
+            'is_delete' => 0
+        ))->save(array(
+            'update_time' => $update_time
+        ))) {
+            // Update successful,commit transaction
+            $this->commit();
+            return true;
+        } else {
+            // Update failed,rollback transaction
+            $this->rollback();
+            return false;
+        }
+    }
+
 }

@@ -142,4 +142,69 @@ class NewsModel extends Model {
         return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
+    /**
+     * Update a news
+     *
+     * @param int $id
+     *            News id
+     * @param string $title
+     *            News title
+     * @param int $language
+     *            News language
+     * @param string $content
+     *            News content
+     * @param array|null $image
+     *            News images
+     * @return array
+     */
+    public function updateNews($id, $title, $language, $content, $image) {
+        $update_time = time();
+        // Start transaction
+        $this->startTrans();
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'title' => $title,
+            'language' => $language,
+            'content' => $content,
+            'update_time' => $update_time
+        ))) {
+            // Update news successful,update news image
+            if (D('NewsImage')->updateNewsImage($id, $update_time)) {
+                // Update news image successful,add new news image
+                if ($image) {
+                    if (D('NewsImage')->addNewsImage($id, $update_time, $image)) {
+                        // Add new news image successful,commit transaction
+                        $this->commit();
+                        return array(
+                            'status' => true,
+                            'msg' => 'Update news successful'
+                        );
+                    } else {
+                        // Add new news image failed,rollback transaction
+                        $this->rollback();
+                        return array(
+                            'status' => false,
+                            'msg' => 'Add new news image failed'
+                        );
+                    }
+                } else {
+                    // No new news image,commit transaction
+                    $this->commit();
+                    return array(
+                        'status' => true,
+                        'msg' => 'Update news successful'
+                    );
+                }
+            }
+        } else {
+            // Update news failed,rollback transaction
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => 'Update news failed'
+            );
+        }
+    }
+
 }

@@ -939,12 +939,72 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
-                        No
+                        int page: 1,<br />
+                        int pageSize: 15
                     </td>
                 </tr>
                 <tr>
                     <td>Successful return：</td>
                     <td><div class="success_return_30"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_30"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">News list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/news_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int page: 1,<br />
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_31"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_31"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">Home page news list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/home_page_news_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        No
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_32"></div></td>
                 </tr>
             </table>
         </div>
@@ -1018,7 +1078,11 @@ $(function() {
     $(".failed_return_28").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_29").JSONView({"status":1,"result":[{"id":"1","c_cate_id":"1","p_cate_id":"3","name":"Red Apple","business_model":"1","item_number":"16E9E6812604419F","price":"12.00","sale_amount":null,"unit":"30","is_bidding":"1","size":"12","weight":"100","quality":"120","color":"red","area":"China","pay_method":"2","guarantee":"nothing","stock":"1000","description":"very good","add_time":"2014-03-29 23:38:01","update_time":"2014-03-30 00:38:49","child_category":"Apple","parent_category":"Agriculture","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13961074791465.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13961074798873.jpg"}]}]});
     $(".failed_return_29").JSONView({"status":0,"result":"Invalid parameters"});
-    $(".success_return_30").JSONView({"status":1,"result":[{"id":"2","zip_code":"AR","name_zh":"\u963f\u62c9\u4f2f","name_en":"Arab","name_ar":"shjdhfj","add_time":"2014-04-21 15:14:41","update_time":null},{"id":"1","zip_code":"CH","name_zh":"\u4e2d\u56fd","name_en":"China","name_ar":"hfdjfh","add_time":"2014-04-21 15:13:44","update_time":null}]});
+    $(".success_return_30").JSONView({"status":1,"result":[{"id":"1","zip_code":"CH","name_zh":"\u4e2d\u56fd","name_en":"China","name_ar":"yfsdfkjs","add_time":"2014-04-22 23:32:23","update_time":null}]});
+    $(".failed_return_30").JSONView({"status":0,"result":"Invalid parameter"});
+    $(".success_return_31").JSONView({"status":1,"result":[{"id":"3","title":"sdsdsd","content":"<p>sdsdsdsdsdsd<img alt=\"\" src=\"\/uploads\/news\/news_13981876884345.jpg\" style=\"height:115px; width:205px\" \/><\/p>","language":"2","add_time":"2014-04-23 01:28:34","update_time":"2014-04-23 01:35:56","image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13981877137234.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981877135261.jpg"}]},{"id":"2","title":"yhdkjfs","content":"<p>sdsghfdg<\/p>","language":"2","add_time":"2014-04-23 01:19:29","update_time":"2014-04-23 01:20:00","image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871681919.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871682983.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871683943.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871982583.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871983184.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871983635.jpg"}]}]});
+    $(".failed_return_31").JSONView({"status":0,"result":"Invalid parameter"});
+    $(".success_return_32").JSONView({"status":1,"result":[{"id":"8","type":"1","title":"aas","content":"<p>233434<\/p>","language":"2","add_time":"2014-04-23 02:26:43","update_time":null,"image":"http:\/\/www.pro2.com\/uploads\/news_13981912024379.jpg"},{"id":"6","type":"1","title":"dsdsd","content":"<p>dfdfgg<\/p>","language":"2","add_time":"2014-04-23 02:26:26","update_time":null,"image":"http:\/\/www.pro2.com\/uploads\/news_13981911843036.jpg"},{"id":"5","type":"1","title":"ddsdsd","content":"<p>dsdsd<\/p>","language":"2","add_time":"2014-04-23 02:26:17","update_time":null,"image":"http:\/\/www.pro2.com\/uploads\/news_13981911764952.jpg"},{"id":"4","type":"1","title":"\u554a\u98d2\u98d2\u6492","content":"<p>\u554a\u6492\u6253\u7b97\u6253\u7b97<\/p>","language":"2","add_time":"2014-04-23 02:21:58","update_time":null,"image":"http:\/\/www.pro2.com\/uploads\/news_13981909071415.jpg"},{"id":"3","type":"1","title":"sdsdsd","content":"<p>sdsdsdsdsdsd<img alt=\"\" src=\"\/uploads\/news\/news_13981876884345.jpg\" style=\"height:115px; width:205px\" \/><\/p>","language":"2","add_time":"2014-04-23 01:28:34","update_time":"2014-04-23 01:35:56","image":"http:\/\/www.pro2.com\/uploads\/news_13981877137234.jpg"},{"id":"2","type":"1","title":"yhdkjfs","content":"<p>sdsghfdg<\/p>","language":"2","add_time":"2014-04-23 01:19:29","update_time":"2014-04-23 01:20:00","image":"http:\/\/www.pro2.com\/uploads\/news_13981871681919.jpg"}]});
 });
 //]]>
 </script>

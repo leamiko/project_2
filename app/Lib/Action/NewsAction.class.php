@@ -105,15 +105,111 @@ class NewsAction extends AdminAction {
      */
     public function update() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
-        $article = D('Article');
         if ($this->isAjax()) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : $this->redirect('/');
-            $author = isset($_POST['author']) ? trim($_POST['author']) : $this->redirect('/');
+            $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
-            $this->ajaxReturn($article->updateArticle($id, $title, $author, $content));
+            $image = isset($_POST['image']) ? $_POST['image'] : $this->redirect('/');
+            if (is_string($image)) {
+                $image = null;
+            } else {
+                $image = (array) $image;
+            }
+            $this->ajaxReturn(D('News')->updateNews($id, $title, $language, $content, $image));
         } else {
-            $this->assign('article', $article->where("id = {$id}")->find());
+            $this->assign('news', M('news')->where(array(
+                'id' => $id
+            ))->find());
+            $news_images = M('news_image')->field(array(
+                'id',
+                'image'
+            ))->where(array(
+                'news_id' => $id,
+                'is_delete' => 0
+            ))->select();
+            $image_count = "";
+            foreach ($news_images as &$v) {
+                $v['src'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
+                $image_count .= "'{$v['image']}',";
+            }
+            $this->assign('news_images', $news_images);
+            $this->assign('image_count', rtrim($image_count, ","));
             $this->display();
+        }
+    }
+
+    /**
+     * Update news image
+     */
+    public function update_image() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $news_image = M('NewsImage');
+            // Start transaction
+            $news_image->startTrans();
+            if ($news_image->where(array(
+                'id' => $id
+            ))->save(array(
+                'is_delete' => 1
+            ))) {
+                // Delete successful,commit transaction
+                $news_image->commit();
+                $this->ajaxReturn(array(
+                    'status' => true,
+                    'msg' => 'Delete news image successful'
+                ));
+            } else {
+                // Delete failed,rollback transaction
+                $news_image->rollback();
+                $this->ajaxReturn(array(
+                    'status' => false,
+                    'msg' => 'Delete news image failed.'
+                ));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Update news type
+     */
+    public function update_news_type() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            $news = M('News');
+            if (intval($news->where(array(
+                'type' => 1
+            ))->count()) >= 6 && $type == 1) {
+                $this->ajaxReturn(array(
+                    'status' => false,
+                    'msg' => 'There is already have 6 news display on app home page.'
+                ));
+            }
+            // Start transaction
+            $news->startTrans();
+            if ($news->where(array(
+                'id' => $id
+            ))->save(array(
+                'type' => $type
+            ))) {
+                // Update successful, commit transaction
+                $news->commit();
+                $this->ajaxReturn(array(
+                    'status' => true,
+                    'msg' => 'Update news type successful'
+                ));
+            } else {
+                // Update failed, rollback transaction
+                $news->rollback();
+                $this->ajaxReturn(array(
+                    'status' => false,
+                    'msg' => 'Update news type failed'
+                ));
+            }
+        } else {
+            $this->redirect('/');
         }
     }
 

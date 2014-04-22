@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50534
+Source Server         : 本地数据库
+Source Server Version : 50519
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50534
+Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-22 17:40:56
+Date: 2014-04-23 02:45:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398137593', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398191154', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_area`
@@ -202,6 +202,7 @@ CREATE TABLE `easy_member` (
 DROP TABLE IF EXISTS `easy_news`;
 CREATE TABLE `easy_news` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'news type(1:display on app home page, 0:General news)',
   `title` varchar(255) NOT NULL COMMENT 'news title',
   `content` text NOT NULL COMMENT 'news content',
   `language` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'news language(1:Chinese,2:English,3:Arabic)',

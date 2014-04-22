@@ -82,6 +82,12 @@ class GoodsImageModel extends Model {
      * @return boolean
      */
     public function updateGoodsImage($goods_id, $p_cate_id, $c_cate_id, $update_time) {
+        if (!$this->where(array(
+            'is_delete' => 0,
+            'goods_id' => $goods_id
+        ))->count()) {
+            return true;
+        }
         // Start transaction
         $this->startTrans();
         if ($this->where(array(
