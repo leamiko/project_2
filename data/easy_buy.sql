@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-23 02:45:42
+Date: 2014-04-24 00:14:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,44 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398191154', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398258131', '1', 'Administrator!Do not delete!', '1');
+
+-- ----------------------------
+-- Table structure for `easy_advertisement`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_advertisement`;
+CREATE TABLE `easy_advertisement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `business_model` tinyint(1) NOT NULL COMMENT 'business model(1:b2c, 2:b2b)',
+  `title` varchar(255) NOT NULL COMMENT 'advertisement title',
+  `content` text NOT NULL COMMENT 'advertisement content',
+  `language` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'advertisement language(1:Chinese,2:English,3:Arabic)',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='advertisement table';
+
+-- ----------------------------
+-- Records of easy_advertisement
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `easy_advertisement_image`
+-- ----------------------------
+DROP TABLE IF EXISTS `easy_advertisement_image`;
+CREATE TABLE `easy_advertisement_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `advertisement_id` int(11) NOT NULL COMMENT 'advertisement id',
+  `image` varchar(255) NOT NULL COMMENT 'advertisement image',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is deleted?(0:no,1:yes)',
+  `add_time` int(11) NOT NULL COMMENT 'add time',
+  `update_time` int(11) DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='advertisement images table';
+
+-- ----------------------------
+-- Records of easy_advertisement_image
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `easy_area`

@@ -102,6 +102,20 @@ $app_config = array(
                 )
             )
         ),
+        'Advertisement' => array(
+            'text' => 'Advertisement',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'AD overview',
+                    'url' => '/advertisement/index'
+                ),
+                'add' => array(
+                    'text' => 'Add an AD',
+                    'url' => '/advertisement/add'
+                )
+            )
+        ),
         'Setting' => array(
             'text' => 'Setting',
             'default' => 'index',
@@ -123,6 +137,11 @@ $app_config = array(
             )
         )
     ),
+    'ADVERTISEMENT_ALLOW_UPLOAD_IMAGE_EXTENSION' => array(
+        'jpg',
+        'jpeg',
+        'png'
+    ),
     'CATEGORY_ALLOW_UPLOAD_IMAGE_EXTENSION' => array(
         'jpg',
         'jpeg',
@@ -138,6 +157,7 @@ $app_config = array(
         'jpeg',
         'png'
     ),
+    'ADVERTISEMENT_MAX_UPLOAD_FILE_SIZE' => 2097152,
     'GOODS_MAX_UPLOAD_FILE_SIZE' => 2097152,
     'CATEGORY_MAX_UPLOAD_FILE_SIZE' => 2097152,
     'NEWS_MAX_UPLOAD_FILE_SIZE' => 2097152,

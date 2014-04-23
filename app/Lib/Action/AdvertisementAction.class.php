@@ -1,43 +1,44 @@
 <?php
 
 /**
- * News Action
+ * Advertisement Action
  *
  * @author lzjjie
  * @version 1.0.0
  * @since 1.0.0
  */
-class NewsAction extends AdminAction {
+class AdvertisementAction extends AdminAction {
 
     /**
-     * Add a news
+     * Add an advertisement
      */
     public function add() {
         if ($this->isAjax()) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : $this->redirect('/');
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $this->ajaxReturn(D('News')->addNews($title, $language, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $business_model, $content, $image));
         } else {
             $this->display();
         }
     }
 
     /**
-     * Delete news
+     * Delete advertisement
      */
     public function delete() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
-            $this->ajaxReturn(D('News')->deleteNews((array) $id));
+            $this->ajaxReturn(D('Advertisement')->deleteAdvertisement((array) $id));
         } else {
             $this->redirect('/');
         }
     }
 
     /**
-     * Delete news picture
+     * Delete advertisement picture
      */
     public function delete_image() {
         if ($this->isAjax()) {
@@ -70,7 +71,7 @@ class NewsAction extends AdminAction {
     }
 
     /**
-     * News overview
+     * Advertisement overview
      */
     public function index() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
@@ -79,10 +80,10 @@ class NewsAction extends AdminAction {
             $pageSize = isset($_GET['pageSize']) ? $_GET['pageSize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
-            $news = D('News');
-            $total = $news->getNewsCount($keyword);
+            $advertisement = D('Advertisement');
+            $total = $advertisement->getAdvertisementCount($keyword);
             if ($total) {
-                $rows = $news->getNewsList($page, $pageSize, $order, $sort, $keyword);
+                $rows = $advertisement->getAdvertisementList($page, $pageSize, $order, $sort, $keyword);
                 foreach ($rows as &$v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
@@ -101,13 +102,14 @@ class NewsAction extends AdminAction {
     }
 
     /**
-     * Update news
+     * Update advertisement
      */
     public function update() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
         if ($this->isAjax()) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : $this->redirect('/');
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? $_POST['image'] : $this->redirect('/');
             if (is_string($image)) {
@@ -115,55 +117,55 @@ class NewsAction extends AdminAction {
             } else {
                 $image = (array) $image;
             }
-            $this->ajaxReturn(D('News')->updateNews($id, $title, $language, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $business_model, $content, $image));
         } else {
-            $this->assign('news', M('News')->where(array(
+            $this->assign('advertisement', M('Advertisement')->where(array(
                 'id' => $id
             ))->find());
-            $news_images = M('NewsImage')->field(array(
+            $advertisement_images = M('AdvertisementImage')->field(array(
                 'id',
                 'image'
             ))->where(array(
-                'news_id' => $id,
+                'advertisement_id' => $id,
                 'is_delete' => 0
             ))->select();
             $image_count = "";
-            foreach ($news_images as &$v) {
+            foreach ($advertisement_images as &$v) {
                 $v['src'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
                 $image_count .= "'{$v['image']}',";
             }
-            $this->assign('news_images', $news_images);
+            $this->assign('advertisement_images', $advertisement_images);
             $this->assign('image_count', rtrim($image_count, ","));
             $this->display();
         }
     }
 
     /**
-     * Update news image
+     * Update advertisement image
      */
     public function update_image() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
-            $news_image = M('NewsImage');
+            $advertisement_image = M('AdvertisementImage');
             // Start transaction
-            $news_image->startTrans();
-            if ($news_image->where(array(
+            $advertisement_image->startTrans();
+            if ($advertisement_image->where(array(
                 'id' => $id
             ))->save(array(
                 'is_delete' => 1
             ))) {
                 // Delete successful,commit transaction
-                $news_image->commit();
+                $advertisement_image->commit();
                 $this->ajaxReturn(array(
                     'status' => true,
-                    'msg' => 'Delete news image successful'
+                    'msg' => 'Delete advertisement image successful'
                 ));
             } else {
                 // Delete failed,rollback transaction
-                $news_image->rollback();
+                $advertisement_image->rollback();
                 $this->ajaxReturn(array(
                     'status' => false,
-                    'msg' => 'Delete news image failed.'
+                    'msg' => 'Delete advertisement image failed.'
                 ));
             }
         } else {
@@ -172,68 +174,26 @@ class NewsAction extends AdminAction {
     }
 
     /**
-     * Update news type
-     */
-    public function update_news_type() {
-        if ($this->isAjax()) {
-            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
-            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
-            $news = M('News');
-            if (intval($news->where(array(
-                'type' => 1
-            ))->count()) >= 6 && $type == 1) {
-                $this->ajaxReturn(array(
-                    'status' => false,
-                    'msg' => 'There is already have 6 news display on app home page.'
-                ));
-            }
-            // Start transaction
-            $news->startTrans();
-            if ($news->where(array(
-                'id' => $id
-            ))->save(array(
-                'type' => $type
-            ))) {
-                // Update successful, commit transaction
-                $news->commit();
-                $this->ajaxReturn(array(
-                    'status' => true,
-                    'msg' => 'Update news type successful'
-                ));
-            } else {
-                // Update failed, rollback transaction
-                $news->rollback();
-                $this->ajaxReturn(array(
-                    'status' => false,
-                    'msg' => 'Update news type failed'
-                ));
-            }
-        } else {
-            $this->redirect('/');
-        }
-    }
-
-    /**
-     * Upload image in news content
+     * Upload image in advertisement content
      */
     public function upload() {
         if (!empty($_FILES)) {
-            $targetPath = $_SERVER['DOCUMENT_ROOT'] . "/uploads/news";
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . "/uploads/ad";
             if (!file_exists($targetPath)) {
                 mkdir($targetPath);
             }
-            if ($_FILES['upload']['size'] > C('NEWS_MAX_UPLOAD_FILE_SIZE')) {
+            if ($_FILES['upload']['size'] > C('ADVERTISEMENT_MAX_UPLOAD_FILE_SIZE')) {
                 echo "<script type='text/javascript'>
                         window.parent.CKEDITOR.tools.callFunction(0, '', 'Image file is too large, please choose another picture.');
                         </script>";
             } else {
                 $fileParts = pathinfo($_FILES['upload']['name']);
                 $tempFile = $_FILES['upload']['tmp_name'];
-                if (in_array(strtolower($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
+                if (in_array(strtolower($fileParts['extension']), C('ADVERTISEMENT_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
                     $uploadFileName = $this->generateTargetFileName($fileParts['extension']);
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);
-                    $fileName = '/uploads/news/' . $uploadFileName;
+                    $fileName = '/uploads/ad/' . $uploadFileName;
                     $funcNum = $_GET['CKEditorFuncNum'];
                     echo "<script type='text/javascript'>
                     window.parent.CKEDITOR.tools.callFunction($funcNum, '$fileName');
@@ -250,15 +210,15 @@ class NewsAction extends AdminAction {
     }
 
     /**
-     * Upload news image
+     * Upload advertisement image
      */
-    public function upload_news_image() {
+    public function upload_advertisement_image() {
         if (!empty($_FILES)) {
             $targetPath = $_SERVER['DOCUMENT_ROOT'] . "/uploads";
             if (!file_exists($targetPath)) {
                 mkdir($targetPath);
             }
-            if ($_FILES['files']['size'][0] > C('NEWS_MAX_UPLOAD_FILE_SIZE')) {
+            if ($_FILES['files']['size'][0] > C('ADVERTISEMENT_MAX_UPLOAD_FILE_SIZE')) {
                 $this->ajaxReturn(array(
                     'status' => false,
                     'msg' => 'Image file is too large, please choose another picture.'
@@ -266,7 +226,7 @@ class NewsAction extends AdminAction {
             } else {
                 $fileParts = pathinfo($_FILES['files']['name'][0]);
                 $tempFile = $_FILES['files']['tmp_name'][0];
-                if (in_array(strtolower($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
+                if (in_array(strtolower($fileParts['extension']), C('ADVERTISEMENT_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
                     $uploadFileName = $this->generateTargetFileName($fileParts['extension']);
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);
@@ -295,7 +255,7 @@ class NewsAction extends AdminAction {
      * @return string
      */
     private function generateTargetFileName($extension) {
-        return "news_" . time() . rand(1000, 9999) . "." . $extension;
+        return "ad_" . time() . rand(1000, 9999) . "." . $extension;
     }
 
 }

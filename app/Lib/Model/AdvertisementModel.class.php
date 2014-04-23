@@ -1,52 +1,55 @@
 <?php
 
 /**
- * easy_news table's Model
+ * easy_advertisement table's Model
  *
  * @author lzjjie
  * @version 1.0.0
  * @since 1.0.0
  */
-class NewsModel extends Model {
+class AdvertisementModel extends Model {
 
     /**
-     * Add a news
+     * Add an advertisement
      *
      * @param string $title
-     *            News title
+     *            Advertisement title
      * @param int $language
-     *            News language
+     *            Advertisement language
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param string $content
-     *            News content
+     *            Advertisement content
      * @param array $image
-     *            News images
+     *            Advertisement images
      * @return array
      */
-    public function addNews($title, $language, $content, array $image) {
+    public function addAdvertisement($title, $language, $business_model, $content, array $image) {
         $data = array(
             'title' => $title,
             'language' => $language,
+            'business_model' => $business_model,
             'content' => $content,
             'add_time' => time()
         );
         // Start transaction
         $this->startTrans();
         if ($this->add($data)) {
-            $news_id = $this->getLastInsID();
-            // Add successful,add news image
-            if (D('NewsImage')->addNewsImage($news_id, $data['add_time'], $image)) {
+            $advertisement_id = $this->getLastInsID();
+            // Add successful,add advertisement image
+            if (D('AdvertisementImage')->addAdvertisementImage($advertisement_id, $data['add_time'], $image)) {
                 // Add image successful,commit transaction
                 $this->commit();
                 return array(
                     'status' => true,
-                    'msg' => 'Add news successful'
+                    'msg' => 'Add advertisement successful'
                 );
             } else {
                 // Add images failed,rollback transaction
                 $this->rollback();
                 return array(
                     'status' => false,
-                    'msg' => 'Add news image(s) failed'
+                    'msg' => 'Add advertisement_id image(s) failed'
                 );
             }
         } else {
@@ -54,19 +57,19 @@ class NewsModel extends Model {
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => 'Add news failed'
+                'msg' => 'Add advertisement failed'
             );
         }
     }
 
     /**
-     * Delete news
+     * Delete advertisement
      *
      * @param array $id
-     *            News id
+     *            Advertisement id
      * @return array
      */
-    public function deleteNews(array $id) {
+    public function deleteAdvertisement(array $id) {
         // Start transaction
         $this->startTrans();
         if ($this->where(array(
@@ -75,20 +78,20 @@ class NewsModel extends Model {
                 $id
             )
         ))->delete()) {
-            // Delete successful,delete the news image
-            if (D('NewsImage')->deleteNewsImage($id)) {
-                // Delete news image successful, commit transaction
+            // Delete successful,delete the advertisement image
+            if (D('AdvertisementImage')->deleteAdvertisementImage($id)) {
+                // Delete advertisement image successful, commit transaction
                 $this->commit();
                 return array(
                     'status' => true,
-                    'msg' => 'Delete news succeddful'
+                    'msg' => 'Delete advertisement succeddful'
                 );
             } else {
-                // Delete news image failed, rollback transaction
+                // Delete advertisement image failed, rollback transaction
                 $this->rollback();
                 return array(
                     'status' => false,
-                    'msg' => 'Delete news image failed'
+                    'msg' => 'Delete advertisement image failed'
                 );
             }
         } else {
@@ -96,19 +99,19 @@ class NewsModel extends Model {
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => 'Delete news failed'
+                'msg' => 'Delete advertisement failed'
             );
         }
     }
 
     /**
-     * Get news count
+     * Get advertisement count
      *
      * @param string $keyword
      *            Keyword
      * @return int
      */
-    public function getNewsCount($keyword) {
+    public function getAdvertisementCount($keyword) {
         return (int) (empty($keyword) ? $this->count() : $this->where(array(
             'title' => array(
                 'like',
@@ -118,7 +121,7 @@ class NewsModel extends Model {
     }
 
     /**
-     * Get news list
+     * Get advertisement list
      *
      * @param int $page
      *            Current page
@@ -131,7 +134,7 @@ class NewsModel extends Model {
      * @param string $keyword
      *            Keyword
      */
-    public function getNewsList($page, $pageSize, $order, $sort, $keyword) {
+    public function getAdvertisementList($page, $pageSize, $order, $sort, $keyword) {
         $offset = ($page - 1) * $pageSize;
         empty($keyword) || $this->where(array(
             'title' => array(
@@ -143,21 +146,23 @@ class NewsModel extends Model {
     }
 
     /**
-     * Update a news
+     * Update an advertisement
      *
      * @param int $id
-     *            News id
+     *            Advertisement id
      * @param string $title
-     *            News title
+     *            Advertisement title
      * @param int $language
-     *            News language
+     *            Advertisement language
+     * @param int $business_model
+     *            Business model (1:b2c,2:b2b)
      * @param string $content
-     *            News content
+     *            Advertisement content
      * @param array|null $image
-     *            News images
+     *            Advertisement images
      * @return array
      */
-    public function updateNews($id, $title, $language, $content, $image) {
+    public function updateAdvertisement($id, $title, $language, $business_model, $content, $image) {
         $update_time = time();
         // Start transaction
         $this->startTrans();
@@ -166,43 +171,44 @@ class NewsModel extends Model {
         ))->save(array(
             'title' => $title,
             'language' => $language,
+            'business_model' => $business_model,
             'content' => $content,
             'update_time' => $update_time
         ))) {
-            // Update news successful,update news image
-            if (D('NewsImage')->updateNewsImage($id, $update_time)) {
-                // Update news image successful,add new news image
+            // Update advertisement successful,update advertisement image
+            if (D('AdvertisementImage')->updateAdvertisementImage($id, $update_time)) {
+                // Update advertisement image successful,add new advertisement image
                 if ($image) {
-                    if (D('NewsImage')->addNewsImage($id, $update_time, $image)) {
-                        // Add new news image successful,commit transaction
+                    if (D('AdvertisementImage')->addAdvertisementImage($id, $update_time, $image)) {
+                        // Add new advertisement image successful,commit transaction
                         $this->commit();
                         return array(
                             'status' => true,
-                            'msg' => 'Update news successful'
+                            'msg' => 'Update advertisement successful'
                         );
                     } else {
-                        // Add new news image failed,rollback transaction
+                        // Add new advertisement image failed,rollback transaction
                         $this->rollback();
                         return array(
                             'status' => false,
-                            'msg' => 'Add new news image failed'
+                            'msg' => 'Add new advertisement image failed'
                         );
                     }
                 } else {
-                    // No new news image,commit transaction
+                    // No new advertisement image,commit transaction
                     $this->commit();
                     return array(
                         'status' => true,
-                        'msg' => 'Update news successful'
+                        'msg' => 'Update advertisement successful'
                     );
                 }
             }
         } else {
-            // Update news failed,rollback transaction
+            // Update advertisement failed,rollback transaction
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => 'Update news failed'
+                'msg' => 'Update advertisement failed'
             );
         }
     }

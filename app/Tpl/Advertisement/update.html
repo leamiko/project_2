@@ -1,0 +1,223 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>Edit an advertisement
+                </div>
+            </div>
+        </div>
+        <div class="top_6">
+            <table cellpadding="10" cellspacing="10" class="tab">
+                <tr height="60px">
+                    <td align="right">Title:&nbsp;&nbsp;</td>
+                    <td><input type="text" id="title" value="<{$advertisement['title']}>" /></td>
+                </tr>
+                <tr height="60px">
+                    <td align="right">Language:&nbsp;&nbsp;</td>
+                    <td>
+                        <input type="radio" value="1" name="language"<if condition="$advertisement['language'] eq 1"> checked</if> />&nbsp;&nbsp;Chinese
+                        <input type="radio" value="2" name="language"<if condition="$advertisement['language'] eq 2"> checked</if> />&nbsp;&nbsp;English
+                        <input type="radio" value="3" name="language"<if condition="$advertisement['language'] eq 3"> checked</if> />&nbsp;&nbsp;Arabic
+                    </td>
+                </tr>
+                <tr height="60px">
+                    <td align="right">Business model:&nbsp;&nbsp;</td>
+                    <td>
+                        <select id="business_model">
+                            <option value="1"<if condition="$advertisement['business_model'] eq 1"> selected</if>>b2c</option>
+                            <option value="2"<if condition="$advertisement['business_model'] eq 2"> selected</if>>b2b</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Content:&nbsp;&nbsp;</td>
+                    <td><textarea id="content"><{$advertisement['content']}></textarea></td>
+                </tr>
+                <tr>
+                    <td align="right" class="l-table-edit-td">
+                        Advertisement Picture：
+                    </td>
+                    <td align="left" class="l-table-edit-td">
+                        <span class="btn btn-success fileinput-button" style="color: #fff;">
+                            &nbsp;&nbsp;Select
+                            <input id="fileupload" type="file" name="files[]" multiple />
+                        </span><span class="tipmsg">&nbsp;&nbsp;Only can upload 6 pictures at most</span><br /><br />
+                        <div id="progress" class="progress" style="display: none;">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <ul id="image_box">
+                            <volist name = "advertisement_images" id = "val">
+                            <li>
+                                <a href="<{$val['src']}>" target="_blank" title="Click to see the source" class="image-preview-outter">
+                                    <img src="<{$val['src']}>" width="160" height="90" border="0" />
+                                </a> 
+                                <a href="javascript:void(0);" onclick="update_picture('<{$val['image']}>', $(this), <{$val['id']}>);" class="image-preview-delete" title="Delete">
+                                </a> 
+                            </li>
+                            </volist>
+                        </ul>
+                    </td>
+                </tr>
+                <tr height="60px">
+                    <td colspan="2" align="center"><input class="btn btn-primary" type="button" value="Save" onclick="saveAdvertisement()" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+<!--
+body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{width:130px}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px}.l-verify-tip{left:230px;top:120px}.l-table-edit tr td span{color:#f30;padding-left:5px}.tipmsg{color:#f30}#image_box{width:90%;clear:both;margin:12px auto}#image_box li{display:inline-block;position:relative;margin:6px 3px}#image_box li a img{width:160px;height:90px}.image-preview{position:relative;margin-top:16px}.image-preview-outter{display:block}.image-preview-delete{display:block;position:absolute;top:0;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px}#add_goods_button{width:100%;text-align:center;margin:12px auto}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
+-->
+</style>
+<script type="text/javascript" src="__PUBLIC__/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+CKEDITOR.disableAutoInline = true;
+var image_count = [<{$image_count}>];
+var update_image = new Array();
+$(function() {
+    var editor = $("#content").ckeditor({
+        width         : 700,
+        height        : 300,
+        language      : 'en',
+        filebrowserUploadUrl: '<{:U("advertisement/upload")}>'
+    });
+    $('#fileupload').fileupload({
+        acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
+        maxFileSize : 2097152,
+        minFileSize : 1,
+        url : '<{:U("advertisement/upload_advertisement_image")}>',
+        dataType : 'json',
+        send : function(e, data) {
+            $("#progress").show();
+        },
+        done : function(e, data) {
+            if (data.result.status) {
+                $("#progress").hide();
+                if (parseInt(image_count.length + update_image.length) < 6) {
+                    update_image.push(data.result.filename);
+                    $("#image_box").append("<li>" +
+                                           "<a href='" + data.result.src + "' target='_blank' title='Click to see the source' class='image-preview-outter'>" +
+                                           "<img src='" + data.result.src + "' width='160' height='90' border='0' />" +
+                                           "</a>" + 
+                                           "<a href='javascript:void(0);' onclick=\"delete_image(\'" + data.result.filename + "\', $(this));\" class='image-preview-delete' title='Delete'>" +
+                                           "</a>" + 
+                                           "</li>");
+                } else {
+                    delete_another_image(data.result.filename);
+                }
+            } else {
+                $("#image_tip").html(data.result.msg);
+            }
+        },
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css('width', progress + '%');
+        }
+    });
+});
+
+//Check title
+function ckTitle() {
+    var title = $.trim($("#title").val());
+    if (title.length <= 0) {
+        $.ligerDialog.alert('Advertisement title can not be empty.');
+        return false;
+    }
+    return true;
+}
+
+//Check content
+function ckContent() {
+    var content = $.trim($("#content").val());
+    if (content.length <= 0) {
+        $.ligerDialog.alert('Advertisement content can not be empty.');
+        return false;
+    }
+    return true;
+}
+
+//Check Images
+function ckImage() {
+    if (parseInt(image_count.length + update_image.length) <= 0) {
+        $.ligerDialog.alert('Please upload one Advertisement picture at least.');
+        return false;
+    }
+    return true;
+}
+
+// Save advertisement
+function saveAdvertisement() {
+    if (!ckTitle()) return false;
+    if (!ckContent()) return false;
+    if (!ckImage()) return false;
+    var title = $.trim($("#title").val());
+    var language = $("input[name='language']").filter(":checked").val();
+    var business_model = $("#business_model").val();
+    var content = $.trim($("#content").val());
+    var post_data = {
+            title: title,
+            language: language,
+            business_model: business_model,
+            content: content,
+            image: update_image.length ? update_image : ''
+    };
+    $.post("<{:U('advertisement/update')}>/id/<{$advertisement["id"]}>", post_data, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+            window.location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+
+//Delete image
+function delete_image(filename, obj) {
+    $.post('<{:U("advertisement/delete_image")}>', {
+        filename : filename
+    }, function(data) {
+        if (data.status) {
+            obj.parent().remove();
+            var index = update_image.indexOf(filename);
+            update_image.splice(index, 1);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+
+//Delete excess image
+function delete_another_image(filename) {
+    $.post('<{:U("advertisement/delete_image")}>', {
+        filename: filename
+    });
+}
+
+//Update Picture
+function update_picture(filename, obj, id) {
+    $.post('<{:U("advertisement/update_image")}>', {id: id}, function(data) {
+        if (data.status) {
+            obj.parent().remove();
+            var index = image_count.indexOf(filename);
+            image_count.splice(index, 1);
+            $.ligerDialog.alert(data.msg, 'Success(>_<)', 'success');
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

@@ -127,6 +127,48 @@ class ApiAction extends Action {
     }
 
     /**
+     * Advertisement list
+     */
+    public function advertisement_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
+            if (!in_array($business_model, array(
+                1,
+                2
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('Advertisement')->where(array(
+                'business_model' => $business_model
+            ))->order("add_time DESC")->limit(6)->select();
+            if (!empty($result)) {
+                foreach ($result as &$v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $v['image'] = M('AdvertisementImage')->field(array(
+                        'image'
+                    ))->where(array(
+                        'advertisement_id' => $v['id'],
+                        'is_delete' => 0
+                    ))->select();
+                    foreach ($v['image'] as &$v_1) {
+                        $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
+                    }
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Area list
      */
     public function area_list() {
@@ -480,6 +522,7 @@ class ApiAction extends Action {
                 'result' => $result
             ));
         } else {
+            $this->redirect('/');
         }
     }
 
