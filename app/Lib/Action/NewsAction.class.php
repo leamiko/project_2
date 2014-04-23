@@ -229,7 +229,7 @@ class NewsAction extends AdminAction {
             } else {
                 $fileParts = pathinfo($_FILES['upload']['name']);
                 $tempFile = $_FILES['upload']['tmp_name'];
-                if (in_array(strtoupper($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
+                if (in_array(strtolower($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
                     $uploadFileName = $this->generateTargetFileName($fileParts['extension']);
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);
@@ -266,7 +266,7 @@ class NewsAction extends AdminAction {
             } else {
                 $fileParts = pathinfo($_FILES['files']['name'][0]);
                 $tempFile = $_FILES['files']['tmp_name'][0];
-                if (in_array(strtoupper($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
+                if (in_array(strtolower($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
                     $uploadFileName = $this->generateTargetFileName($fileParts['extension']);
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);
