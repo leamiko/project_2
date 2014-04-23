@@ -229,12 +229,11 @@ class NewsAction extends AdminAction {
             } else {
                 $fileParts = pathinfo($_FILES['upload']['name']);
                 $tempFile = $_FILES['upload']['tmp_name'];
-                if (in_array($fileParts['extension'], C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
+                if (in_array(strtoupper($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
                     $uploadFileName = $this->generateTargetFileName($fileParts['extension']);
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);
                     $fileName = '/uploads/news/' . $uploadFileName;
-                    // $fileName = 'http://' . $_SERVER['HTTP_HOST'] . '/uploads/news/' . $uploadFileName;
                     $funcNum = $_GET['CKEditorFuncNum'];
                     echo "<script type='text/javascript'>
                     window.parent.CKEDITOR.tools.callFunction($funcNum, '$fileName');
@@ -259,7 +258,7 @@ class NewsAction extends AdminAction {
             if (!file_exists($targetPath)) {
                 mkdir($targetPath);
             }
-            if ($_FILES['files']['size'][0] > C('GOODS_MAX_UPLOAD_FILE_SIZE')) {
+            if ($_FILES['files']['size'][0] > C('NEWS_MAX_UPLOAD_FILE_SIZE')) {
                 $this->ajaxReturn(array(
                     'status' => false,
                     'msg' => 'Image file is too large, please choose another picture.'
@@ -267,7 +266,7 @@ class NewsAction extends AdminAction {
             } else {
                 $fileParts = pathinfo($_FILES['files']['name'][0]);
                 $tempFile = $_FILES['files']['tmp_name'][0];
-                if (in_array($fileParts['extension'], C('GOODS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
+                if (in_array(strtoupper($fileParts['extension']), C('NEWS_ALLOW_UPLOAD_IMAGE_EXTENSION'))) {
                     $uploadFileName = $this->generateTargetFileName($fileParts['extension']);
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);

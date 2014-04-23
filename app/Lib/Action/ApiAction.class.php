@@ -464,13 +464,15 @@ class ApiAction extends Action {
                 foreach ($result as &$v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
-                    $image = M('NewsImage')->field(array(
+                    $v['image'] = M('NewsImage')->field(array(
                         'image'
                     ))->where(array(
                         'news_id' => $v['id'],
                         'is_delete' => 0
-                    ))->order("id ASC")->find();
-                    $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$image['image']}";
+                    ))->select();
+                    foreach ($v['image'] as &$v_1) {
+                        $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
+                    }
                 }
             }
             $this->ajaxReturn(array(
