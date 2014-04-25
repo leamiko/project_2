@@ -294,10 +294,11 @@ class ApiAction extends Action {
      */
     public function child_category_list() {
         if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
-            if ($p_cate_id < 1 || $page < 1 || $pageSize < 0) {
+            if ($user_id < 1 || $p_cate_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameters'
@@ -309,6 +310,11 @@ class ApiAction extends Action {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
+                    $v['isSubscription'] = M('Subscription')->where(array(
+                        'user_id' => $user_id,
+                        'p_cate_id' => $p_cate_id,
+                        'c_cate_id' => $v['id']
+                    ))->count() ? 1 : 0;
                 }
             }
             $this->ajaxReturn(array(
@@ -499,8 +505,20 @@ class ApiAction extends Action {
      */
     public function home_page_news_list() {
         if ($this->isPost() || $this->isAjax()) {
+            $language = isset($_POST['language']) ? $_POST['language'] : $this->redirect('/');
+            if (!in_array($language, array(
+                1,
+                2,
+                3
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
             $result = M('News')->where(array(
-                'type' => 1
+                'type' => 1,
+                'language' => $language
             ))->order("add_time DESC")->limit(6)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
@@ -769,15 +787,22 @@ class ApiAction extends Action {
      */
     public function news_list() {
         if ($this->isPost() || $this->isAjax()) {
+            $language = isset($_POST['language']) ? $_POST['language'] : $this->redirect('/');
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
-            if ($page < 1 || $pageSize < 0) {
+            if (!in_array($language, array(
+                1,
+                2,
+                3
+            )) || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameter'
                 ));
             }
-            $result = D('News')->getNewsList($page, $pageSize, "add_time", "DESC", '');
+            $result = M('News')->where(array(
+                'language' => $language
+            ))->order("add_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];

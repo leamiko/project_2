@@ -178,9 +178,11 @@ class NewsAction extends AdminAction {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            $language = isset($_POST['language']) ? intval($_POST['language']) : $this->redirect('/');
             $news = M('News');
             if (intval($news->where(array(
-                'type' => 1
+                'type' => 1,
+                'language' => $language
             ))->count()) >= 6 && $type == 1) {
                 $this->ajaxReturn(array(
                     'status' => false,

@@ -51,7 +51,7 @@ $(function(){
             {display: "Edit", align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
                     var str = parseInt(rowdata.type) ? 'Pull from App home page' : 'Push to App home page';
                     var type = parseInt(rowdata.type) ? 0 : 1;
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a> | <a href="javascript:void(0);" onclick="updateNewsType('+rowdata.id+', '+type+')">' + str + '</a>';
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a> | <a href="javascript:void(0);" onclick="updateNewsType('+rowdata.id+', '+type+', '+rowdata.language+')">' + str + '</a>';
                 }
             }
             ],
@@ -105,8 +105,8 @@ function update(id) {
 }
 
 //Update news type
-function updateNewsType(id, type) {
-    $.post("<{:U('news/update_news_type')}>", {id: id, type: type}, function(data) {
+function updateNewsType(id, type, language) {
+    $.post("<{:U('news/update_news_type')}>", {id: id, type: type, language: language}, function(data) {
         if (data.status) {
             $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
             location.reload(true);

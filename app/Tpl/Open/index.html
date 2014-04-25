@@ -462,6 +462,7 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
+                        int user_id: 1,
                         int p_cate_id: 1,
                         int page: 1,
                         int pageSize: 15
@@ -969,6 +970,7 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
+                        int language: 1(1:Chinese,2:English,3:Arabic),<br />
                         int page: 1,<br />
                         int pageSize: 15
                     </td>
@@ -999,12 +1001,16 @@
                 <tr>
                     <td>Parameters：</td>
                     <td>
-                        No
+                        int language: 1(1:Chinese,2:English,3:Arabic)
                     </td>
                 </tr>
                 <tr>
                     <td>Successful return：</td>
                     <td><div class="success_return_32"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_32"></div></td>
                 </tr>
             </table>
             <div class="api_hr"></div>
@@ -1075,7 +1081,7 @@ $(function() {
     $(".failed_return_12").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_13").JSONView({"status":1,"result":[{"id":"1","name":"Agriculture","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13980656277630.png","add_time":"2014-04-21 15:33:49","update_time":null,"is_delete":"0"}]});
     $(".failed_return_13").JSONView({"status":0,"result":"Invalid parameters"});
-    $(".success_return_14").JSONView({"status":1,"result":[{"id":"1","parent_id":"3","name":"Apple","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13961062273505.jpg","add_time":"2014-03-29 22:57:35","update_time":"2014-03-29 23:17:31","is_delete":"0","parent_name":"Agriculture"}]});
+    $(".success_return_14").JSONView({"status":1,"result":[{"id":"1","parent_id":"1","name":"aaaa","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13983977067558.jpg","add_time":"2014-04-25 11:48:26","update_time":null,"is_delete":"0","parent_name":"test","isSubscription":1},{"id":"2","parent_id":"1","name":"bbb","business_model":"1","image":"http:\/\/www.pro2.com\/uploads\/cate_13983977188555.jpg","add_time":"2014-04-25 11:48:39","update_time":null,"is_delete":"0","parent_name":"test","isSubscription":0}]});
     $(".failed_return_14").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_15").JSONView({"status":1,"result":[{"id":"1","c_cate_id":"1","p_cate_id":"3","name":"Red Apple","business_model":"1","item_number":"16E9E6812604419F","price":"12.00","sale_amount":null,"unit":"30","size":"12","weight":"100","quality":"120","color":"red","area":"China","pay_method":"2","guarantee":"nothing","stock":"1000","description":"very good","add_time":"2014-03-29 23:38:01","update_time":"2014-03-30 00:38:49","child_category":"Apple","parent_category":"Agriculture","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13961074791465.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13961074798873.jpg"}]},{"id":"3","c_cate_id":"1","p_cate_id":"3","name":"Green Apple","business_model":"1","item_number":"CA1C871B7129A769","price":"13.00","sale_amount":null,"unit":"g","size":"30","weight":"200","quality":"very good","color":"Green","area":"China","pay_method":"1","guarantee":"very good","stock":"1000","description":"very good","add_time":"2014-04-02 00:02:51","update_time":"2014-04-02 00:24:05","child_category":"Apple","parent_category":"Agriculture","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13963681691656.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13963681692633.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13963681704356.jpg"}]},{"id":"4","c_cate_id":"1","p_cate_id":"3","name":"test","business_model":"1","item_number":"3513F740FFB0D661","price":"12.00","sale_amount":null,"unit":"g","size":"121","weight":"12","quality":"sasas","color":"yellow","area":"China","pay_method":"1","guarantee":"asasas","stock":"1000","description":"asasas","add_time":"2014-04-10 23:41:43","update_time":null,"child_category":"Apple","parent_category":"Agriculture","image":[{"image":"http:\/\/www.pro2.com\/uploads\/goods_13971444986822.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13971444999023.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/goods_13971444994133.jpg"}]}]});
     $(".failed_return_15").JSONView({"status":0,"result":"Invalid parameters"});
@@ -1109,9 +1115,10 @@ $(function() {
     $(".failed_return_29").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_30").JSONView({"status":1,"result":[{"id":"1","zip_code":"CH","name_zh":"\u4e2d\u56fd","name_en":"China","name_ar":"yfsdfkjs","add_time":"2014-04-22 23:32:23","update_time":null}]});
     $(".failed_return_30").JSONView({"status":0,"result":"Invalid parameter"});
-    $(".success_return_31").JSONView({"status":1,"result":[{"id":"3","title":"sdsdsd","content":"<p>sdsdsdsdsdsd<img alt=\"\" src=\"\/uploads\/news\/news_13981876884345.jpg\" style=\"height:115px; width:205px\" \/><\/p>","language":"2","add_time":"2014-04-23 01:28:34","update_time":"2014-04-23 01:35:56","image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13981877137234.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981877135261.jpg"}]},{"id":"2","title":"yhdkjfs","content":"<p>sdsghfdg<\/p>","language":"2","add_time":"2014-04-23 01:19:29","update_time":"2014-04-23 01:20:00","image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871681919.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871682983.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871683943.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871982583.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871983184.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13981871983635.jpg"}]}]});
+    $(".success_return_31").JSONView({"status":1,"result":[{"id":"14","type":"0","title":"14","content":"<p>14<\/p>","language":"1","add_time":"2014-04-25 12:26:27","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999868299.jpg"}]},{"id":"13","type":"1","title":"13","content":"<p>13<\/p>","language":"1","add_time":"2014-04-25 12:26:18","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999778317.jpg"}]},{"id":"12","type":"1","title":"12","content":"<p>12<\/p>","language":"1","add_time":"2014-04-25 12:26:09","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999683814.jpg"}]},{"id":"11","type":"1","title":"11","content":"<p>11<\/p>","language":"1","add_time":"2014-04-25 12:25:58","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999572641.jpg"}]},{"id":"10","type":"1","title":"10","content":"<p>10<\/p>","language":"1","add_time":"2014-04-25 12:25:48","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999463742.jpg"}]},{"id":"9","type":"1","title":"9","content":"<p>9<\/p>","language":"1","add_time":"2014-04-25 12:25:36","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999346224.jpg"}]},{"id":"8","type":"1","title":"8","content":"<p>8<\/p>","language":"1","add_time":"2014-04-25 12:25:24","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983999234996.jpg"}]}]});
     $(".failed_return_31").JSONView({"status":0,"result":"Invalid parameter"});
-    $(".success_return_32").JSONView({"status":1,"result":[{"id":"1","type":"1","title":"sdsd","content":"<p>asasdasd<\/p>","language":"2","add_time":"2014-04-23 18:16:42","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13982481715652.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/news_13982481982104.jpg"}]}]});
+    $(".success_return_32").JSONView({"status":1,"result":[{"id":"6","type":"1","title":"6","content":"<p>6<\/p>","language":"2","add_time":"2014-04-25 12:24:53","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983998916179.jpg"}]},{"id":"5","type":"1","title":"5","content":"<p>5<\/p>","language":"2","add_time":"2014-04-25 12:24:38","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983998764373.jpg"}]},{"id":"4","type":"1","title":"4","content":"<p>4<\/p>","language":"2","add_time":"2014-04-25 12:24:28","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983998678134.jpg"}]},{"id":"3","type":"1","title":"3","content":"<p>3<\/p>","language":"2","add_time":"2014-04-25 12:24:20","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983998582275.jpg"}]},{"id":"2","type":"1","title":"2","content":"<p>2<\/p>","language":"2","add_time":"2014-04-25 12:24:11","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983998507771.jpg"}]},{"id":"1","type":"1","title":"1","content":"<p>s<\/p>","language":"2","add_time":"2014-04-25 12:24:02","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/news_13983998401347.jpg"}]}]});
+    $(".failed_return_32").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_33").JSONView({"status":1,"result":[{"id":"2","business_model":"1","title":"this is a test","content":"<p>this is a test<\/p>","language":"2","add_time":"2014-04-24 00:00:18","update_time":null,"image":[{"image":"http:\/\/www.pro2.com\/uploads\/ad_13982688165381.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/ad_13982688164927.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/ad_13982688163607.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/ad_13982688161197.jpg"},{"image":"http:\/\/www.pro2.com\/uploads\/ad_13982688165318.jpg"}]}]});
     $(".failed_return_33").JSONView({"status":0,"result":"Invalid parameters"});
 });
