@@ -12,14 +12,17 @@ class NotificationModel extends Model {
     /**
      * Add notification
      *
+     * @param int $vip_only
+     *            Only for vip user(1:yes, 0:no)
      * @param string $content
      *            Notification content
      * @return array
      */
-    public function addNotification($content) {
+    public function addNotification($vip_only, $content) {
         // Start transaction
         $this->startTrans();
         if ($this->add(array(
+            'vip_only' => $vip_only,
             'content' => $content,
             'add_time' => time()
         ))) {

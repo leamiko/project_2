@@ -1,46 +1,22 @@
 <include file="./Public/html/header.html" />
 <style type="text/css">
 <!--
-body {
-    font-size: 12px;
-}
-
-.l-table-edit-td {
-    padding: 10px 20px;
-}
-
-.l-table-edit-td input {
-    width: 130px;
-}
-
-.l-button-submit,.l-button-test {
-    width: 80px;
-    float: left;
-    margin-left: 10px;
-    padding-bottom: 2px;
-}
-
-.l-verify-tip {
-    left: 230px;
-    top: 120px;
-}
-
-.l-table-edit tr td span {
-    color: #f30;
-    padding-left: 5px;
-}
-
-.tipmsg {
-    color: #f30;
-}
-
-#content {
-    height:100px;
-    width:300px;
-}
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}#content{height:100px;width:300px;}
 -->
 </style>
 <table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td">
+            <span>*</span>For vip only:
+        </td>
+        <td>
+            <select id="vip_only">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
     <tr>
         <td align="right" class="l-table-edit-td">
             <span>*</span>Content:
@@ -91,8 +67,9 @@ function ckContent() {
 //Check Form
 function checkForm() {
     if (!ckContent()) return false;
+    var vip_only = $("#vip_only").val();
     var content = $.trim($("#content").val());
-    return {content: content};
+    return {vip_only: vip_only, content: content};
 }
 
 //Submit form

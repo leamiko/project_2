@@ -14,8 +14,9 @@ class SettingAction extends AdminAction {
      */
     public function add_notification() {
         if ($this->isAjax()) {
+            $vip_only = isset($_POST['vip_only']) ? intval($_POST['vip_only']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
-            $this->ajaxReturn(D('Notification')->addNotification($content));
+            $this->ajaxReturn(D('Notification')->addNotification($vip_only, $content));
         } else {
             $this->display();
         }
@@ -67,12 +68,47 @@ class SettingAction extends AdminAction {
     public function push_notification() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $vip_only = isset($_POST['vip_only']) ? intval($_POST['vip_only']) : $this->redirect('/');
+            $flag = false;
             $message = M('Notification')->field(array(
                 'content'
             ))->where(array(
                 'id' => $id
             ))->find();
-            if (push($message['content'])) {
+            if ($vip_only) {
+                $result = M('Member')->field(array(
+                    'id'
+                ))->where(array(
+                    'is_vip' => 1
+                ))->select();
+                $vips = array();
+                if (!empty($result)) {
+                    $i = ceil(count($result) / 1000);
+                    for ($j = 1; $j <= $i; $j++) {
+                        $alias = "";
+                        $length = min(array(
+                            ($j * 1000),
+                            count($result)
+                        ));
+                        for ($k = ($j - 1) * 1000; $k < $length; $k++) {
+                            $alias .= $result[$k]['id'] . ",";
+                        }
+                        $vips[] = rtrim($alias, ",");
+                    }
+                }
+                if ($vips) {
+                    for ($i = 0; $i < count($vips); $i++) {
+                        if (push($message['content'], 3, $vips[$i])) {
+                            $flag = true;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else {
+                $flag = push($message['content']);
+            }
+            if ($flag) {
                 $this->ajaxReturn(array(
                     'status' => true,
                     'msg' => 'Push notificatio successful'
