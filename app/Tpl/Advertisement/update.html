@@ -96,6 +96,22 @@ $(function() {
         minFileSize : 1,
         url : '<{:U("advertisement/upload_advertisement_image")}>',
         dataType : 'json',
+        submit : function(e, data) {
+            if (parseInt(image_count.length + update_image.length) >= 6) {
+                $.ligerDialog.alert('There are already have 6 pictures.', 'Error(>_<)', 'warn');
+                return false;
+            }
+            var file =  data.files[0];
+            if (file.size > 2097152) {
+                $.ligerDialog.alert('file is too large, please upload another one.', 'Error(>_<)', 'warn');
+                return false;
+            }
+            var reg = /jpe?g|png/i;
+            if (!reg.test(file.type)) {
+                $.ligerDialog.alert('Unsupported image format.', 'Error(>_<)', 'warn');
+                return false;
+            }
+        },
         send : function(e, data) {
             $("#progress").show();
         },
@@ -115,7 +131,7 @@ $(function() {
                     delete_another_image(data.result.filename);
                 }
             } else {
-                $("#image_tip").html(data.result.msg);
+                $.ligerDialog.alert(data.result.msg, 'Error(>_<)', 'warn');
             }
         },
         progressall : function(e, data) {

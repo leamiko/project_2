@@ -56,6 +56,18 @@ $(function() {
         minFileSize: 1,
         url: '<{:U("Category/upload")}>',
         dataType: 'json',
+        submit : function(e, data) {
+            var file =  data.files[0];
+            if (file.size > 2097152) {
+                $.ligerDialog.alert('file is too large, please upload another one.', 'Error(>_<)', 'warn');
+                return false;
+            }
+            var reg = /jpe?g|png/i;
+            if (!reg.test(file.type)) {
+                $.ligerDialog.alert('Unsupported image format.', 'Error(>_<)', 'warn');
+                return false;
+            }
+        },
         send: function (e, data) {
             $("#progress").show();
         },
