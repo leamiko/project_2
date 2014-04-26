@@ -146,6 +146,7 @@ class ApiAction extends Action {
             ))->order("add_time DESC")->limit(6)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
+                    $v['content'] = preg_replace("/src=\"(.+)\"/U", "src=\"http://{$_SERVER['HTTP_HOST']}$1\"", $v['content']);
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['image'] = M('AdvertisementImage')->field(array(
@@ -522,6 +523,7 @@ class ApiAction extends Action {
             ))->order("add_time DESC")->limit(6)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
+                    $v['content'] = preg_replace("/src=\"(.+)\"/U", "src=\"http://{$_SERVER['HTTP_HOST']}$1\"", $v['content']);
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['image'] = M('NewsImage')->field(array(
@@ -804,6 +806,7 @@ class ApiAction extends Action {
                 'language' => $language
             ))->order("add_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
+                $v['content'] = preg_replace("/src=\"(.+)\"/U", "src=\"http://{$_SERVER['HTTP_HOST']}$1\"", $v['content']);
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                 $v['image'] = M('NewsImage')->field(array(
@@ -1276,17 +1279,6 @@ class ApiAction extends Action {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => 'Invalid parameters'
-                ));
-            }
-            $is_vip = M('Member')->field(array(
-                'is_vip'
-            ))->where(array(
-                'id' => $user_id
-            ))->find();
-            if (!$is_vip['is_vip']) {
-                $this->ajaxReturn(array(
-                    'status' => 0,
-                    'result' => 'this user is not a vip user'
                 ));
             }
             $subscription = M('Subscription');

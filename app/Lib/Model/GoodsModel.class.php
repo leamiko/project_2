@@ -78,7 +78,7 @@ class GoodsModel extends Model {
             if (D('GoodsImage')->addGoodsImage($goods_id, $p_cate_id, $c_cate_id, $data['add_time'], $image)) {
                 // Add image successful,commit transaction
                 $this->commit();
-                // Push to vip
+                // Push user who subscribed
                 $this->pushGoods($p_cate_id, $c_cate_id, $goods_id);
                 return array(
                     'status' => true,
@@ -414,7 +414,7 @@ class GoodsModel extends Model {
     }
 
     /**
-     * Push new goods to vip user
+     * Push new goods to user
      *
      * @param int $p_cate_id
      *            Parent category
