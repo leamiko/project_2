@@ -131,10 +131,14 @@ class ApiAction extends Action {
      */
     public function advertisement_list() {
         if ($this->isPost() || $this->isAjax()) {
-            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
-            if (!in_array($business_model, array(
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if (!in_array($type, array(
                 1,
-                2
+                2,
+                3,
+                4,
+                5,
+                6
             ))) {
                 $this->ajaxReturn(array(
                     'status' => 0,
@@ -142,7 +146,8 @@ class ApiAction extends Action {
                 ));
             }
             $result = M('Advertisement')->where(array(
-                'business_model' => $business_model
+                'type' => $type,
+                'status' => 1
             ))->order("add_time DESC")->limit(6)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {

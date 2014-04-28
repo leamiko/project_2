@@ -23,11 +23,15 @@
                     </td>
                 </tr>
                 <tr height="60px">
-                    <td align="right">Business model:&nbsp;&nbsp;</td>
+                    <td align="right">Type:&nbsp;&nbsp;</td>
                     <td>
-                        <select id="business_model">
-                            <option value="1"<if condition="$advertisement['business_model'] eq 1"> selected</if>>b2c</option>
-                            <option value="2"<if condition="$advertisement['business_model'] eq 2"> selected</if>>b2b</option>
+                        <select id="type">
+                            <option value="1"<if condition="$advertisement['type'] eq 1"> selected</if>>Shop</option>
+                            <option value="2"<if condition="$advertisement['type'] eq 2"> selected</if>>Factory</option>
+                            <option value="3"<if condition="$advertisement['type'] eq 3"> selected</if>>Auction</option>
+                            <option value="4"<if condition="$advertisement['type'] eq 4"> selected</if>>Sell&Buy</option>
+                            <option value="5"<if condition="$advertisement['type'] eq 5"> selected</if>>Shipping</option>
+                            <option value="6"<if condition="$advertisement['type'] eq 6"> selected</if>>Home</option>
                         </select>
                     </td>
                 </tr>
@@ -177,12 +181,12 @@ function saveAdvertisement() {
     if (!ckImage()) return false;
     var title = $.trim($("#title").val());
     var language = $("input[name='language']").filter(":checked").val();
-    var business_model = $("#business_model").val();
+    var type = $("#type").val();
     var content = $.trim($("#content").val());
     var post_data = {
             title: title,
             language: language,
-            business_model: business_model,
+            type: type,
             content: content,
             image: update_image.length ? update_image : ''
     };

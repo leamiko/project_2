@@ -25,9 +25,13 @@
                 <tr height="60px">
                     <td align="right">Business model:&nbsp;&nbsp;</td>
                     <td>
-                        <select id="business_model">
-                            <option value="1">b2c</option>
-                            <option value="2">b2b</option>
+                        <select id="type">
+                            <option value="1">Shop</option>
+                            <option value="2">Factory</option>
+                            <option value="3">Auction</option>
+                            <option value="4">Sell&Buy</option>
+                            <option value="5">Shipping</option>
+                            <option value="6">Home</option>
                         </select>
                     </td>
                 </tr>
@@ -167,9 +171,16 @@ function saveAdvertisement() {
     if (!ckImage()) return false;
     var title = $.trim($("#title").val());
     var language = $("input[name='language']").filter(":checked").val();
-    var business_model = $("#business_model").val();
+    var type = $("#type").val();
     var content = $.trim($("#content").val());
-    $.post("<{:U('advertisement/add')}>", {title: title, language: language, business_model: business_model, content: content, image: image_count}, function(data) {
+    var post_data = {
+            title: title,
+            language: language,
+            type: type,
+            content: content,
+            image: image_count
+    };
+    $.post("<{:U('advertisement/add')}>", post_data, function(data) {
         if (data.status) {
             $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
             window.location.reload(true);

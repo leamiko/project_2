@@ -16,10 +16,10 @@ class AdvertisementAction extends AdminAction {
         if ($this->isAjax()) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : $this->redirect('/');
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
-            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $business_model, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $type, $content, $image));
         } else {
             $this->display();
         }
@@ -109,7 +109,7 @@ class AdvertisementAction extends AdminAction {
         if ($this->isAjax()) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : $this->redirect('/');
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
-            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? $_POST['image'] : $this->redirect('/');
             if (is_string($image)) {
@@ -117,7 +117,7 @@ class AdvertisementAction extends AdminAction {
             } else {
                 $image = (array) $image;
             }
-            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $business_model, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $type, $content, $image));
         } else {
             $this->assign('advertisement', M('Advertisement')->where(array(
                 'id' => $id
@@ -137,6 +137,20 @@ class AdvertisementAction extends AdminAction {
             $this->assign('advertisement_images', $advertisement_images);
             $this->assign('image_count', rtrim($image_count, ","));
             $this->display();
+        }
+    }
+
+    /**
+     * Update advertisement status
+     */
+    public function update_advertisement_status() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            $this->ajaxReturn(D('Advertisement')->updateAdvertisementStatus($id, $status, $type));
+        } else {
+            $this->redirect('/');
         }
     }
 

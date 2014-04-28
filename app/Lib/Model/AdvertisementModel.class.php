@@ -16,19 +16,19 @@ class AdvertisementModel extends Model {
      *            Advertisement title
      * @param int $language
      *            Advertisement language
-     * @param int $business_model
-     *            Business model(1:b2c,2:b2b)
+     * @param int $type
+     *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
      * @param string $content
      *            Advertisement content
      * @param array $image
      *            Advertisement images
      * @return array
      */
-    public function addAdvertisement($title, $language, $business_model, $content, array $image) {
+    public function addAdvertisement($title, $language, $type, $content, array $image) {
         $data = array(
             'title' => $title,
             'language' => $language,
-            'business_model' => $business_model,
+            'type' => $type,
             'content' => $content,
             'add_time' => time()
         );
@@ -154,15 +154,15 @@ class AdvertisementModel extends Model {
      *            Advertisement title
      * @param int $language
      *            Advertisement language
-     * @param int $business_model
-     *            Business model (1:b2c,2:b2b)
+     * @param int $type
+     *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
      * @param string $content
      *            Advertisement content
      * @param array|null $image
      *            Advertisement images
      * @return array
      */
-    public function updateAdvertisement($id, $title, $language, $business_model, $content, $image) {
+    public function updateAdvertisement($id, $title, $language, $type, $content, $image) {
         $update_time = time();
         // Start transaction
         $this->startTrans();
@@ -171,7 +171,7 @@ class AdvertisementModel extends Model {
         ))->save(array(
             'title' => $title,
             'language' => $language,
-            'business_model' => $business_model,
+            'type' => $type,
             'content' => $content,
             'update_time' => $update_time
         ))) {
@@ -209,6 +209,50 @@ class AdvertisementModel extends Model {
             return array(
                 'status' => false,
                 'msg' => 'Update advertisement failed'
+            );
+        }
+    }
+
+    /**
+     * Update advertisement status
+     *
+     * @param int $id
+     *            Advertisement id
+     * @param int $status
+     *            Advertisement status(1:visible, 0:hidden)
+     * @param int $type
+     *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
+     * @return array
+     */
+    public function updateAdvertisementStatus($id, $status, $type) {
+        if ($this->where(array(
+            'status' => 1,
+            'type' => $type
+        ))->count() >= 6 && $status) {
+            return array(
+                'status' => false,
+                'msg' => 'There are already have six advertisements in this type visible.'
+            );
+        }
+        // Start transaction
+        $this->startTrans();
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'status' => $status
+        ))) {
+            // Update successful, commit transaction
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => 'Update advertisement\'s status successful'
+            );
+        } else {
+            // Update failed, rollback transaction
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => 'Update advertisement\'s status failed'
             );
         }
     }

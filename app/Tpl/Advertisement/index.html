@@ -39,13 +39,25 @@ $(function(){
                     }
                 }
             },
-            {display: "Business model", name: 'business_model', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Business model", name: 'type', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
                         case 1 :
-                            return 'b2c';
+                            return 'Shop';
                         case 2 :
-                            return 'b2b';
+                            return 'Factory';
+                        case 3 :
+                            return 'Auction';
+                        case 4 :
+                            return 'Sell&Buy';
+                        case 5 :
+                            return 'Shipping';
+                        case 6 :
+                            return 'Home';
                     }
+                }
+            },
+            {display: "Status", name: 'status', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? 'Visible' : 'Hidden';
                 }
             },
             {display: "Add time", name: 'add_time', align: 'center', width: '12%'},
@@ -53,8 +65,16 @@ $(function(){
                     return value ? value : 'Never update';
                 }
             },
-            {display: "Edit", align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a>';
+            {display: "Edit", align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    var str = '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">Edit</a>';
+                    if (parseInt(rowdata.status)) {
+                        var status = 0;
+                        var tip = 'Hidden';
+                    } else {
+                        var status = 1;
+                        var tip = 'Visible';
+                    }
+                    return str + ' | <a href="javascript:void(0);" onclick="change_status(' + rowdata.id + ', ' + status + ', ' + rowdata.type + ')">' + tip + '</a>';
                 }
             }
             ],
@@ -105,6 +125,19 @@ function del() {
 //Edit advertisement
 function update(id) {
     top.f_addTab(null, 'Edit an advertisement', '<{:U("advertisement/update")}>?id='+id);
+}
+
+//Change advertisement status
+function change_status(id, status, type) {
+    $.post("<{:U('advertisement/update_advertisement_status')}>", {id: id, status: status, type: type}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, 'Success(^_^)', 'success');
+            location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, 'Error(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
 }
 //]]>
 </script>
