@@ -177,7 +177,6 @@ $app_config = array(
         'app_key' => '5df39a7723b31e8abc5a826d',
         'master_secret' => '7d718cd8946d52c1afee84b0',
         'platform' => 'android,ios'
-    ),
-    'SHOW_PAGE_TRACE' => true
+    )
 );
 return array_merge(require 'config.inc.php', $app_config);
