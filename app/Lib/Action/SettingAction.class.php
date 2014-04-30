@@ -109,6 +109,12 @@ class SettingAction extends AdminAction {
                 $flag = push($message['content']);
             }
             if ($flag) {
+                // Update the notification status to is pushed.
+                M('Notification')->where(array(
+                    'id' => $id
+                ))->save(array(
+                    'is_pushed' => 1
+                ));
                 $this->ajaxReturn(array(
                     'status' => true,
                     'msg' => 'Push notificatio successful'

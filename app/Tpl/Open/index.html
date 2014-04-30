@@ -1042,6 +1042,39 @@
                     <td><div class="failed_return_33"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">User push list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/user_push_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        int is_vip: 1(1:yes,0:no),<br />
+                        int is_system: 1(1:yes, 0:no),<br />
+                        int page: 1,<br />
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_34"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_34"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1121,6 +1154,8 @@ $(function() {
     $(".failed_return_32").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_33").JSONView({"status":1,"result":[{"id":"15","type":"1","status":"1","title":"this is a test","content":"<p>this is a test~~~~!<\/p>","language":"2","add_time":"2014-04-28 21:34:19","update_time":"2014-04-28 21:34:34","image":[{"image":"http:\/\/www.pro2.com\/uploads\/ad_13986920582622.jpg"}]}]});
     $(".failed_return_33").JSONView({"status":0,"result":"Invalid parameters"});
+    $(".success_return_34").JSONView({"status":1,"result":[{"id":"1","content":"\u54c8\u54c8","is_pushed":"1","vip_only":"0","add_time":"2014-04-30 17:57:59"}]});
+    $(".failed_return_34").JSONView({"status":0,"result":"Invalid parameters"});
 });
 //]]>
 </script>

@@ -24,8 +24,12 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Content", name: 'content', align: 'left', width: '70%', isSort: false},
+            {display: "Content", name: 'content', align: 'left', width: '60%', isSort: false},
             {display: "Vip only", name: 'vip_only', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? 'Yes' : 'No';
+                }
+            },
+            {display: "Is pushed?", name: 'is_pushed', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? 'Yes' : 'No';
                 }
             },

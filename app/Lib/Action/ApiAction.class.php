@@ -1576,6 +1576,54 @@ class ApiAction extends Action {
     }
 
     /**
+     * User push list
+     */
+    public function user_push_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $is_vip = isset($_POST['is_vip']) ? intval($_POST['is_vip']) : $this->redirect('/');
+            $is_system = isset($_POST['is_system']) ? intval($_POST['is_system']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($user_id < 0 || !in_array($is_system, array(
+                0,
+                1
+            )) || !in_array($is_vip, array(
+                0,
+                1
+            )) || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            if ($is_system) {
+                $result = D('Notification')->getUserNotificationList($user_id, $is_vip, $page, $pageSize);
+                if (!empty($result)) {
+                    foreach ($result as &$v) {
+                        $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    }
+                }
+            } else {
+                $result = D('Goods')->getUserNotificationList($user_id, $page, $pageSize);
+                if (!empty($result)) {
+                    foreach ($result as &$v) {
+                        $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                        $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                        $v['image'] = D('GoodsImage')->apiGetGoodsImageList($v['id']);
+                    }
+                }
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Update user status
      */
     public function update_user_status() {

@@ -100,4 +100,37 @@ class NotificationModel extends Model {
         return $this->limit($offset, $pageSize)->order($order . " " . $sort)->select();
     }
 
+    /**
+     * Get user notification list
+     *
+     * @param int $user_id
+     *            User id
+     * @param int $is_vip
+     *            Is a vip user?(1:yes,0:no)
+     * @param int $page
+     *            Current page
+     * @param int $pageSize
+     *            Page size
+     */
+    public function getUserNotificationList($user_id, $is_vip, $page, $pageSize) {
+        $register_time = M('Member')->field(array(
+            'register_time'
+        ))->where(array(
+            'id' => $user_id
+        ))->find();
+        $condition = array(
+            'add_time' => array(
+                'gt',
+                $register_time['register_time']
+            ),
+            'is_pushed' => 1
+        );
+        $is_vip || $condition['vip_only'] = array(
+            'eq',
+            0
+        );
+        $offset = ($page - 1) * $pageSize;
+        return $this->where($condition)->order("add_time DESC")->limit($offset, $pageSize)->select();
+    }
+
 }

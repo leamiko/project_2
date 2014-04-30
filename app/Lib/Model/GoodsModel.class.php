@@ -414,6 +414,40 @@ class GoodsModel extends Model {
     }
 
     /**
+     * Get user notification
+     *
+     * @param int $user_id
+     *            User id
+     * @param int $page
+     *            Current page
+     * @param int $pageSize
+     *            Page size
+     * @return array
+     */
+    public function getUserNotificationList($user_id, $page, $pageSize) {
+        $offset = ($page - 1) * $pageSize;
+        $sql = "SELECT
+                    id, c_cate_id, p_cate_id, name, item_number, price, stock,
+                    business_model, unit, is_bidding, pay_method, sale_amount,
+                    size, weight, color, area,quality, guarantee, description,
+                    is_delete, add_time, update_time
+                FROM
+                    easy_goods
+                WHERE
+                    c_cate_id IN (
+                    SELECT
+                        c_cate_id
+                    FROM
+                        easy_subscription
+                    WHERE
+                        user_id = {$user_id})
+                ORDER BY
+                    id DESC
+                LIMIT {$offset}, {$pageSize}";
+        return $this->query($sql);
+    }
+
+    /**
      * Push new goods to user
      *
      * @param int $p_cate_id
