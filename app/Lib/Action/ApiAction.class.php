@@ -595,6 +595,69 @@ class ApiAction extends Action {
     }
 
     /**
+     * My publish list
+     */
+    public function my_publish_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($user_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('Publish')->where(array(
+                'user_id' => $user_id
+            ))->order("publish_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
+            foreach ($result as &$v) {
+                $v['image_1'] = $v['image_1'] ? "http://{$_SERVER['HTTP_HOST']}{$v['image_1']}" : $v['image_1'];
+                $v['image_2'] = $v['image_2'] ? "http://{$_SERVER['HTTP_HOST']}{$v['image_2']}" : $v['image_2'];
+                $v['image_3'] = $v['image_3'] ? "http://{$_SERVER['HTTP_HOST']}{$v['image_3']}" : $v['image_3'];
+                $v['image_4'] = $v['image_4'] ? "http://{$_SERVER['HTTP_HOST']}{$v['image_4']}" : $v['image_4'];
+                $v['publish_time'] = date("Y-m-d H:i:s", $v['publish_time']);
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * My shipping agency list
+     */
+    public function my_shipping_agency_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
+            $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
+            if ($user_id < 1 || $page < 1 || $pageSize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
+                ));
+            }
+            $result = M('ShippingAgency')->where(array(
+                'user_id' => $user_id
+            ))->order("add_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
+            foreach ($result as &$v) {
+                $v['loading_time'] = date("Y-m-d H:i:s", $v['loading_time']);
+                $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * Order
      */
     public function order() {

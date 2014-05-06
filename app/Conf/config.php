@@ -39,7 +39,7 @@ $app_config = array(
                     'url' => '/goods/index'
                 ),
                 'add' => array(
-                    'text' => 'Add A Goods',
+                    'text' => 'Add a Goods',
                     'url' => '/goods/add'
                 )
             )
@@ -93,11 +93,11 @@ $app_config = array(
             'default' => 'index',
             'children' => array(
                 'index' => array(
-                    'text' => 'News overview',
+                    'text' => 'News Overview',
                     'url' => '/news/index'
                 ),
                 'add' => array(
-                    'text' => 'Add a news',
+                    'text' => 'Add a News',
                     'url' => '/news/add'
                 )
             )
@@ -107,11 +107,11 @@ $app_config = array(
             'default' => 'index',
             'children' => array(
                 'index' => array(
-                    'text' => 'AD overview',
+                    'text' => 'Ad overview',
                     'url' => '/advertisement/index'
                 ),
                 'add' => array(
-                    'text' => 'Add an AD',
+                    'text' => 'Add an Ad',
                     'url' => '/advertisement/add'
                 )
             )
@@ -121,7 +121,7 @@ $app_config = array(
             'default' => 'index',
             'children' => array(
                 'index' => array(
-                    'text' => 'System notifications',
+                    'text' => 'System Notifications',
                     'url' => '/setting/index'
                 )
             )

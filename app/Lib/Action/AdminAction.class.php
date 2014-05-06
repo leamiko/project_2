@@ -37,7 +37,7 @@ class AdminAction extends Action {
             }
             $tmpArr[] = array(
                 'text' => $value['text'],
-                'isexpand' => true,
+                'isexpand' => false,
                 'children' => $children_1
             );
         }

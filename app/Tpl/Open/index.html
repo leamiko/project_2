@@ -1075,6 +1075,68 @@
                     <td><div class="failed_return_34"></div></td>
                 </tr>
             </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">My publish list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/my_publish_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        int page: 1,<br />
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_35"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_35"></div></td>
+                </tr>
+            </table>
+            <div class="api_hr"></div>
+            <table border="1" width="96%">
+                <tr>
+                    <td width="20%">Interface：</td>
+                    <td width="80%">My shipping agency list</td>
+                </tr>
+                <tr>
+                    <td>URL：</td>
+                    <td>/api/my_shipping_agency_list</td>
+                </tr>
+                <tr>
+                    <td>Method：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>Parameters：</td>
+                    <td>
+                        int user_id: 1,<br />
+                        int page: 1,<br />
+                        int pageSize: 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>Successful return：</td>
+                    <td><div class="success_return_36"></div></td>
+                </tr>
+                <tr>
+                    <td>Failed return：</td>
+                    <td><div class="failed_return_36"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1156,6 +1218,10 @@ $(function() {
     $(".failed_return_33").JSONView({"status":0,"result":"Invalid parameters"});
     $(".success_return_34").JSONView({"status":1,"result":[{"id":"1","content":"\u54c8\u54c8","is_pushed":"1","vip_only":"0","add_time":"2014-04-30 17:57:59"}]});
     $(".failed_return_34").JSONView({"status":0,"result":"Invalid parameters"});
+    $(".success_return_35").JSONView({"status":1,"result":[{"id":"1","user_id":"1","type":"0","goods_name":"red apple","publisher_second_name":"Jackson","publisher_first_name":"Michael","country":"United State","carton":"40","telephone":"99881223","phone":"8389291","email":"jackson@hotmail.com","company":"AIG","image_1":"http:\/\/www.pro2.com\/uploads\/ad_13986920582622.jpg","image_2":"http:\/\/www.pro2.com\/uploads\/ad_13986920582622.jpg","image_3":"http:\/\/www.pro2.com\/uploads\/ad_13986920582622.jpg","image_4":"http:\/\/www.pro2.com\/uploads\/ad_13986920582622.jpg","length":"11","width":"11","height":"23","thickness":"21","weight":"200","color":"red","use":"eating","quantity":"1","material":"2000","remark":"this is a very good","publish_time":"2014-04-29 10:59:31"}]});
+    $(".failed_return_35").JSONView({"status":0,"result":"Invalid parameters"});
+    $(".success_return_36").JSONView({"status":1,"result":[{"id":"1","user_id":"1","first_name":"Michael","last_name":"Jackson","telephone":"28912789","phone":"2383879","email":"jackson@gmail.com","company":"AIG","country":"United State","goods_name":"red apple","shipping_type":"Air","quanlity":"500000","shipping_port":"UGA","destination_port":"ANV","container":"50","wish_shipping_line":"747","loading_time":"2014-04-29 13:44:50","weight":"20000","remark":"this is a test","document_type":"doc","add_time":"2014-04-29 13:54:30"}]});
+    $(".failed_return_36").JSONView({"status":0,"result":"Invalid parameters"});
 });
 //]]>
 </script>
