@@ -23,7 +23,7 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Category Name", name: 'name', align: 'center', width: '20%', isSort: false},
+            {display: "Category Name", name: 'name', align: 'center', width: '20%'},
             {display: "Business Model", name: 'business_model', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) == 1 ? 'B2C' : 'B2B';
                 }
