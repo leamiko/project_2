@@ -1,7 +1,7 @@
 <?php
 
 /**
- * application configuration
+ * Application configuration
  *
  * @author lzjjie
  * @version 1.0.0
@@ -163,14 +163,14 @@ $app_config = array(
     'NEWS_MAX_UPLOAD_FILE_SIZE' => 2097152,
     // Mail
     'EMAIL' => array(
-        'SMTP_HOST' => 'smtp.live.com',
-        'SMTP_PORT' => '587',
-        'SENDER_MAIL' => 'easybuybuy@hotmail.com',
+        'SMTP_HOST' => 'smtp.gmail.com',
+        'SMTP_PORT' => '465',
+        'SENDER_MAIL' => 'easybuybuy2014@gmail.com',
         'SENDER_PWD' => 'MAXS204gems',
         'SENDER_NAME' => 'EasyBuyBuy',
         'REPLY_EMAIL' => '',
         'REPLY_NAME' => '',
-        'SECURE_PRO' => 'tls'
+        'SECURE_PRO' => 'ssl'
     ),
     // JPush configuration
     'JPush' => array(

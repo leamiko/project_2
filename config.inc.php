@@ -1,7 +1,7 @@
 <?php
 
 /**
- * main configuration
+ * Main configuration
  *
  * @author lzjjie
  * @version 1.0.0
