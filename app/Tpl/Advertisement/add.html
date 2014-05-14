@@ -36,6 +36,20 @@
                     </td>
                 </tr>
                 <tr>
+                    <td align="right">Goods advertisement:&nbsp;&nbsp;</td>
+                    <td>
+                        <input type="radio" value="1" name="goods_advertisement" />&nbsp;&nbsp;Yes
+                        <input type="radio" value="0" name="goods_advertisement" checked="checked" />&nbsp;&nbsp;No
+                    </td>
+                </tr>
+                <tr height="60px" id="select_goods" style="display:none;">
+                    <td align="right">Goods:&nbsp;&nbsp;</td>
+                    <td>
+                        <select id="goods_id">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td align="right">Content:&nbsp;&nbsp;</td>
                     <td><textarea id="content"></textarea></td>
                 </tr>
@@ -78,6 +92,21 @@ body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{wi
 CKEDITOR.disableAutoInline = true;
 var image_count = new Array();
 $(function() {
+    $("input[name='goods_advertisement']").change(function() {
+        var is = parseInt($(this).val());
+        if (is) {
+            var opt = '<option value="0">SELECT A GOODS FOR THIS AD</option>';
+            $.post("<{:U(advertisement/get_goods_list)}>", function(data) {
+                for (var i in data) {
+                    str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+                $("#goods_id").html(str);
+            }, 'json');
+            $("#select_goods").show();
+        } else {
+            $("#select_goods").hide();
+        }
+    });
     var editor = $("#content").ckeditor({
         width         : 700,
         height        : 300,
@@ -145,6 +174,19 @@ function ckTitle() {
     return true;
 }
 
+//Check goods
+function ckGoods() {
+    var is = parseInt($("input[name='goods_advertisement']").val());
+    if (is) {
+        var goods_id = parseInt($("#goods_id").val());
+        if (!goods_id) {
+            $.ligerDialog.alert('Please select a goods', 'Error(>_<)', 'warn');
+            return false;
+        }
+    }
+    return true;
+}
+
 //Check content
 function ckContent() {
     var content = $.trim($("#content").val());
@@ -167,16 +209,21 @@ function ckImage() {
 // Save advertisement
 function saveAdvertisement() {
     if (!ckTitle()) return false;
+    if (!ckGoods()) return false;
     if (!ckContent()) return false;
     if (!ckImage()) return false;
     var title = $.trim($("#title").val());
     var language = $("input[name='language']").filter(":checked").val();
     var type = $("#type").val();
+    var is_goods_advertisement = $("input[name='goods_advertisement']").filter(":checked").val();
+    var goods_id = parseInt(is_goods_advertisement) ? $("#goods_id").val() : '';
     var content = $.trim($("#content").val());
     var post_data = {
             title: title,
             language: language,
             type: type,
+            is_goods_advertisement: is_goods_advertisement,
+            goods_id: goods_id,
             content: content,
             image: image_count
     };

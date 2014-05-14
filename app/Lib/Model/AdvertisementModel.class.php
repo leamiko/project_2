@@ -18,19 +18,25 @@ class AdvertisementModel extends Model {
      *            Advertisement language
      * @param int $type
      *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
+     * @param int $is_goods_advertisement
+     *            Is goods advertisement(1:Yes, 0:No)
+     * @param int|null $goods_id
+     *            Goods id
      * @param string $content
      *            Advertisement content
      * @param array $image
      *            Advertisement images
      * @return array
      */
-    public function addAdvertisement($title, $language, $type, $content, array $image) {
+    public function addAdvertisement($title, $language, $type, $is_goods_advertisement, $goods_id, $content, array $image) {
         $data = array(
-            'title' => $title,
-            'language' => $language,
-            'type' => $type,
-            'content' => $content,
-            'add_time' => time()
+                'title' => $title,
+                'language' => $language,
+                'type' => $type,
+                'is_goods_advertisement' => $is_goods_advertisement,
+                'goods_id' => empty($goods_id) ? null : intval($goods_id),
+                'content' => $content,
+                'add_time' => time()
         );
         // Start transaction
         $this->startTrans();
@@ -41,23 +47,23 @@ class AdvertisementModel extends Model {
                 // Add image successful,commit transaction
                 $this->commit();
                 return array(
-                    'status' => true,
-                    'msg' => 'Add advertisement successful'
+                        'status' => true,
+                        'msg' => 'Add advertisement successful'
                 );
             } else {
                 // Add images failed,rollback transaction
                 $this->rollback();
                 return array(
-                    'status' => false,
-                    'msg' => 'Add advertisement_id image(s) failed'
+                        'status' => false,
+                        'msg' => 'Add advertisement_id image(s) failed'
                 );
             }
         } else {
             // Add failed,rollback transaction
             $this->rollback();
             return array(
-                'status' => false,
-                'msg' => 'Add advertisement failed'
+                    'status' => false,
+                    'msg' => 'Add advertisement failed'
             );
         }
     }
@@ -73,33 +79,33 @@ class AdvertisementModel extends Model {
         // Start transaction
         $this->startTrans();
         if ($this->where(array(
-            'id' => array(
-                'in',
-                $id
-            )
+                'id' => array(
+                        'in',
+                        $id
+                )
         ))->delete()) {
             // Delete successful,delete the advertisement image
             if (D('AdvertisementImage')->deleteAdvertisementImage($id)) {
                 // Delete advertisement image successful, commit transaction
                 $this->commit();
                 return array(
-                    'status' => true,
-                    'msg' => 'Delete advertisement succeddful'
+                        'status' => true,
+                        'msg' => 'Delete advertisement succeddful'
                 );
             } else {
                 // Delete advertisement image failed, rollback transaction
                 $this->rollback();
                 return array(
-                    'status' => false,
-                    'msg' => 'Delete advertisement image failed'
+                        'status' => false,
+                        'msg' => 'Delete advertisement image failed'
                 );
             }
         } else {
             // Delete failed,rollback transaction
             $this->rollback();
             return array(
-                'status' => false,
-                'msg' => 'Delete advertisement failed'
+                    'status' => false,
+                    'msg' => 'Delete advertisement failed'
             );
         }
     }
@@ -113,10 +119,10 @@ class AdvertisementModel extends Model {
      */
     public function getAdvertisementCount($keyword) {
         return (int) (empty($keyword) ? $this->count() : $this->where(array(
-            'title' => array(
-                'like',
-                "%{$keyword}%"
-            )
+                'title' => array(
+                        'like',
+                        "%{$keyword}%"
+                )
         ))->count());
     }
 
@@ -137,10 +143,10 @@ class AdvertisementModel extends Model {
     public function getAdvertisementList($page, $pageSize, $order, $sort, $keyword) {
         $offset = ($page - 1) * $pageSize;
         empty($keyword) || $this->where(array(
-            'title' => array(
-                'like',
-                "%{$keyword}%"
-            )
+                'title' => array(
+                        'like',
+                        "%{$keyword}%"
+                )
         ));
         return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
@@ -156,24 +162,30 @@ class AdvertisementModel extends Model {
      *            Advertisement language
      * @param int $type
      *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
+     * @param int $is_goods_advertisement
+     *            Is goods advertisement(1:Yes, 0:No)
+     * @param int|null $goods_id
+     *            Goods id
      * @param string $content
      *            Advertisement content
      * @param array|null $image
      *            Advertisement images
      * @return array
      */
-    public function updateAdvertisement($id, $title, $language, $type, $content, $image) {
+    public function updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $goods_id, $content, $image) {
         $update_time = time();
         // Start transaction
         $this->startTrans();
         if ($this->where(array(
-            'id' => $id
+                'id' => $id
         ))->save(array(
-            'title' => $title,
-            'language' => $language,
-            'type' => $type,
-            'content' => $content,
-            'update_time' => $update_time
+                'title' => $title,
+                'language' => $language,
+                'type' => $type,
+                'is_goods_advertisement' => $is_goods_advertisement,
+                'goods_id' => $goods_id,
+                'content' => $content,
+                'update_time' => $update_time
         ))) {
             // Update advertisement successful,update advertisement image
             if (D('AdvertisementImage')->updateAdvertisementImage($id, $update_time)) {
@@ -183,23 +195,23 @@ class AdvertisementModel extends Model {
                         // Add new advertisement image successful,commit transaction
                         $this->commit();
                         return array(
-                            'status' => true,
-                            'msg' => 'Update advertisement successful'
+                                'status' => true,
+                                'msg' => 'Update advertisement successful'
                         );
                     } else {
                         // Add new advertisement image failed,rollback transaction
                         $this->rollback();
                         return array(
-                            'status' => false,
-                            'msg' => 'Add new advertisement image failed'
+                                'status' => false,
+                                'msg' => 'Add new advertisement image failed'
                         );
                     }
                 } else {
                     // No new advertisement image,commit transaction
                     $this->commit();
                     return array(
-                        'status' => true,
-                        'msg' => 'Update advertisement successful'
+                            'status' => true,
+                            'msg' => 'Update advertisement successful'
                     );
                 }
             }
@@ -207,8 +219,8 @@ class AdvertisementModel extends Model {
             // Update advertisement failed,rollback transaction
             $this->rollback();
             return array(
-                'status' => false,
-                'msg' => 'Update advertisement failed'
+                    'status' => false,
+                    'msg' => 'Update advertisement failed'
             );
         }
     }
@@ -226,33 +238,33 @@ class AdvertisementModel extends Model {
      */
     public function updateAdvertisementStatus($id, $status, $type) {
         if ($this->where(array(
-            'status' => 1,
-            'type' => $type
+                'status' => 1,
+                'type' => $type
         ))->count() >= 6 && $status) {
             return array(
-                'status' => false,
-                'msg' => 'There are already have six advertisements in this type visible.'
+                    'status' => false,
+                    'msg' => 'There are already have six advertisements in this type visible.'
             );
         }
         // Start transaction
         $this->startTrans();
         if ($this->where(array(
-            'id' => $id
+                'id' => $id
         ))->save(array(
-            'status' => $status
+                'status' => $status
         ))) {
             // Update successful, commit transaction
             $this->commit();
             return array(
-                'status' => true,
-                'msg' => 'Update advertisement\'s status successful'
+                    'status' => true,
+                    'msg' => 'Update advertisement\'s status successful'
             );
         } else {
             // Update failed, rollback transaction
             $this->rollback();
             return array(
-                'status' => false,
-                'msg' => 'Update advertisement\'s status failed'
+                    'status' => false,
+                    'msg' => 'Update advertisement\'s status failed'
             );
         }
     }
