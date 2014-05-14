@@ -183,7 +183,7 @@ class AdvertisementModel extends Model {
                 'language' => $language,
                 'type' => $type,
                 'is_goods_advertisement' => $is_goods_advertisement,
-                'goods_id' => $goods_id,
+                'goods_id' => empty($goods_id) ? null : $goods_id,
                 'content' => $content,
                 'update_time' => $update_time
         ))) {

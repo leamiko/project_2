@@ -137,9 +137,16 @@ class AdvertisementAction extends AdminAction {
             }
             $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $goods_id, $content, $image));
         } else {
-            $this->assign('advertisement', M('Advertisement')->where(array(
+            $advertisement = M('Advertisement')->where(array(
                     'id' => $id
-            ))->find());
+            ))->find();
+            $this->assign('advertisement', $advertisement);
+            if ($advertisement['is_goods_advertisement']) {
+                $this->assign('goods_list', M('Goods')->field(array(
+                        'id',
+                        'name'
+                ))->order("add_time DESC")->select());
+            }
             $advertisement_images = M('AdvertisementImage')->field(array(
                     'id',
                     'image'
