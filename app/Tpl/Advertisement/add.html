@@ -42,6 +42,20 @@
                         <input type="radio" value="0" name="goods_advertisement" checked="checked" />&nbsp;&nbsp;No
                     </td>
                 </tr>
+                <tr height="60px" id="select_parent" style="display:none;">
+                    <td align="right">Parent Category:&nbsp;&nbsp;</td>
+                    <td>
+                        <select id="p_cate_id">
+                        </select>
+                    </td>
+                </tr>
+                <tr height="60px" id="select_child" style="display:none;">
+                    <td align="right">Child Category:&nbsp;&nbsp;</td>
+                    <td>
+                        <select id="c_cate_id">
+                        </select>
+                    </td>
+                </tr>
                 <tr height="60px" id="select_goods" style="display:none;">
                     <td align="right">Goods:&nbsp;&nbsp;</td>
                     <td>
@@ -95,12 +109,45 @@ $(function() {
     $("input[name='goods_advertisement']").change(function() {
         var is = parseInt($(this).val());
         if (is) {
-            var opt = '<option value="0">SELECT A GOODS FOR THIS AD</option>';
-            $.post('<{:U("advertisement/get_goods_list")}>', function(data) {
+            var parent_opt = '<option value="0">PARENT CATEGORY</option>';
+            $.post('<{:U("advertisement/get_parent_list")}>', function(data) {
                 for (var i in data) {
-                    opt += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                    parent_opt += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                 }
-                $("#goods_id").html(opt);
+                $("#p_cate_id").html(parent_opt);
+            }, 'json');
+            $("#select_parent").show();
+        } else {
+            $("#select_parent").hide();
+            $("#select_child").hide();
+            $("#select_goods").hide();
+        }
+    });
+    $("#p_cate_id").change(function() {
+        var p_cate_id = parseInt($(this).val());
+        if (p_cate_id) {
+            var child_opt = '<option value="0">CHILD CATEGORY</option>';
+            $.post('<{:U("advertisement/get_child_list")}>', {p_cate_id: p_cate_id}, function(data) {
+                for (var i in data) {
+                    child_opt += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+                $("#c_cate_id").html(child_opt);
+            }, 'json');
+            $("#select_child").show();
+        } else {
+            $("#select_child").hide();
+            $("#select_goods").hide();
+        }
+    });
+    $("#c_cate_id").change(function() {
+        var c_cate_id = parseInt($(this).val());
+        if (c_cate_id) {
+            var goods_opt = '<option value="0">GOODS</option>';
+            $.post('<{:U("advertisement/get_goods_list")}>', {c_cate_id: c_cate_id}, function(data) {
+                for (var i in data) {
+                    goods_opt += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+                $("#goods_id").html(goods_opt);
             }, 'json');
             $("#select_goods").show();
         } else {
@@ -178,8 +225,10 @@ function ckTitle() {
 function ckGoods() {
     var is = parseInt($("input[name='goods_advertisement']").filter(":checked").val());
     if (is) {
+        var p_cate_id = parseInt($("#p_cate_id").val());
+        var c_cate_id = parseInt($("#c_cate_id").val());
         var goods_id = parseInt($("#goods_id").val());
-        if (!goods_id) {
+        if (!p_cate_id || !goods_id || !c_cate_id) {
             $.ligerDialog.alert('Please select a goods', 'Error(>_<)', 'warn');
             return false;
         }
@@ -216,6 +265,8 @@ function saveAdvertisement() {
     var language = $("input[name='language']").filter(":checked").val();
     var type = $("#type").val();
     var is_goods_advertisement = $("input[name='goods_advertisement']").filter(":checked").val();
+    var p_cate_id = parseInt(is_goods_advertisement) ? $("#p_cate_id").val() : '';
+    var c_cate_id = parseInt(is_goods_advertisement) ? $("#c_cate_id").val() : '';
     var goods_id = parseInt(is_goods_advertisement) ? $("#goods_id").val() : '';
     var content = $.trim($("#content").val());
     var post_data = {
@@ -223,6 +274,8 @@ function saveAdvertisement() {
             language: language,
             type: type,
             is_goods_advertisement: is_goods_advertisement,
+            p_cate_id: p_cate_id,
+            c_cate_id: c_cate_id,
             goods_id: goods_id,
             content: content,
             image: image_count

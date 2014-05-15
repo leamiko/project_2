@@ -18,10 +18,12 @@ class AdvertisementAction extends AdminAction {
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             $is_goods_advertisement = isset($_POST['is_goods_advertisement']) ? intval($_POST['is_goods_advertisement']) : $this->redirect('/');
+            $p_cate_id = isset($_POST['p_cate_id']) ? trim($_POST['p_cate_id']) : $this->redirect('/');
+            $c_cate_id = isset($_POST['c_cate_id']) ? trim($_POST['c_cate_id']) : $this->redirect('/');
             $goods_id = isset($_POST['goods_id']) ? trim($_POST['goods_id']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $type, $is_goods_advertisement, $goods_id, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $type, $is_goods_advertisement, $p_cate_id, $c_cate_id, $goods_id, $content, $image));
         } else {
             $this->display();
         }
@@ -47,26 +49,44 @@ class AdvertisementAction extends AdminAction {
             $filename = isset($_POST['filename']) ? trim($_POST['filename']) : $this->redirect('/');
             if (empty($filename)) {
                 $this->ajaxReturn(array(
-                        'status' => true
+                    'status' => true
                 ));
             } else {
                 if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filename)) {
                     if (unlink($_SERVER['DOCUMENT_ROOT'] . $filename)) {
                         $this->ajaxReturn(array(
-                                'status' => true
+                            'status' => true
                         ));
                     } else {
                         $this->ajaxReturn(array(
-                                'status' => false,
-                                'msg' => 'Delete image failed'
+                            'status' => false,
+                            'msg' => 'Delete image failed'
                         ));
                     }
                 } else {
                     $this->ajaxReturn(array(
-                            'status' => true
+                        'status' => true
                     ));
                 }
             }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Ajax get child category list
+     */
+    public function get_child_list() {
+        if ($this->isAjax()) {
+            $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
+            $this->ajaxReturn(M('ChildCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'parent_id' => $p_cate_id,
+                'is_delete' => 0
+            ))->select());
         } else {
             $this->redirect('/');
         }
@@ -77,10 +97,30 @@ class AdvertisementAction extends AdminAction {
      */
     public function get_goods_list() {
         if ($this->isAjax()) {
+            $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
             $this->ajaxReturn(M('Goods')->field(array(
-                    'id',
-                    'name'
-            ))->order("add_time DESC")->select());
+                'id',
+                'name'
+            ))->where(array(
+                'c_cate_id' => $c_cate_id,
+                'is_delete' => 0
+            ))->select());
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * Ajax get parent category list
+     */
+    public function get_parent_list() {
+        if ($this->isAjax()) {
+            $this->ajaxReturn(M('ParentCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'is_delete' => 0
+            ))->select());
         } else {
             $this->redirect('/');
         }
@@ -108,8 +148,8 @@ class AdvertisementAction extends AdminAction {
                 $rows = null;
             }
             $this->ajaxReturn(array(
-                    'Rows' => $rows,
-                    'Total' => $total
+                'Rows' => $rows,
+                'Total' => $total
             ));
         } else {
             $this->assign('keyword', $keyword);
@@ -127,6 +167,8 @@ class AdvertisementAction extends AdminAction {
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             $is_goods_advertisement = isset($_POST['is_goods_advertisement']) ? intval($_POST['is_goods_advertisement']) : $this->redirect('/');
+            $p_cate_id = isset($_POST['p_cate_id']) ? trim($_POST['p_cate_id']) : $this->redirect('/');
+            $c_cate_id = isset($_POST['c_cate_id']) ? trim($_POST['c_cate_id']) : $this->redirect('/');
             $goods_id = isset($_POST['goods_id']) ? trim($_POST['goods_id']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? $_POST['image'] : $this->redirect('/');
@@ -135,24 +177,43 @@ class AdvertisementAction extends AdminAction {
             } else {
                 $image = (array) $image;
             }
-            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $goods_id, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $p_cate_id, $c_cate_id, $goods_id, $content, $image));
         } else {
             $advertisement = M('Advertisement')->where(array(
-                    'id' => $id
+                'id' => $id
             ))->find();
             $this->assign('advertisement', $advertisement);
             if ($advertisement['is_goods_advertisement']) {
+                // Get parent category list
+                $this->assign('parent_list', M('ParentCategory')->field(array(
+                    'id',
+                    'name'
+                ))->where(array(
+                    'is_delete' => 0
+                ))->select());
+                // Get child category list
+                $this->assign('child_list', M('ChildCategory')->field(array(
+                    'id',
+                    'name'
+                ))->where(array(
+                    'parent_id' => $advertisement['p_cate_id'],
+                    'is_delete' => 0
+                ))->select());
+                // Get goods list
                 $this->assign('goods_list', M('Goods')->field(array(
-                        'id',
-                        'name'
-                ))->order("add_time DESC")->select());
+                    'id',
+                    'name'
+                ))->where(array(
+                    'c_cate_id' => $advertisement['c_cate_id'],
+                    'is_delete' => 0
+                ))->select());
             }
             $advertisement_images = M('AdvertisementImage')->field(array(
-                    'id',
-                    'image'
+                'id',
+                'image'
             ))->where(array(
-                    'advertisement_id' => $id,
-                    'is_delete' => 0
+                'advertisement_id' => $id,
+                'is_delete' => 0
             ))->select();
             $image_count = "";
             foreach ($advertisement_images as &$v) {
@@ -189,22 +250,22 @@ class AdvertisementAction extends AdminAction {
             // Start transaction
             $advertisement_image->startTrans();
             if ($advertisement_image->where(array(
-                    'id' => $id
+                'id' => $id
             ))->save(array(
-                    'is_delete' => 1
+                'is_delete' => 1
             ))) {
                 // Delete successful,commit transaction
                 $advertisement_image->commit();
                 $this->ajaxReturn(array(
-                        'status' => true,
-                        'msg' => 'Delete advertisement image successful'
+                    'status' => true,
+                    'msg' => 'Delete advertisement image successful'
                 ));
             } else {
                 // Delete failed,rollback transaction
                 $advertisement_image->rollback();
                 $this->ajaxReturn(array(
-                        'status' => false,
-                        'msg' => 'Delete advertisement image failed.'
+                    'status' => false,
+                    'msg' => 'Delete advertisement image failed.'
                 ));
             }
         } else {
@@ -259,8 +320,8 @@ class AdvertisementAction extends AdminAction {
             }
             if ($_FILES['files']['size'][0] > C('ADVERTISEMENT_MAX_UPLOAD_FILE_SIZE')) {
                 $this->ajaxReturn(array(
-                        'status' => false,
-                        'msg' => 'Image file is too large, please choose another picture.'
+                    'status' => false,
+                    'msg' => 'Image file is too large, please choose another picture.'
                 ));
             } else {
                 $fileParts = pathinfo($_FILES['files']['name'][0]);
@@ -270,14 +331,14 @@ class AdvertisementAction extends AdminAction {
                     $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
                     move_uploaded_file($tempFile, $targetFile);
                     $this->ajaxReturn(array(
-                            'status' => true,
-                            'src' => 'http://' . $_SERVER['HTTP_HOST'] . '/uploads/' . $uploadFileName,
-                            'filename' => '/uploads/' . $uploadFileName
+                        'status' => true,
+                        'src' => 'http://' . $_SERVER['HTTP_HOST'] . '/uploads/' . $uploadFileName,
+                        'filename' => '/uploads/' . $uploadFileName
                     ));
                 } else {
                     $this->ajaxReturn(array(
-                            'status' => false,
-                            'msg' => 'Unsupported image format.'
+                        'status' => false,
+                        'msg' => 'Unsupported image format.'
                     ));
                 }
             }

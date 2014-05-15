@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2014-04-24 00:14:01
+Date: 2014-05-16 00:13:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1398258131', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1400170392', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_advertisement`
@@ -66,10 +66,15 @@ INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20
 DROP TABLE IF EXISTS `easy_advertisement`;
 CREATE TABLE `easy_advertisement` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `business_model` tinyint(1) NOT NULL COMMENT 'business model(1:b2c, 2:b2b)',
+  `type` tinyint(1) NOT NULL COMMENT 'advertisement type(1:shop,2:factory,3:auction,4:sell&buy,5:shipping,6:home)',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'status(1:visible, 0:hidden)',
   `title` varchar(255) NOT NULL COMMENT 'advertisement title',
   `content` text NOT NULL COMMENT 'advertisement content',
   `language` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'advertisement language(1:Chinese,2:English,3:Arabic)',
+  `is_goods_advertisement` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is goods advertisement?(0:no,1:yes)',
+  `p_cate_id` int(11) DEFAULT NULL COMMENT 'Parent category id',
+  `c_cate_id` int(11) DEFAULT NULL COMMENT 'Child category id',
+  `goods_id` int(11) DEFAULT NULL COMMENT 'Goods id',
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
@@ -246,7 +251,7 @@ CREATE TABLE `easy_news` (
   `add_time` int(11) NOT NULL COMMENT 'add time',
   `update_time` int(11) DEFAULT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='news table\r\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='news table';
 
 -- ----------------------------
 -- Records of easy_news
@@ -277,6 +282,8 @@ DROP TABLE IF EXISTS `easy_notification`;
 CREATE TABLE `easy_notification` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `content` varchar(255) NOT NULL COMMENT 'notification content',
+  `is_pushed` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is pushed?(1:yes,0:no)',
+  `vip_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'only push to vip user?(0:no, 1:yes)',
   `add_time` int(11) NOT NULL COMMENT 'add notification time',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='system notification table\r\n';
