@@ -28,10 +28,10 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "Goods Name", name: 'name', align: 'center', width: '12%', isSort: false},
-            {display: "Parent category", name: 'parent_category', align: 'center', width: '10%', isSort: false},
-            {display: "Child category", name: 'child_category', align: 'center', width: '10%', isSort: false},
-            {display: "Business Model", name: 'business_model', align: 'center', width: '10%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Goods Name", name: 'name', align: 'center', width: '12%'},
+            {display: "Parent category", name: 'parent_category', align: 'center', width: '10%'},
+            {display: "Child category", name: 'child_category', align: 'center', width: '10%'},
+            {display: "Business Model", name: 'business_model', align: 'center', width: '10%', render: function(rowdata, rowindex, value) {
                     return parseInt(value) == 1 ? 'B2C' : 'B2B';
                 }
             },
