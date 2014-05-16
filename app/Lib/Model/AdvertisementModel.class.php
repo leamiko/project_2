@@ -20,6 +20,8 @@ class AdvertisementModel extends Model {
      *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
      * @param int $is_goods_advertisement
      *            Is goods advertisement(1:Yes, 0:No)
+     * @param int $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param int $p_cate_id
      *            Parent category id
      * @param int $c_cate_id
@@ -32,12 +34,13 @@ class AdvertisementModel extends Model {
      *            Advertisement images
      * @return array
      */
-    public function addAdvertisement($title, $language, $type, $is_goods_advertisement, $p_cate_id, $c_cate_id, $goods_id, $content, array $image) {
+    public function addAdvertisement($title, $language, $type, $is_goods_advertisement, $business_model, $p_cate_id, $c_cate_id, $goods_id, $content, array $image) {
         $data = array(
             'title' => $title,
             'language' => $language,
             'type' => $type,
             'is_goods_advertisement' => $is_goods_advertisement,
+            'business_model' => empty($business_model) ? null : intval($business_model),
             'p_cate_id' => empty($p_cate_id) ? null : intval($p_cate_id),
             'c_cate_id' => empty($c_cate_id) ? null : intval($c_cate_id),
             'goods_id' => empty($goods_id) ? null : intval($goods_id),
@@ -170,6 +173,8 @@ class AdvertisementModel extends Model {
      *            Advertisement type(1:Shop, 2:Factory, 3:Auction, 4:Sell&Buy, 5:Shipping, 6:Home)
      * @param int $is_goods_advertisement
      *            Is goods advertisement(1:Yes, 0:No)
+     * @param int|null $business_model
+     *            Business model(1:b2c,2:b2b)
      * @param int|null $p_cate_id
      *            Parent category id
      * @param int|null $c_cate_id
@@ -182,7 +187,7 @@ class AdvertisementModel extends Model {
      *            Advertisement images
      * @return array
      */
-    public function updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $p_cate_id, $c_cate_id, $goods_id, $content, $image) {
+    public function updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $business_model, $p_cate_id, $c_cate_id, $goods_id, $content, $image) {
         $update_time = time();
         // Start transaction
         $this->startTrans();
@@ -193,9 +198,10 @@ class AdvertisementModel extends Model {
             'language' => $language,
             'type' => $type,
             'is_goods_advertisement' => $is_goods_advertisement,
-            'p_cate_id' => empty($p_cate_id) ? null : $p_cate_id,
-            'c_cate_id' => empty($c_cate_id) ? null : $c_cate_id,
-            'goods_id' => empty($goods_id) ? null : $goods_id,
+            'business_model' => empty($business_model) ? null : intval($business_model),
+            'p_cate_id' => empty($p_cate_id) ? null : intval($p_cate_id),
+            'c_cate_id' => empty($c_cate_id) ? null : intval($c_cate_id),
+            'goods_id' => empty($goods_id) ? null : intval($goods_id),
             'content' => $content,
             'update_time' => $update_time
         ))) {

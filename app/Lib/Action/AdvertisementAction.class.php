@@ -18,12 +18,13 @@ class AdvertisementAction extends AdminAction {
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             $is_goods_advertisement = isset($_POST['is_goods_advertisement']) ? intval($_POST['is_goods_advertisement']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? trim($_POST['business_model']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? trim($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? trim($_POST['c_cate_id']) : $this->redirect('/');
             $goods_id = isset($_POST['goods_id']) ? trim($_POST['goods_id']) : $this->redirect('/');
             $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
             $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $type, $is_goods_advertisement, $p_cate_id, $c_cate_id, $goods_id, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->addAdvertisement($title, $language, $type, $is_goods_advertisement, $business_model, $p_cate_id, $c_cate_id, $goods_id, $content, $image));
         } else {
             $this->display();
         }
@@ -115,10 +116,12 @@ class AdvertisementAction extends AdminAction {
      */
     public function get_parent_list() {
         if ($this->isAjax()) {
+            $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             $this->ajaxReturn(M('ParentCategory')->field(array(
                 'id',
                 'name'
             ))->where(array(
+                'business_model' => $business_model,
                 'is_delete' => 0
             ))->select());
         } else {
@@ -167,6 +170,7 @@ class AdvertisementAction extends AdminAction {
             $language = isset($_POST['language']) ? trim($_POST['language']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             $is_goods_advertisement = isset($_POST['is_goods_advertisement']) ? intval($_POST['is_goods_advertisement']) : $this->redirect('/');
+            $business_model = isset($_POST['business_model']) ? trim($_POST['business_model']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? trim($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? trim($_POST['c_cate_id']) : $this->redirect('/');
             $goods_id = isset($_POST['goods_id']) ? trim($_POST['goods_id']) : $this->redirect('/');
@@ -177,7 +181,7 @@ class AdvertisementAction extends AdminAction {
             } else {
                 $image = (array) $image;
             }
-            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $p_cate_id, $c_cate_id, $goods_id, $content, $image));
+            $this->ajaxReturn(D('Advertisement')->updateAdvertisement($id, $title, $language, $type, $is_goods_advertisement, $business_model, $p_cate_id, $c_cate_id, $goods_id, $content, $image));
         } else {
             $advertisement = M('Advertisement')->where(array(
                 'id' => $id

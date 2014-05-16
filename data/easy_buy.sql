@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
-Source Server Version : 50519
+Source Server         : localhost
+Source Server Version : 50537
 Source Host           : localhost:3306
 Source Database       : easy_buy
 
 Target Server Type    : MYSQL
-Target Server Version : 50519
+Target Server Version : 50537
 File Encoding         : 65001
 
-Date: 2014-05-16 00:13:59
+Date: 2014-05-16 10:22:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `easy_admin_user` (
 -- ----------------------------
 -- Records of easy_admin_user
 -- ----------------------------
-INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1400170392', '1', 'Administrator!Do not delete!', '1');
+INSERT INTO `easy_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1400203850', '1', 'Administrator!Do not delete!', '1');
 
 -- ----------------------------
 -- Table structure for `easy_advertisement`
@@ -72,6 +72,7 @@ CREATE TABLE `easy_advertisement` (
   `content` text NOT NULL COMMENT 'advertisement content',
   `language` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'advertisement language(1:Chinese,2:English,3:Arabic)',
   `is_goods_advertisement` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is goods advertisement?(0:no,1:yes)',
+  `business_model` tinyint(1) DEFAULT NULL COMMENT 'Business model(1:b2c,2:b2b)',
   `p_cate_id` int(11) DEFAULT NULL COMMENT 'Parent category id',
   `c_cate_id` int(11) DEFAULT NULL COMMENT 'Child category id',
   `goods_id` int(11) DEFAULT NULL COMMENT 'Goods id',

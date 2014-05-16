@@ -42,6 +42,16 @@
                         <input type="radio" value="0" name="goods_advertisement" checked="checked" />&nbsp;&nbsp;No
                     </td>
                 </tr>
+                <tr height="60px" id="select_model" style="display:none;">
+                    <td align="right">BUSINESS MODEL:&nbsp;&nbsp;</td>
+                    <td>
+                        <select id="business_model">
+                            <option value="0">BUSINESS MODEL</option>
+                            <option value="1">B2C</option>
+                            <option value="2">B2B</option>
+                        </select>
+                    </td>
+                </tr>
                 <tr height="60px" id="select_parent" style="display:none;">
                     <td align="right">Parent Category:&nbsp;&nbsp;</td>
                     <td>
@@ -109,8 +119,19 @@ $(function() {
     $("input[name='goods_advertisement']").change(function() {
         var is = parseInt($(this).val());
         if (is) {
+            $("#select_model").show();
+        } else {
+            $("#select_model").hide();
+            $("#select_parent").hide();
+            $("#select_child").hide();
+            $("#select_goods").hide();
+        }
+    });
+    $("#business_model").change(function() {
+        var business_model = parseInt($(this).val());
+        if (business_model) {
             var parent_opt = '<option value="0">PARENT CATEGORY</option>';
-            $.post('<{:U("advertisement/get_parent_list")}>', function(data) {
+            $.post('<{:U("advertisement/get_parent_list")}>', {business_model: business_model}, function(data) {
                 for (var i in data) {
                     parent_opt += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                 }
@@ -225,10 +246,11 @@ function ckTitle() {
 function ckGoods() {
     var is = parseInt($("input[name='goods_advertisement']").filter(":checked").val());
     if (is) {
+        var business_model = parseInt($("#business_model").val());
         var p_cate_id = parseInt($("#p_cate_id").val());
         var c_cate_id = parseInt($("#c_cate_id").val());
         var goods_id = parseInt($("#goods_id").val());
-        if (!p_cate_id || !goods_id || !c_cate_id) {
+        if (!business_model || !p_cate_id || !goods_id || !c_cate_id) {
             $.ligerDialog.alert('Please select a goods', 'Error(>_<)', 'warn');
             return false;
         }
@@ -265,6 +287,7 @@ function saveAdvertisement() {
     var language = $("input[name='language']").filter(":checked").val();
     var type = $("#type").val();
     var is_goods_advertisement = $("input[name='goods_advertisement']").filter(":checked").val();
+    var business_model = parseInt(is_goods_advertisement) ? $("#business_model").val() : '';
     var p_cate_id = parseInt(is_goods_advertisement) ? $("#p_cate_id").val() : '';
     var c_cate_id = parseInt(is_goods_advertisement) ? $("#c_cate_id").val() : '';
     var goods_id = parseInt(is_goods_advertisement) ? $("#goods_id").val() : '';
@@ -274,6 +297,7 @@ function saveAdvertisement() {
             language: language,
             type: type,
             is_goods_advertisement: is_goods_advertisement,
+            business_model: business_model,
             p_cate_id: p_cate_id,
             c_cate_id: c_cate_id,
             goods_id: goods_id,
