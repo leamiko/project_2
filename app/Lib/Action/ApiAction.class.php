@@ -17,20 +17,20 @@ class ApiAction extends Action {
             $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
             if ($id < 1) {
                 $this->ajaxReturn(array(
-                        'statu' => 0,
-                        'result' => 'Invalid parameters'
+                    'statu' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Address')->where(array(
-                    'id' => $id
+                'id' => $id
             ))->select();
             foreach ($result as &$v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -47,20 +47,20 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($user_id < 1 || $page < 1 && $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Address')->where(array(
-                    'user_id' => $user_id
+                'user_id' => $user_id
             ))->limit(($page - 1) * $pageSize, $pageSize)->order("add_time DESC")->select();
             foreach ($result as &$v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -80,26 +80,26 @@ class ApiAction extends Action {
             $address = isset($_POST['address']) ? trim($_POST['address']) : $this->redirect('/');
             if ($user_id < 1 || empty($name) || empty($address)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameter'
+                    'status' => 0,
+                    'result' => 'Invalid parameter'
                 ));
             }
             $addressModel = M('Address');
             if ($addressModel->where(array(
-                    'user_id' => $user_id,
-                    'name' => $name,
-                    'address' => $address
+                'user_id' => $user_id,
+                'name' => $name,
+                'address' => $address
             ))->count()) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'You have already added this address.'
+                    'status' => 0,
+                    'result' => 'You have already added this address.'
                 ));
             }
             $data = array(
-                    'user_id' => $user_id,
-                    'name' => $name,
-                    'address' => $address,
-                    'add_time' => time()
+                'user_id' => $user_id,
+                'name' => $name,
+                'address' => $address,
+                'add_time' => time()
             );
             strlen($phone) && $data['phone'] = $phone;
             strlen($telephone) && $data['telephone'] = $telephone;
@@ -110,15 +110,15 @@ class ApiAction extends Action {
                 // Add successful,commit transaction
                 $addressModel->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Add address successful'
+                    'status' => 1,
+                    'result' => 'Add address successful'
                 ));
             } else {
                 // Add failed,rollback transaction
                 $addressModel->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
@@ -133,21 +133,21 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             if (!in_array($type, array(
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Advertisement')->where(array(
-                    'type' => $type,
-                    'status' => 1
+                'type' => $type,
+                'status' => 1
             ))->order("add_time DESC")->limit(6)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
@@ -155,10 +155,10 @@ class ApiAction extends Action {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['image'] = M('AdvertisementImage')->field(array(
-                            'image'
+                        'image'
                     ))->where(array(
-                            'advertisement_id' => $v['id'],
-                            'is_delete' => 0
+                        'advertisement_id' => $v['id'],
+                        'is_delete' => 0
                     ))->select();
                     foreach ($v['image'] as &$v_1) {
                         $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
@@ -166,8 +166,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -183,8 +183,8 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameter'
+                    'status' => 0,
+                    'result' => 'Invalid parameter'
                 ));
             }
             $result = D('Area')->getAreaList($page, $pageSize, "name_en", "ASC");
@@ -195,8 +195,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -215,33 +215,33 @@ class ApiAction extends Action {
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
             if ($goods_id < 1 || $c_cate_id < 1 || $user_id < 1 || $price < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $bidding = M('Bidding');
             // Start transaction
             $bidding->startTrans();
             if ($bidding->add(array(
-                    'goods_id' => $goods_id,
-                    'c_cate_id' => $c_cate_id,
-                    'user_id' => $user_id,
-                    'price' => $price,
-                    'remark' => strlen($remark) ? $remark : null,
-                    'bidding_time' => time()
+                'goods_id' => $goods_id,
+                'c_cate_id' => $c_cate_id,
+                'user_id' => $user_id,
+                'price' => $price,
+                'remark' => strlen($remark) ? $remark : null,
+                'bidding_time' => time()
             ))) {
                 // Add bidding successful,commit transaction
                 $bidding->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Bidding successful'
+                    'status' => 1,
+                    'result' => 'Bidding successful'
                 ));
             } else {
                 // Add bidding failed,rollback transaction
                 $bidding->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Bidding failed'
+                    'status' => 0,
+                    'result' => 'Bidding failed'
                 ));
             }
         } else {
@@ -259,8 +259,8 @@ class ApiAction extends Action {
             $new_password = isset($_POST['new_password']) ? trim($_POST['new_password']) : $this->redirect('/');
             if ($user_id < 1 || empty($old_password) || empty($new_password)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');
@@ -268,26 +268,26 @@ class ApiAction extends Action {
                 // Start transaction
                 $member->startTrans();
                 if ($member->where("id = {$user_id} AND password = \"" . md5($old_password) . "\"")->save(array(
-                        'password' => md5($new_password)
+                    'password' => md5($new_password)
                 ))) {
                     // Change successful,commit transaction
                     $member->commit();
                     $this->ajaxReturn(array(
-                            'status' => 1,
-                            'result' => 'Change password successful'
+                        'status' => 1,
+                        'result' => 'Change password successful'
                     ));
                 } else {
                     // Change failed,rollback transaction
                     $member->rollback();
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Unknown error'
+                        'status' => 0,
+                        'result' => 'Unknown error'
                     ));
                 }
             } else {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid old password'
+                    'status' => 0,
+                    'result' => 'Invalid old password'
                 ));
             }
         } else {
@@ -306,8 +306,8 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($user_id < 1 || $p_cate_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = D('ChildCategory')->apiGetChildCategoryList($p_cate_id, $page, $pageSize);
@@ -317,15 +317,15 @@ class ApiAction extends Action {
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
                     $v['isSubscription'] = M('Subscription')->where(array(
-                            'user_id' => $user_id,
-                            'p_cate_id' => $p_cate_id,
-                            'c_cate_id' => $v['id']
+                        'user_id' => $user_id,
+                        'p_cate_id' => $p_cate_id,
+                        'c_cate_id' => $v['id']
                     ))->count() ? 1 : 0;
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -340,28 +340,28 @@ class ApiAction extends Action {
             $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
             if ($id < 1) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $address = M('Address');
             // Start transaction
             $address->startTrans();
             if ($address->where(array(
-                    'id' => $id
+                'id' => $id
             ))->delete()) {
                 // Delete successful,commit transaction
                 $address->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Delete address successful'
+                    'status' => 1,
+                    'result' => 'Delete address successful'
                 ));
             } else {
                 // Delete failed,rollback transaction
                 $address->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
@@ -379,21 +379,21 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($c_cate_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Goods')->where(array(
-                    'c_cate_id' => $c_cate_id,
-                    'is_bidding' => 1
+                'c_cate_id' => $c_cate_id,
+                'is_bidding' => 1
             ))->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
                     $v['image'] = M('GoodsImage')->field(array(
-                            'image'
+                        'image'
                     ))->where(array(
-                            'goods_id' => $v['id'],
-                            'is_delete' => 0
+                        'goods_id' => $v['id'],
+                        'is_delete' => 0
                     ))->order("id ASC")->select();
                     foreach ($v['image'] as &$v_1) {
                         $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
@@ -408,8 +408,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -424,21 +424,21 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             if ($user_id < 1) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Address')->where(array(
-                    'user_id' => $user_id,
-                    'is_default' => 1
+                'user_id' => $user_id,
+                'is_default' => 1
             ))->select();
             foreach ($result as &$v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -456,8 +456,8 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($p_cate_id < 1 || $c_cate_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = D('Goods')->apiGetGoodsList($p_cate_id, $c_cate_id, $page, $pageSize);
@@ -469,8 +469,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -485,8 +485,8 @@ class ApiAction extends Action {
             $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
             if ($goods_id < 1) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = D('Goods')->getGoodsDetail($goods_id);
@@ -498,8 +498,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -513,18 +513,18 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $language = isset($_POST['language']) ? $_POST['language'] : $this->redirect('/');
             if (!in_array($language, array(
-                    1,
-                    2,
-                    3
+                1,
+                2,
+                3
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('News')->where(array(
-                    'type' => 1,
-                    'language' => $language
+                'type' => 1,
+                'language' => $language
             ))->order("add_time DESC")->limit(6)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
@@ -532,10 +532,10 @@ class ApiAction extends Action {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['image'] = M('NewsImage')->field(array(
-                            'image'
+                        'image'
                     ))->where(array(
-                            'news_id' => $v['id'],
-                            'is_delete' => 0
+                        'news_id' => $v['id'],
+                        'is_delete' => 0
                     ))->select();
                     foreach ($v['image'] as &$v_1) {
                         $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
@@ -543,8 +543,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -561,33 +561,33 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($user_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Order')->where(array(
-                    'user_id' => $user_id
+                'user_id' => $user_id
             ))->order("order_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
                     $v['order_time'] = date("Y-m-d H:i:s", $v['order_time']);
                     $total_price = M('OrderGoods')->field(array(
-                            'SUM(goods_price)' => 'total_price'
+                        'SUM(goods_price)' => 'total_price'
                     ))->where(array(
-                            'order_id' => $v['id']
+                        'order_id' => $v['id']
                     ))->select();
                     $v['total_price'] = $total_price[0]['total_price'];
                     $temp = M('Shipping')->field(array(
-                            'name'
+                        'name'
                     ))->where(array(
-                            'id' => $v['shipping_type']
+                        'id' => $v['shipping_type']
                     ))->find();
                     $v['shipping_type'] = $temp['name'];
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -604,12 +604,12 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($user_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Publish')->where(array(
-                    'user_id' => $user_id
+                'user_id' => $user_id
             ))->order("publish_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
                 $v['image_1'] = $v['image_1'] ? "http://{$_SERVER['HTTP_HOST']}{$v['image_1']}" : $v['image_1'];
@@ -619,8 +619,8 @@ class ApiAction extends Action {
                 $v['publish_time'] = date("Y-m-d H:i:s", $v['publish_time']);
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -637,20 +637,20 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($user_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('ShippingAgency')->where(array(
-                    'user_id' => $user_id
+                'user_id' => $user_id
             ))->order("add_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
                 $v['loading_time'] = date("Y-m-d H:i:s", $v['loading_time']);
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -670,23 +670,23 @@ class ApiAction extends Action {
             $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
             if ($user_id < 0 || empty($goods_detail) || $address_id < 0 || $shipping_type < 0 || empty($pay_method) || !in_array($status, array(
-                    0,
-                    1
+                0,
+                1
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $order_number = $this->generateOrderNumber($user_id);
             $data = array(
-                    'user_id' => $user_id,
-                    'address_id' => $address_id,
-                    'shipping_type' => $shipping_type,
-                    'pay_method' => $pay_method,
-                    'order_number' => $order_number,
-                    'status' => $status,
-                    'order_time' => time()
+                'user_id' => $user_id,
+                'address_id' => $address_id,
+                'shipping_type' => $shipping_type,
+                'pay_method' => $pay_method,
+                'order_number' => $order_number,
+                'status' => $status,
+                'order_time' => time()
             );
             strlen($remark) && $data['remark'] = $remark;
             $order = M('Order');
@@ -699,10 +699,10 @@ class ApiAction extends Action {
                 $dataList = array();
                 foreach ($goods_detail as $v) {
                     $dataList[] = array(
-                            'goods_id' => $v->id,
-                            'goods_price' => $v->price,
-                            'goods_amount' => $v->amount,
-                            'order_id' => $order_id
+                        'goods_id' => $v->id,
+                        'goods_price' => $v->price,
+                        'goods_amount' => $v->amount,
+                        'order_id' => $order_id
                     );
                 }
                 $order_goods = M('OrderGoods');
@@ -713,26 +713,26 @@ class ApiAction extends Action {
                     $order_goods->commit();
                     $order->commit();
                     $this->ajaxReturn(array(
-                            'status' => 1,
-                            'result' => array(
-                                    'order_id' => $order_id
-                            )
+                        'status' => 1,
+                        'result' => array(
+                            'order_id' => $order_id
+                        )
                     ));
                 } else {
                     // Add order goods failed,rollback transaction
                     $order_goods->rollback();
                     $order->rollback();
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Unknown error'
+                        'status' => 0,
+                        'result' => 'Unknown error'
                     ));
                 }
             } else {
                 // Add failed,rollback transaction
                 $order->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Add order failed'
+                    'status' => 0,
+                    'result' => 'Add order failed'
                 ));
             }
         } else {
@@ -750,29 +750,29 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($order_id < 1 || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('OrderGoods')->where(array(
-                    'order_id' => $order_id
+                'order_id' => $order_id
             ))->order("id ASC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
                 $temp = M('Goods')->field(array(
-                        'name'
+                    'name'
                 ))->where(array(
-                        'id' => $v['goods_id']
+                    'id' => $v['goods_id']
                 ))->find();
                 $v['goods_name'] = $temp['name'];
                 $v['goods_image'] = M('GoodsImage')->field(array(
-                        'CONCAT("' . "http://{$_SERVER['HTTP_HOST']}" . '", image)' => 'image'
+                    'CONCAT("' . "http://{$_SERVER['HTTP_HOST']}" . '", image)' => 'image'
                 ))->where(array(
-                        'goods_id' => $v['goods_id']
+                    'goods_id' => $v['goods_id']
                 ))->select();
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -788,30 +788,30 @@ class ApiAction extends Action {
             $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
             if (empty($account) || empty($password)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');
             if ($member->where(array(
-                    'account' => $account,
-                    'password' => md5($password)
+                'account' => $account,
+                'password' => md5($password)
             ))->count()) {
                 $result = $member->field(array(
-                        'id',
-                        'account',
-                        'phone',
-                        'avatar',
-                        'sex',
-                        'status',
-                        'is_vip',
-                        'email',
-                        'register_time',
-                        'upgrade_time',
-                        'last_time'
+                    'id',
+                    'account',
+                    'phone',
+                    'avatar',
+                    'sex',
+                    'status',
+                    'is_vip',
+                    'email',
+                    'register_time',
+                    'upgrade_time',
+                    'last_time'
                 ))->where(array(
-                        'account' => $account,
-                        'password' => md5($password)
+                    'account' => $account,
+                    'password' => md5($password)
                 ))->select();
                 foreach ($result as &$value) {
                     $value['password'] = $password;
@@ -823,28 +823,28 @@ class ApiAction extends Action {
                 // Update user last login time,start transaction
                 $member->startTrans();
                 if ($member->where(array(
-                        'id' => $result[0]['id']
+                    'id' => $result[0]['id']
                 ))->save(array(
-                        'last_time' => time()
+                    'last_time' => time()
                 ))) {
                     // Update successful,commit transaction
                     $member->commit();
                     $this->ajaxReturn(array(
-                            'status' => 1,
-                            'result' => $result
+                        'status' => 1,
+                        'result' => $result
                     ));
                 } else {
                     // Update failed,rollback transaction
                     $member->rollback();
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Update last login time failed'
+                        'status' => 0,
+                        'result' => 'Update last login time failed'
                     ));
                 }
             } else {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Account and the password are not match.'
+                    'status' => 0,
+                    'result' => 'Account and the password are not match.'
                 ));
             }
         } else {
@@ -861,35 +861,35 @@ class ApiAction extends Action {
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if (!in_array($language, array(
-                    1,
-                    2,
-                    3
+                1,
+                2,
+                3
             )) || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameter'
+                    'status' => 0,
+                    'result' => 'Invalid parameter'
                 ));
             }
             $result = M('News')->where(array(
-                    'language' => $language
+                'language' => $language
             ))->order("add_time DESC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
                 $v['content'] = preg_replace("/src=\"(.+)\"/U", "src=\"http://{$_SERVER['HTTP_HOST']}$1\"", $v['content']);
                 $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                 $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                 $v['image'] = M('NewsImage')->field(array(
-                        'image'
+                    'image'
                 ))->where(array(
-                        'news_id' => $v['id'],
-                        'is_delete' => 0
+                    'news_id' => $v['id'],
+                    'is_delete' => 0
                 ))->select();
                 foreach ($v['image'] as &$v_1) {
                     $v_1['image'] = "http://{$_SERVER['HTTP_HOST']}{$v_1['image']}";
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -906,8 +906,8 @@ class ApiAction extends Action {
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = D('ParentCategory')->getParentCategoryList($page, $pageSize, "id", "ASC", $business_model);
@@ -917,8 +917,8 @@ class ApiAction extends Action {
                 $v['image'] = "http://{$_SERVER['HTTP_HOST']}{$v['image']}";
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -956,28 +956,28 @@ class ApiAction extends Action {
             $material = isset($_POST['material']) ? trim($_POST['material']) : null;
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : null;
             if ($user_id < 1 || !in_array($type, array(
-                    0,
-                    1
+                0,
+                1
             )) || empty($goods_name) || empty($publisher_second_name) || empty($publisher_first_name) || empty($country) || empty($telephone) || empty($phone) || empty($email) || empty($image_1) || $quantity < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $data = array(
-                    'user_id' => $user_id,
-                    'type' => $type,
-                    'goods_name' => $goods_name,
-                    'publisher_second_name' => $publisher_second_name,
-                    'publisher_first_name' => $publisher_first_name,
-                    'country' => $country,
-                    'carton' => $carton,
-                    'telephone' => $telephone,
-                    'phone' => $phone,
-                    'email' => $email,
-                    'image_1' => $this->saveImage('publish_', $image_1),
-                    'quantity' => $quantity,
-                    'publish_time' => time()
+                'user_id' => $user_id,
+                'type' => $type,
+                'goods_name' => $goods_name,
+                'publisher_second_name' => $publisher_second_name,
+                'publisher_first_name' => $publisher_first_name,
+                'country' => $country,
+                'carton' => $carton,
+                'telephone' => $telephone,
+                'phone' => $phone,
+                'email' => $email,
+                'image_1' => $this->saveImage('publish_', $image_1),
+                'quantity' => $quantity,
+                'publish_time' => time()
             );
             strlen($company) && $data['company'] = $company;
             strlen($length) && $data['length'] = intval($length);
@@ -998,15 +998,15 @@ class ApiAction extends Action {
                 // Add successful,commit transaction
                 $publis->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Publish successful'
+                    'status' => 1,
+                    'result' => 'Publish successful'
                 ));
             } else {
                 // Add failed,rollback transaction
                 $publis->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Publish failed'
+                    'status' => 0,
+                    'result' => 'Publish failed'
                 ));
             }
         } else {
@@ -1024,41 +1024,41 @@ class ApiAction extends Action {
             $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
             if (empty($account) || empty($password) || empty($email)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');
             if ($member->where("account = \"{$account}\"")->count()) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'User already exists'
+                    'status' => 0,
+                    'result' => 'User already exists'
                 ));
             }
             // Start transaction
             $member->startTrans();
             if ($member->add(array(
-                    'account' => $account,
-                    'password' => md5($password),
-                    'email' => $email,
-                    'status' => 0,
-                    'register_time' => time()
+                'account' => $account,
+                'password' => md5($password),
+                'email' => $email,
+                'status' => 0,
+                'register_time' => time()
             ))) {
                 // Send the email to user with verfication code
                 $verificationCode = $this->generateVerificationCode();
                 if ($this->sendMail($email, $account, 'EasyBuy Register Verification Code', "Dear {$account}! Thinks for registering!Your verification code is : {$verificationCode}.Enjoy your shopping!")) {
                     $lastId = $member->getLastInsID();
                     $result = $member->field(array(
-                            'id',
-                            'account',
-                            'avatar',
-                            'sex',
-                            'status',
-                            'is_vip',
-                            'email',
-                            'register_time',
-                            'last_time',
-                            'upgrade_time'
+                        'id',
+                        'account',
+                        'avatar',
+                        'sex',
+                        'status',
+                        'is_vip',
+                        'email',
+                        'register_time',
+                        'last_time',
+                        'upgrade_time'
                     ))->where("id = {$lastId}")->select();
                     foreach ($result as &$v) {
                         $v['avatar'] = $v['avatar'] ? "http://{$_SERVER['HTTP_HOST']}{$v['avatar']}" : $v['avatar'];
@@ -1071,16 +1071,16 @@ class ApiAction extends Action {
                     // Registration successful,commit transaction
                     $member->commit();
                     $this->ajaxReturn(array(
-                            'status' => 1,
-                            'result' => $result
+                        'status' => 1,
+                        'result' => $result
                     ));
                 }
             } else {
                 // Registration failed,rollback transaction
                 $member->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
@@ -1097,21 +1097,21 @@ class ApiAction extends Action {
             $email = isset($_POST['email']) ? trim($_POST['email']) : $this->redirect('/');
             if (empty($account) || empty($email)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             // Send the email to user with verfication code
             $verificationCode = $this->generateVerificationCode();
             if ($this->sendMail($email, $account, 'EasyBuy Register Verification Code', "Dear {$account}! Thinks for registering!Your verification code is : {$verificationCode}.Enjoy you shopping!")) {
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => $verificationCode
+                    'status' => 1,
+                    'result' => $verificationCode
                 ));
             } else {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Resend verification email failed'
+                    'status' => 0,
+                    'result' => 'Resend verification email failed'
                 ));
             }
         } else {
@@ -1130,12 +1130,12 @@ class ApiAction extends Action {
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if (!in_array($business_model, array(
-                    1,
-                    2
+                1,
+                2
             )) || empty($business_model) || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = D('Goods')->searchGoods($business_model, $keyword, $zip_code_id, $page, $pageSize);
@@ -1147,8 +1147,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -1164,58 +1164,58 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             if ($id < 1 || $user_id < 1) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $address = M('Address');
             if ($address->where(array(
-                    'user_id' => $user_id,
-                    'id' => $id,
-                    'is_default' => 1
+                'user_id' => $user_id,
+                'id' => $id,
+                'is_default' => 1
             ))->count()) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'This address was the default one'
+                    'status' => 0,
+                    'result' => 'This address was the default one'
                 ));
             }
             // Start transaction
             $address->startTrans();
             if ($address->where(array(
-                    'user_id' => $user_id,
-                    'is_default' => 1
+                'user_id' => $user_id,
+                'is_default' => 1
             ))->count()) {
                 // Set all address to normal
                 if (!$address->where(array(
-                        'user_id' => $user_id
+                    'user_id' => $user_id
                 ))->save(array(
-                        'is_default' => 0
+                    'is_default' => 0
                 ))) {
                     // Set all addresses to normal failed,rollback transaction
                     $address->rollback();
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Unknown error'
+                        'status' => 0,
+                        'result' => 'Unknown error'
                     ));
                 }
             }
             if ($address->where(array(
-                    'id' => $id
+                'id' => $id
             ))->save(array(
-                    'is_default' => 1
+                'is_default' => 1
             ))) {
                 // Set default address successful,commit transaction
                 $address->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Set default address successful'
+                    'status' => 1,
+                    'result' => 'Set default address successful'
                 ));
             } else {
                 // Set default address failed,rollback transaction
                 $address->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
@@ -1249,25 +1249,25 @@ class ApiAction extends Action {
             $document_type = isset($_POST['document_type']) ? trim($_POST['document_type']) : null;
             if ($user_id < 1 || empty($first_name) || empty($last_name) || empty($telephone) || empty($phone) || empty($email) || empty($company) || empty($country) || empty($goods_name) || empty($shipping_type) || $quantity < 0 || empty($shipping_port) || empty($destination_port)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $data = array(
-                    'user_id' => $user_id,
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'telephone' => $telephone,
-                    'phone' => $phone,
-                    'email' => $email,
-                    'company' => $company,
-                    'country' => $country,
-                    'goods_name' => $goods_name,
-                    'shipping_type' => $shipping_type,
-                    'quantity' => $quantity,
-                    'shipping_port' => $shipping_port,
-                    'destination_port' => $destination_port,
-                    'add_time' => time()
+                'user_id' => $user_id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'telephone' => $telephone,
+                'phone' => $phone,
+                'email' => $email,
+                'company' => $company,
+                'country' => $country,
+                'goods_name' => $goods_name,
+                'shipping_type' => $shipping_type,
+                'quantity' => $quantity,
+                'shipping_port' => $shipping_port,
+                'destination_port' => $destination_port,
+                'add_time' => time()
             );
             strlen($container) && $data['container'] = intval($container);
             strlen($wish_shipping_line) && $data['wish_shipping_line'] = $wish_shipping_line;
@@ -1282,15 +1282,15 @@ class ApiAction extends Action {
                 // Add successful,commit transaction
                 $shipping_agency->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Apply shipping agency successful'
+                    'status' => 1,
+                    'result' => 'Apply shipping agency successful'
                 ));
             } else {
                 // Add failed,rollback transaction
                 $shipping_agency->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Apply shipping agency failed'
+                    'status' => 0,
+                    'result' => 'Apply shipping agency failed'
                 ));
             }
         } else {
@@ -1305,16 +1305,16 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $business_model = isset($_POST['business_model']) ? intval($_POST['business_model']) : $this->redirect('/');
             if (!in_array($business_model, array(
-                    1,
-                    2
+                1,
+                2
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $result = M('Shipping')->where(array(
-                    'business_model' => $business_model
+                'business_model' => $business_model
             ))->order("id ASC")->select();
             if (!empty($result)) {
                 foreach ($result as &$v) {
@@ -1323,8 +1323,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -1341,69 +1341,69 @@ class ApiAction extends Action {
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
             if ($user_id < 1 || $c_cate_id < 1 || $p_cate_id < 1 || !in_array($type, array(
-                    0,
-                    1
+                0,
+                1
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $subscription = M('Subscription');
             // subscribe
             if ($type) {
                 if ($subscription->where(array(
-                        'user_id' => $user_id,
-                        'p_cate_id' => $p_cate_id,
-                        'c_cate_id' => $c_cate_id
+                    'user_id' => $user_id,
+                    'p_cate_id' => $p_cate_id,
+                    'c_cate_id' => $c_cate_id
                 ))->count()) {
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'You have already subscribe this child category'
+                        'status' => 0,
+                        'result' => 'You have already subscribe this child category'
                     ));
                 }
                 // Start transaction
                 $subscription->startTrans();
                 if ($subscription->add(array(
-                        'p_cate_id' => $p_cate_id,
-                        'c_cate_id' => $c_cate_id,
-                        'user_id' => $user_id,
-                        'subscribe_time' => time()
+                    'p_cate_id' => $p_cate_id,
+                    'c_cate_id' => $c_cate_id,
+                    'user_id' => $user_id,
+                    'subscribe_time' => time()
                 ))) {
                     // Add successful,commit transaction
                     $subscription->commit();
                     $this->ajaxReturn(array(
-                            'status' => 1,
-                            'result' => 'Subscribe successful'
+                        'status' => 1,
+                        'result' => 'Subscribe successful'
                     ));
                 } else {
                     // Add failed,rollback transaction
                     $subscription->rollback();
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Subscribe failed'
+                        'status' => 0,
+                        'result' => 'Subscribe failed'
                     ));
                 }
             } else {
                 // Start transaction
                 $subscription->startTrans();
                 if ($subscription->where(array(
-                        'user_id' => $user_id,
-                        'p_cate_id' => $p_cate_id,
-                        'c_cate_id' => $c_cate_id
+                    'user_id' => $user_id,
+                    'p_cate_id' => $p_cate_id,
+                    'c_cate_id' => $c_cate_id
                 ))->delete()) {
                     // Delete successful,commit transaction
                     $subscription->commit();
                     $this->ajaxReturn(array(
-                            'status' => 1,
-                            'result' => 'Unsubscribe successful'
+                        'status' => 1,
+                        'result' => 'Unsubscribe successful'
                     ));
                 } else {
                     // Delete failed,rollback transaction
                     $subscription->rollback();
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Unsubscribe failed'
+                        'status' => 0,
+                        'result' => 'Unsubscribe failed'
                     ));
                 }
             }
@@ -1426,50 +1426,50 @@ class ApiAction extends Action {
             $address = isset($_POST['address']) ? trim($_POST['address']) : $this->redirect('/');
             if ($id < 1 || $user_id < 1 || empty($name) || empty($address)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $addressModel = M('Address');
             if ($addressModel->where(array(
-                    'user_id' => $user_id,
-                    'name' => $name,
-                    'address' => $address,
-                    'id' => array(
-                            'neq',
-                            $id
-                    )
+                'user_id' => $user_id,
+                'name' => $name,
+                'address' => $address,
+                'id' => array(
+                    'neq',
+                    $id
+                )
             ))->count()) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'You have already added this address'
+                    'status' => 0,
+                    'result' => 'You have already added this address'
                 ));
             }
             // Start transaction
             $addressModel->startTrans();
             if ($addressModel->where(array(
-                    'id' => $id
+                'id' => $id
             ))->save(array(
-                    'user_id' => $user_id,
-                    'name' => $name,
-                    'phone' => strlen($phone) ? $phone : null,
-                    'telephone' => strlen($telephone) ? $telephone : null,
-                    'zip' => strlen($zip) ? $zip : null,
-                    'address' => $address,
-                    'update_time' => time()
+                'user_id' => $user_id,
+                'name' => $name,
+                'phone' => strlen($phone) ? $phone : null,
+                'telephone' => strlen($telephone) ? $telephone : null,
+                'zip' => strlen($zip) ? $zip : null,
+                'address' => $address,
+                'update_time' => time()
             ))) {
                 // Update successful,commit transaction
                 $addressModel->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Update address successful'
+                    'status' => 1,
+                    'result' => 'Update address successful'
                 ));
             } else {
                 // Update failed,rollback transaction
                 $addressModel->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
@@ -1489,23 +1489,23 @@ class ApiAction extends Action {
             $sex = isset($_POST['sex']) ? intval($_POST['sex']) : null;
             if ($id < 1) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');
             $data = array();
             if ($account) {
                 if ($member->where(array(
-                        'account' => $account,
-                        'id' => array(
-                                'neq',
-                                $id
-                        )
+                    'account' => $account,
+                    'id' => array(
+                        'neq',
+                        $id
+                    )
                 ))->count()) {
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'This account was used by anothor member.'
+                        'status' => 0,
+                        'result' => 'This account was used by anothor member.'
                     ));
                 } else {
                     $data['account'] = $account;
@@ -1514,16 +1514,16 @@ class ApiAction extends Action {
             $phone && $data['phone'] = $phone;
             if ($avatar) {
                 $old_avatar = $member->where(array(
-                        'id' => $id
+                    'id' => $id
                 ))->field(array(
-                        'avatar'
+                    'avatar'
                 ))->find();
                 if ($old_avatar['avatar']) {
                     if (file_exists($_SERVER['DOCUMENT_ROOT'] . $old_avatar['avatar'])) {
                         if (!unlink($_SERVER['DOCUMENT_ROOT'] . $old_avatar['avatar'])) {
                             $this->ajaxReturn(array(
-                                    'status' => 0,
-                                    'result' => 'Update member avatar failed'
+                                'status' => 0,
+                                'result' => 'Update member avatar failed'
                             ));
                         }
                     }
@@ -1532,12 +1532,12 @@ class ApiAction extends Action {
             }
             if (!is_null($sex)) {
                 if (!in_array($sex, array(
-                        0,
-                        1
+                    0,
+                    1
                 ))) {
                     $this->ajaxReturn(array(
-                            'status' => 0,
-                            'result' => 'Invalid parameters'
+                        'status' => 0,
+                        'result' => 'Invalid parameters'
                     ));
                 } else {
                     $data['sex'] = $sex;
@@ -1545,30 +1545,30 @@ class ApiAction extends Action {
             }
             if (empty($data)) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Nothing to update'
+                    'status' => 0,
+                    'result' => 'Nothing to update'
                 ));
             }
             // Start transaction
             $member->startTrans();
             if ($member->where(array(
-                    'id' => $id
+                'id' => $id
             ))->save($data)) {
                 // Update successful,get the new information
                 $result = $member->field(array(
-                        'id',
-                        'account',
-                        'phone',
-                        'avatar',
-                        'sex',
-                        'status',
-                        'is_vip',
-                        'email',
-                        'register_time',
-                        'last_time',
-                        'upgrade_time'
+                    'id',
+                    'account',
+                    'phone',
+                    'avatar',
+                    'sex',
+                    'status',
+                    'is_vip',
+                    'email',
+                    'register_time',
+                    'last_time',
+                    'upgrade_time'
                 ))->where(array(
-                        'id' => $id
+                    'id' => $id
                 ))->limit(1)->select();
                 foreach ($result as &$v) {
                     $v['register_time'] = date("Y-m-d H:i:s", $v['register_time']);
@@ -1579,15 +1579,15 @@ class ApiAction extends Action {
                 // Commit transaction
                 $member->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => $result
+                    'status' => 1,
+                    'result' => $result
                 ));
             } else {
                 // Update failed,rollback transaction
                 $member->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Update member failed'
+                    'status' => 0,
+                    'result' => 'Update member failed'
                 ));
             }
         } else {
@@ -1603,34 +1603,34 @@ class ApiAction extends Action {
             $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
             $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
             if ($id < 0 || !in_array($status, array(
-                    0,
-                    1
+                0,
+                1
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $order = M('Order');
             // Start transaction
             $order->startTrans();
             if ($order->where(array(
-                    'id' => $id
+                'id' => $id
             ))->save(array(
-                    'status' => $status
+                'status' => $status
             ))) {
                 // Update status successful,commit transaction
                 $order->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Update order status successful'
+                    'status' => 1,
+                    'result' => 'Update order status successful'
                 ));
             } else {
                 // Update status failed,rollback transaction
                 $order->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Update order status failed'
+                    'status' => 0,
+                    'result' => 'Update order status failed'
                 ));
             }
         } else {
@@ -1649,15 +1649,15 @@ class ApiAction extends Action {
             $page = isset($_POST['page']) ? intval($_POST['page']) : $this->redirect('/');
             $pageSize = isset($_POST['pageSize']) ? intval($_POST['pageSize']) : $this->redirect('/');
             if ($user_id < 0 || !in_array($is_system, array(
-                    0,
-                    1
+                0,
+                1
             )) || !in_array($is_vip, array(
-                    0,
-                    1
+                0,
+                1
             )) || $page < 1 || $pageSize < 0) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             if ($is_system) {
@@ -1678,8 +1678,8 @@ class ApiAction extends Action {
                 }
             }
             $this->ajaxReturn(array(
-                    'status' => 1,
-                    'result' => $result
+                'status' => 1,
+                'result' => $result
             ));
         } else {
             $this->redirect('/');
@@ -1694,32 +1694,32 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
             if ($user_id < 1 || !in_array($status, array(
-                    0,
-                    1
+                0,
+                1
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');
             // Start transaction
             $member->startTrans();
             if ($member->where("id = {$user_id}")->save(array(
-                    'status' => $status
+                'status' => $status
             ))) {
                 // Update user status successful,commit transaction
                 $member->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Update user status successful'
+                    'status' => 1,
+                    'result' => 'Update user status successful'
                 ));
             } else {
                 // Update user status failed,rollback transaction
                 $member->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
@@ -1735,33 +1735,33 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $is_vip = isset($_POST['is_vip']) ? intval($_POST['is_vip']) : $this->redirect('/');
             if ($user_id < 1 || !in_array($is_vip, array(
-                    0,
-                    1
+                0,
+                1
             ))) {
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Invalid parameters'
+                    'status' => 0,
+                    'result' => 'Invalid parameters'
                 ));
             }
             $member = M('Member');
             // Start transaction
             $member->startTrans();
             if ($member->where("id = {$user_id}")->save(array(
-                    'is_vip' => $is_vip,
-                    'upgrade_time' => time()
+                'is_vip' => $is_vip,
+                'upgrade_time' => time()
             ))) {
                 // Upgrade successful,commit transaction
                 $member->commit();
                 $this->ajaxReturn(array(
-                        'status' => 1,
-                        'result' => 'Upgrade successful'
+                    'status' => 1,
+                    'result' => 'Upgrade successful'
                 ));
             } else {
                 // Upgrade failed,rollback transaction
                 $member->rollback();
                 $this->ajaxReturn(array(
-                        'status' => 0,
-                        'result' => 'Unknown error'
+                    'status' => 0,
+                    'result' => 'Unknown error'
                 ));
             }
         } else {
