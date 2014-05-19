@@ -1,7 +1,7 @@
 <?php
 
 /**
- * main entrance
+ * Main entrance
  * feedback lzjjie@gmail.com
  *
  * @author lzjjie
