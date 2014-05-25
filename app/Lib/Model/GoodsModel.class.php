@@ -503,9 +503,13 @@ class GoodsModel extends Model {
         $condition = array(
             'g.business_model' => $business_model,
             'g.is_delete' => 0,
-            'g.name' => array(
-                'like',
-                "%{$keyword}%"
+            '_complex' => array(
+                array(
+                    'g.name' => array('like', "%{$keyword}%"),
+                    'p.name' => array('like', "%{$keyword}%"),
+                    'c.name' => array('like', "%{$keyword}%"),
+                    '_logic' => 'OR'
+                )
             )
         );
         $zip_code_id && $condition['a.id'] = $zip_code_id;
