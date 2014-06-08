@@ -434,6 +434,7 @@ class GoodsModel extends Model {
                 FROM
                     easy_goods
                 WHERE
+                    is_delete = 0 AND
                     c_cate_id IN (
                     SELECT
                         c_cate_id

@@ -50,7 +50,7 @@
             </tr>
             <tr id="amount_select" style="display:none;">
                 <td align="right" class="l-table-edit-td">
-                    Amount for sale:
+                    <span>*</span>Minimum sell:
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="sale_amount" />
@@ -386,13 +386,14 @@ function ckStock() {
 //Check Amount for sale
 function ckSaleAmount() {
     var sale_amount = $.trim($("#sale_amount").val());
-    if (sale_amount.length > 0) {
-        var reg = /^\d+$/g;
-        if (!reg.test(sale_amount)) {
-            addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale just contains number only.');
-            return false;
-        } 
-        return true;
+    if (sale_amount.length == 0) {
+        addTip($("#sale_amount").parent('td').next('td:last'), 'The minimum sell can not be empty.');
+        return false;
+    }
+    var reg = /^\d+$/g;
+    if (!reg.test(sale_amount)) {
+        addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale just contains number only.');
+        return false;
     }
     return true;
 }
