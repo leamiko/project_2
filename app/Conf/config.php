@@ -88,6 +88,16 @@ $app_config = array(
                 )
             )
         ),
+        'Order' => array(
+            'text' => 'Order',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => 'Order Overview',
+                    'url' => '/order/index'
+                )
+            )
+        ),
         'News' => array(
             'text' => 'News',
             'default' => 'index',
