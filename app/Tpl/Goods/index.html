@@ -12,8 +12,7 @@
             <form method="get" name="search_form">
                 Goods Name：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="submit" value="Search" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="Delete goods" onclick="javascript:del();" />&nbsp;&nbsp;
-                <span style="font-weight:bolder;color:#ff0000;">(Click the row to select the goods you going to delete.)</span>
+                <input class="btn btn-primary" type="button" value="Delete goods" onclick="javascript:del();" />
             </form>
         </div>
         <div>
@@ -51,7 +50,7 @@ $(function(){
                 }
             },
             {display: "Stock", name: 'stock', align: 'center', width: '6%'},
-            {display: "Edit", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "Edit", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     var str = '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">Edit</a>';
                     if (rowdata.business_model == 1) {
                         str += ' | <a href="javascript:void(0);" onclick="setBidding('+rowdata.id+', '+rowdata.c_cate_id+')">Set bidding</a>';
@@ -64,8 +63,9 @@ $(function(){
             dataAction: 'server',
             method: 'get',
             width: '100%',
+            checkbox: true,
+            frozenCheckbox: false,
             pageSize:20,
-            allowUnSelectRow: true,
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
             onAfterChangeColumnWidth:f_change,
@@ -80,11 +80,12 @@ function f_onShowDetail(record, container, callback) {
     var sale_amount = record.sale_amount ? record.sale_amount : 'Unknown';
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
     out.push("<tr><td width='20%' align='right'>Unit:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.unit + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Shipping fee:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.shipping_fee + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Size:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.size + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Weight:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.weight + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Color:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.color + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Area:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.area + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>Amout for Sale:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + sale_amount + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Minimum sell:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + sale_amount + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Quality:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.quality + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Guarantee:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.guarantee + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>Description:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.description + "</td></tr>");

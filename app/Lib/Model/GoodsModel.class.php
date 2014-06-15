@@ -28,6 +28,8 @@ class GoodsModel extends Model {
      *            amount for sale(only when business model is 2)
      * @param string $unit
      *            unit
+     * @param float $shipping_fee
+     *            Shipping fee
      * @param string $size
      *            size
      * @param string $weight
@@ -48,7 +50,7 @@ class GoodsModel extends Model {
      *            goods images
      * @return array
      */
-    public function addGoods($name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, array $image) {
+    public function addGoods($name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $shipping_fee, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, array $image) {
         $data = array(
             'name' => $name,
             'p_cate_id' => $p_cate_id,
@@ -57,6 +59,7 @@ class GoodsModel extends Model {
             'price' => $price,
             'business_model' => $business_model,
             'unit' => $unit,
+            'shipping_fee' => $shipping_fee,
             'area' => $area,
             'pay_method' => $pay_method,
             'stock' => $stock,
@@ -130,6 +133,7 @@ class GoodsModel extends Model {
             'g.business_model',
             'g.sale_amount',
             'g.unit',
+            'g.shipping_fee',
             'g.size',
             'g.weight',
             'g.quality',
@@ -320,6 +324,7 @@ class GoodsModel extends Model {
             'g.price',
             'g.sale_amount',
             'g.unit',
+            'g.shipping_fee',
             'g.is_bidding',
             'g.size',
             'g.weight',
@@ -388,6 +393,7 @@ class GoodsModel extends Model {
             'g.price',
             'g.sale_amount',
             'g.unit',
+            'g.shipping_fee',
             'g.is_bidding',
             'g.size',
             'g.weight',
@@ -506,9 +512,18 @@ class GoodsModel extends Model {
             'g.is_delete' => 0,
             '_complex' => array(
                 array(
-                    'g.name' => array('like', "%{$keyword}%"),
-                    'p.name' => array('like', "%{$keyword}%"),
-                    'c.name' => array('like', "%{$keyword}%"),
+                    'g.name' => array(
+                        'like',
+                        "%{$keyword}%"
+                    ),
+                    'p.name' => array(
+                        'like',
+                        "%{$keyword}%"
+                    ),
+                    'c.name' => array(
+                        'like',
+                        "%{$keyword}%"
+                    ),
                     '_logic' => 'OR'
                 )
             )
@@ -529,6 +544,7 @@ class GoodsModel extends Model {
             'g.business_model',
             'g.sale_amount',
             'g.unit',
+            'g.shipping_fee',
             'g.size',
             'g.weight',
             'g.quality',
@@ -610,6 +626,8 @@ class GoodsModel extends Model {
      *            Amount for sale
      * @param string $unit
      *            Unit
+     * @param float $shipping_fee
+     *            Shipping fee
      * @param string $size
      *            Size
      * @param string $weight
@@ -630,7 +648,7 @@ class GoodsModel extends Model {
      *            Goods images
      * @return array
      */
-    public function updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, $image) {
+    public function updateGoods($id, $name, $p_cate_id, $c_cate_id, $price, $stock, $business_model, $sale_amount, $unit, $shipping_fee, $size, $weight, $color, $area, $pay_method, $quality, $guarantee, $description, $image) {
         $update_time = time();
         // Start transaction
         $this->startTrans();
@@ -644,6 +662,7 @@ class GoodsModel extends Model {
             'business_model' => $business_model,
             'sale_amount' => strlen($sale_amount) ? intval($sale_amount) : null,
             'unit' => $unit,
+            'shipping_fee' => $shipping_fee,
             'size' => strlen($size) ? $size : null,
             'weight' => strlen($weight) ? intval($weight) : null,
             'color' => strlen($color) ? $color : null,

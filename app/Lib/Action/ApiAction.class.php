@@ -385,6 +385,7 @@ class ApiAction extends Action {
             }
             $result = M('Goods')->where(array(
                 'c_cate_id' => $c_cate_id,
+                'is_delete' => 0,
                 'is_bidding' => 1
             ))->select();
             if (!empty($result)) {
@@ -759,11 +760,13 @@ class ApiAction extends Action {
             ))->order("id ASC")->limit(($page - 1) * $pageSize, $pageSize)->select();
             foreach ($result as &$v) {
                 $temp = M('Goods')->field(array(
-                    'name'
+                    'name',
+                    'shipping_fee'
                 ))->where(array(
                     'id' => $v['goods_id']
                 ))->find();
                 $v['goods_name'] = $temp['name'];
+                $v['shipping_fee'] = $temp['shipping_fee'];
                 $v['goods_image'] = M('GoodsImage')->field(array(
                     'CONCAT("' . "http://{$_SERVER['HTTP_HOST']}" . '", image)' => 'image'
                 ))->where(array(

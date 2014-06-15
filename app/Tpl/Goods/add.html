@@ -93,6 +93,15 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
+                    <span>*</span>Shipping fee
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="shipping_fee" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
                     Size:
                 </td>
                 <td align="left" class="l-table-edit-td">
@@ -249,11 +258,21 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckStock();
     });
+    $("#sale_amount").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckSaleAmount();
+    });
     $("#unit").focus(function() {
         addTip($(this).parent('td').next('td:last'), 'Unit can not more than 30 characters.');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckUnit();
+    });
+    $("#shipping_fee").focus(function() {
+        addTip($(this).parent('td').next('td:last'), 'Shipping fee with two decimal places at most');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckShippingFee();
     });
     $("#area").change(function() {
         removeTip($(this).parent('td').next('td:last'));
@@ -385,17 +404,22 @@ function ckStock() {
 
 //Check Amount for sale
 function ckSaleAmount() {
-    var sale_amount = $.trim($("#sale_amount").val());
-    if (sale_amount.length == 0) {
-        addTip($("#sale_amount").parent('td').next('td:last'), 'The minimum sell can not be empty.');
-        return false;
+    var business_model = parseInt($("#business_model").val());
+    if (business_model === 1) {
+        return true;
+    } else {
+        var sale_amount = $.trim($("#sale_amount").val());
+        if (sale_amount.length == 0) {
+            addTip($("#sale_amount").parent('td').next('td:last'), 'The minimum sell can not be empty.');
+            return false;
+        }
+        var reg = /^\d+$/g;
+        if (!reg.test(sale_amount)) {
+            addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale just contains number only.');
+            return false;
+        }
+        return true;
     }
-    var reg = /^\d+$/g;
-    if (!reg.test(sale_amount)) {
-        addTip($("#sale_amount").parent('td').next('td:last'), 'Amount for sale just contains number only.');
-        return false;
-    }
-    return true;
 }
 
 //Check Unit
@@ -407,6 +431,25 @@ function ckUnit() {
     }
     if (unit.length > 30) {
         addTip($("#unit").parent('td').next('td:last'), 'Unit can not more than 30 characters.');
+        return false;
+    }
+    return true;
+}
+
+//Check shipping fee
+function ckShippingFee() {
+    var shipping_fee = $.trim($("#shipping_fee").val());
+    if (shipping_fee.length <= 0) {
+        addTip($("#shipping_fee").parent('td').next('td:last'), 'Shipping fee can not be empty.');
+        return false;
+    }
+    var sReg = /^\d+(\.\d{1,2})?$/;
+    if (!sReg.test(shipping_fee)) {
+        addTip($("#shipping_fee").parent('td').next('td:last'), 'Shipping fee with two decimal places at most and just contain number and decimal point.');
+        return false;
+    }
+    if (parseFloat(shipping_fee) > 99999999.99) {
+        addTip($("#shipping_fee").parent('td').next('td:last'), 'Shipping fee is too high.');
         return false;
     }
     return true;
@@ -452,6 +495,7 @@ function checkForm() {
     if (!ckStock()) return false;
     if (!ckSaleAmount()) return false;
     if (!ckUnit()) return false;
+    if (!ckShippingFee()) return false;
     if (!ckArea()) return false;
     if (!ckImage()) return false;
     var name = $.trim($("#name").val());
@@ -462,6 +506,7 @@ function checkForm() {
     var business_model = parseInt($("#business_model").val());
     var sale_amount = $.trim($("#sale_amount").val());
     var unit = $.trim($("#unit").val());
+    var shipping_fee = parseFloat($("#shipping_fee").val());
     var size = $.trim($("#size").val());
     var weight = $.trim($("#weight").val());
     var color = $.trim($("#color").val());
@@ -479,6 +524,7 @@ function checkForm() {
         business_model: business_model,
         sale_amount: sale_amount,
         unit: unit,
+        shipping_fee: shipping_fee,
         size: size,
         weight: weight,
         color: color,
