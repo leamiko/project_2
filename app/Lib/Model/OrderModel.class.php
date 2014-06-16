@@ -42,12 +42,29 @@ class OrderModel extends Model {
     public function getOrderList($page, $pageSize, $order, $sort, $keyword) {
         $offset = ($page - 1) * $pageSize;
         empty($keyword) || $this->where(array(
-            'order_number' => array(
+            'o.order_number' => array(
                 'like',
                 "%{$keyword}%"
             )
         ));
-        return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        return $this->table($this->getTableName() . " AS o")->join(array(
+            "INNER JOIN " . M('Member')->getTableName() . " AS m ON o.user_id = m.id",
+            "INNER JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.id",
+            "INNER JOIN " . M('Shipping')->getTableName() . " AS s ON o.shipping_type = s.id"
+        ))->field(array(
+            'm.account' => 'username',
+            'a.phone',
+            'a.telephone',
+            'a.zip',
+            'a.address',
+            's.name' => 'shipping',
+            'o.id',
+            'o.order_number',
+            'o.pay_method',
+            'o.status',
+            'o.order_time',
+            'o.remark'
+        ))->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
 }

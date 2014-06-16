@@ -23,6 +23,10 @@ class OrderAction extends AdminAction {
             $total = $orderModel->getOrderCount($keyword);
             if ($total) {
                 $rows = $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword);
+                foreach ($rows as &$v) {
+                    $v['order_time'] = date("Y-m-d H:i:s", $v['order_time']);
+                    $v['order_goods'] = D('OrderGoods')->getOrderGoodsList($v['id']);
+                }
             } else {
                 $rows = null;
             }

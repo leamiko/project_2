@@ -1,0 +1,97 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>Order overview
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <form method="get" name="search_form">
+                Order number：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="submit" value="Search" />
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "Username", name: 'username', align: 'center', width: '12%', isSort: false},
+            {display: "Order number", name: 'order_number', align: 'center', width: '16%', isSort: false},
+            {display: "Pay Method", name: 'pay_method', align: 'center', width: '6%', isSort: false},
+            {display: "Status", name: 'status', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? 'Paid' : 'Unpaid';
+                }
+            },
+            {display: "Order time", name: 'order_time', align: 'center', width: '12%', isSort: false}
+            ],
+            url: '<{:U("Order/index")}>?keyword=<{$keyword}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
+    });
+    $("#pageloading").hide();
+});
+
+//Show Detail
+function f_onShowDetail(record, container, callback) {
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>Consignee address:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.address + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Consignee phone:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.phone ? record.phone : 'Unknown') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Consignee telephone:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.telephone ? record.telephone : 'Unknown') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Zip code:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.zip ? record.zip : 'Unknown') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Shipping method:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.shipping + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>Remark:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.remark ? record.remark : '---') + "</td></tr>");
+    out.push("</table>");
+    out.push("<h3 style='margin:10px;'>Order goods:</h3>");
+    var total_price = 0;
+    for (var i in record.order_goods) {
+        if (record.order_goods[i].business_model == 1) {
+            var business_model = 'B2C';
+        } else {
+            var business_model = 'B2B';
+        }
+        total_price += parseFloat(record.order_goods[i].goods_price);
+        out.push('<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">');
+        out.push("<tr><td width='20%' align='right'>Goods name:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].name + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Parent category:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].parent_category + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Child category:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].child_category + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Item number:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].item_number + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Stock:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].stock + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Business model:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + business_model + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Unit:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].unit + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Is bidding:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].is_bidding ? 'Yes' : 'No') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Shipping fee:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].shipping_fee + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Area:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].name_zh + ' | ' + record.order_goods[i].name_en + ' | ' + record.order_goods[i].name_ar) + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Minimum sell:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].sale_amount ? record.order_goods[i].sale_amount : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Size:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].size ? record.order_goods[i].size : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Weight:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].weight ? record.order_goods[i].weight : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Color:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].color ? record.order_goods[i].color : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Quality:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].quality ? record.order_goods[i].quality : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Guarantee:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].guarantee ? record.order_goods[i].guarantee : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Description:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.order_goods[i].description ? record.order_goods[i].description : '---') + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Goods price:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].goods_price + "</td></tr>");
+        out.push("<tr><td width='20%' align='right'>Goods amount:&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_goods[i].goods_amount + "</td></tr>");
+        out.push("</table>");
+    }
+    out.push("<h3 style='margin:10px;'>Total price:&nbsp;&nbsp;" + total_price + "</h3>");
+    $(container).html(out.join(''));
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
