@@ -765,6 +765,8 @@ class ApiAction extends Action {
                 ))->where(array(
                     'id' => $v['goods_id']
                 ))->find();
+                $shipping_type = M('Order')->field(array('shipping_type'))->where(array('id' => $order_id))->find();
+                $v['shipping_type'] = $shipping_type['shipping_type'];
                 $v['goods_name'] = $temp['name'];
                 $v['shipping_fee'] = $temp['shipping_fee'];
                 $v['goods_image'] = M('GoodsImage')->field(array(
